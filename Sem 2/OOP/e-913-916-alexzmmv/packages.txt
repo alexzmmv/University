@@ -1,0 +1,7 @@
+John|Iuliu|2|100.4|232.54|0
+Zana Floare|Andre|100|200.4|202.54|0
+Jamila|Sat|1|100.4|232.54|0
+Racu|Bucuresti|90|300.4|232.54|1
+Marinica|Sat|43|120.4|232.54|0
+Arnold|Rarau|234|10.4|232.4|0
+Jani|Ploiesti|6|20|20|0

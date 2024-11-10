@@ -1,0 +1,55 @@
+     1                                  bits 32 
+     2                                  
+     3                                  global start        
+     4                                  
+     5                                  extern exit               
+     6                                  import exit msvcrt.dll   
+     7                                  
+     8                                  ; 100/(e+h-3*a)
+     9                                  
+    10                                  segment data use32 class=data
+    11 00000000 00000000                    q_ dd 0
+    12                                      
+    13 00000004 FF                          blank db 0FFh
+    14                                      
+    15 00000005 00000000                    reminder_ dd 0 
+    16                                      
+    17 00000009 FF                          blank2 db 0FFh
+    18 0000000A 0C                          a db 12
+    19 0000000B 08                          b db 8
+    20 0000000C 0F                          c db 15
+    21 0000000D BB                          d db 0BBh
+    22 0000000E F20F                        e dw 0FF2h
+    23 00000010 F80A                        f dw 0AF8h
+    24 00000012 FB0E                        g dw 0EFBh
+    25 00000014 F20B                        h dw 0BF2h
+    26                                      
+    27                                  segment code use32 class=code
+    28                                      start:
+    29                                      
+    30 00000000 B800000000                  mov eax,0
+    31 00000005 BB00000000                  mov ebx,0
+    32 0000000A B900000000                  mov  ecx,0
+    33 0000000F BA00000000                  mov edx,0
+    34                                      
+    35 00000014 BB[0E000000]                mov ebx,e
+    36 00000019 B9[14000000]                mov ecx,h
+    37 0000001E 01D9                        add ecx,ebx
+    38 00000020 B003                        mov al,3
+    39 00000022 F625[0A000000]              mul byte[a]
+    40 00000028 BB00000000                  mov ebx,0
+    41 0000002D 6689C3                      mov bx,ax
+    42                                      
+    43 00000030 BA00000000                  mov edx,0
+    44 00000035 B864000000                  mov eax,100d
+    45                                      
+    46 0000003A F7F3                        div ebx
+    47                                      
+    48 0000003C A3[00000000]                mov [q_],eax
+    49 00000041 8915[05000000]              mov [reminder_],edx
+    50                                      
+    51                                     
+    52                                       
+    53                                       
+    54 00000047 6A00                           push    dword 0      
+    55 00000049 FF15[00000000]                 call    [exit]  

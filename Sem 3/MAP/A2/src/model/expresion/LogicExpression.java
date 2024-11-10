@@ -1,0 +1,80 @@
+package model.expresion;
+
+import model.exception.AdtException;
+import model.exception.ExpressionException;
+import model.programStateComponents.SymbolTable;
+import model.type.BoolType;
+import model.values.BoolValue;
+import model.values.IValue;
+
+public class LogicExpression implements IExpression{
+    public LogicExpression(IExpression e1, IExpression e2, int op) {
+        this.e1 = e1;
+        this.e2 = e2;
+        this.op = op;
+    }
+
+    IExpression e1;
+    IExpression e2;
+    int op; // 1 - and, 2 - or, 3 - not
+
+
+    @Override
+    public IValue evaluate(SymbolTable table) throws ExpressionException, AdtException {
+        if(op == 1){
+            IValue v1 = e1.evaluate(table);
+            if(v1.getType().equals(new BoolType())){
+                IValue v2 = e2.evaluate(table);
+                if(v2.getType().equals(new BoolType())){
+                    boolean b1 = ((BoolValue)v1).getVal();
+                    boolean b2 = ((BoolValue)v2).getVal();
+                    return new BoolValue(b1 && b2);
+                }
+                else
+                    throw new ExpressionException("Second operand is not a boolean");
+            }
+            else
+                throw new ExpressionException("First operand is not a boolean");
+        }
+        else if(op == 2){
+            IValue v1 = e1.evaluate(table);
+            if(v1.getType().equals(new BoolType())){
+                IValue v2 = e2.evaluate(table);
+                if(v2.getType().equals(new BoolType())){
+                    boolean b1 = ((BoolValue)v1).getVal();
+                    boolean b2 = ((BoolValue)v2).getVal();
+                    return new BoolValue(b1 || b2);
+                }
+                else
+                    throw new ExpressionException("Second operand is not a boolean");
+            }
+            else
+                throw new ExpressionException("First operand is not a boolean");
+        }
+        else if(op == 3){
+            IValue v1 = e1.evaluate(table);
+            if(v1.getType().equals(new BoolType())){
+                boolean b1 = ((BoolValue)v1).getVal();
+                return new BoolValue(!b1);
+            }
+            else
+                throw new ExpressionException("Operand is not a boolean");
+        }
+        else
+            throw new ExpressionException("Invalid operation");
+
+    }
+
+    @Override
+    public String toString() {
+        if(op == 1)
+            return e1.toString() + " && " + e2.toString();
+        else if(op == 2)
+            return e1.toString() + " || " + e2.toString();
+        else if(op == 3)
+            return "!" + e1.toString();
+        else
+            return "Invalid operation";
+    }
+
+}

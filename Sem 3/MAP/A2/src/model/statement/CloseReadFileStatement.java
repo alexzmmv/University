@@ -1,0 +1,44 @@
+package model.statement;
+
+import model.ProgramState;
+import model.exception.AdtException;
+import model.exception.ExpressionException;
+import model.exception.FileException;
+import model.expresion.IExpression;
+import model.type.StringType;
+import model.values.IValue;
+import model.values.StringValue;
+
+import java.io.BufferedReader;
+
+public class CloseReadFileStatement implements IStatement{
+    IExpression expression;
+
+    public CloseReadFileStatement(IExpression expression) {
+        this.expression = expression;
+    }
+
+
+    @Override
+    public ProgramState execute(ProgramState state) throws ExpressionException, AdtException {
+        IValue value = expression.evaluate(state.getSymbolTable());
+        if(!value.getType().equals(new StringType()))
+            throw new ExpressionException("Expression evaluation must be a string");
+        StringValue stringValue = (StringValue) value;
+        if(!state.getFileTable().isDefined(stringValue))
+            throw new FileException("File not opened");
+        BufferedReader bufferedReader = state.getFileTable().lookup(stringValue);
+        try {
+            bufferedReader.close();
+        }catch (Exception e){
+            throw new FileException("Error closing file: " + e.getMessage());
+        }
+        state.getFileTable().remove(stringValue);
+        return state;
+    }
+
+    @Override
+    public String toString() {
+        return "CRF[" +expression +']';
+    }
+}

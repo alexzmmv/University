@@ -1,0 +1,70 @@
+     1                                  bits 32 
+     2                                  global start        
+     3                                  
+     4                                  extern exit               
+     5                                  import exit msvcrt.dll    
+     6                                            
+     7                                  ;d-a+c+c-b+a
+     8                                  ;muldiv 15 x-(a*b*25+c*3)/(a+b)+e; a,b,c-byte; e-doubleword
+     9                                  ;muldiv 30 a*b-(100-c)/(b*b)+e+x; a-word; b,c-byte; e-doubleword; x-qword
+    10                                  segment data use32 class=data
+    11                                      ; ...
+    12 00000000 FF                          a db 0_FFh
+    13 00000001 FFFF                        b dw 0_FF_FFh
+    14 00000003 FFFFFF0F                    c dd 0F_FF_FF_FFh
+    15 00000007 FFFF000000000000            d dq 0FF_FFh
+    16 0000000F 0000000000000000            aux dq 0
+    17                                      
+    18                                  segment code use32 class=code
+    19                                      start:
+    20 00000000 B800000000                      mov eax,0
+    21 00000005 BB00000000                      mov ebx,0
+    22 0000000A B900000000                      mov ecx,0
+    23 0000000F BA00000000                      mov edx,0
+    24                                          
+    25 00000014 8B0D[0B000000]                  mov ecx,[d+4]
+    26 0000001A 8B1D[07000000]                  mov ebx,[d]
+    27                                          ;ecx:ebx<-d
+    28 00000020 A0[00000000]                    mov al,[a]
+    29 00000025 6698                            cbw
+    30 00000027 6699                            cwd
+    31 00000029 6652                            push dx
+    32 0000002B 6650                            push ax
+    33 0000002D 58                              pop eax
+    34 0000002E 98                              cwde
+    35 0000002F F8                              clc
+    36 00000030 29C3                            sub ebx,eax
+    37 00000032 19D1                            sbb ecx,edx
+    38                                          ;d-a
+    39 00000034 BA00000000                      mov edx,0
+    40 00000039 A1[03000000]                    mov eax,[c]
+    41 0000003E 98                              cwde
+    42 0000003F 01C3                            add ebx,eax
+    43 00000041 11D1                            adc ecx,edx
+    44 00000043 01C3                            add ebx,eax
+    45 00000045 11D1                            adc ecx,edx
+    46                                          ;d-a+c+c
+    47 00000047 66A1[01000000]                  mov ax,[b]
+    48 0000004D 6699                            cwd
+    49 0000004F 6652                            push dx
+    50 00000051 6650                            push ax
+    51 00000053 58                              pop eax
+    52 00000054 98                              cwde
+    53 00000055 F8                              clc
+    54 00000056 29C3                            sub ebx,eax
+    55 00000058 19D1                            sbb ecx,edx
+    56                                          
+    57 0000005A A0[00000000]                    mov al,[a]
+    58 0000005F 6698                            cbw
+    59 00000061 6699                            cwd
+    60 00000063 6652                            push dx
+    61 00000065 6650                            push ax
+    62 00000067 58                              pop eax
+    63 00000068 98                              cwde
+    64 00000069 F8                              clc
+    65 0000006A 01C3                            add ebx,eax
+    66 0000006C 11D1                            adc ecx,edx
+    67                                  
+    68                                          ;rezult is in ebx:ecx
+    69 0000006E 6A00                            push    dword 0      ; push the parameter for exit onto the stack
+    70 00000070 FF15[00000000]                  call    [exit]       ; call exit to terminate the program

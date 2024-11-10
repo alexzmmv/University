@@ -1,0 +1,10 @@
+import socket
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind(("0.0.0.0", 7777))
+s.listen()
+cs,addr=s.accept()
+msg=cs.recv(100).decode()
+msg=msg.split(',')
+len_msg=len(msg)
+cs.send(str(len_msg).encode())
+cs.close()

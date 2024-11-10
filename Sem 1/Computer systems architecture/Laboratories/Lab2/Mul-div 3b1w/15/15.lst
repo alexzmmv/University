@@ -1,0 +1,50 @@
+     1                                  bits 32 
+     2                                  
+     3                                  global start        
+     4                                  
+     5                                  extern exit               
+     6                                  import exit msvcrt.dll   
+     7                                  
+     8                                  ;(a*2)+2*(b-3)-d-2*c
+     9                                    
+    10                                  segment data use32 class=DATA
+    11 00000000 00000000                    rezult dd 0
+    12 00000004 0C                          a db 12
+    13 00000005 08                          b db 8
+    14 00000006 0F                          c db 15
+    15 00000007 1B00                        d dw 27
+    16                                  
+    17                                      
+    18                                  segment code use32 class=CODE
+    19                                      start:
+    20                                      
+    21 00000000 B800000000                  mov eax,0
+    22 00000005 BB00000000                  mov ebx,0
+    23 0000000A B900000000                  mov  ecx,0
+    24 0000000F BA00000000                  mov edx,0
+    25                                      
+    26                                      
+    27 00000014 802D[05000000]03            sub byte [b],3
+    28 0000001B B002                        mov al,2
+    29 0000001D F625[05000000]              mul byte [b]
+    30 00000023 6689C3                      mov bx,ax
+    31                                      ;bx<-2*(b-3)
+    32                                      
+    33 00000026 66B80200                    mov ax,2
+    34 0000002A F625[06000000]              mul byte[c]
+    35 00000030 6689C1                      mov cx,ax
+    36                                      ;cx<- c*2
+    37                                      
+    38                                      
+    39 00000033 66B80200                    mov ax,2
+    40 00000037 F625[04000000]              mul byte[a]
+    41                                      ;ax=2*a
+    42                                      
+    43 0000003D 01D8                        add eax,ebx
+    44 0000003F 2B05[07000000]              sub eax,[d]
+    45 00000045 29C8                        sub eax,ecx
+    46                                      
+    47 00000047 A3[00000000]                mov [rezult],eax
+    48                                      
+    49 0000004C 6A00                           push    dword 0      
+    50 0000004E FF15[00000000]                 call    [exit]  
