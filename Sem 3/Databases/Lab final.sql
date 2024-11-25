@@ -1,13 +1,17 @@
 
-ALTER PROCEDURE [dbo].[UniversityCreate] AS
+
+CREATE OR ALTER PROCEDURE UniversityCreate AS
 BEGIN
+	
+	
 	--create VersionTable
 	CREATE TABLE VersionTable (
-		VersionID INT PRIMARY KEY IDENTITY(1,1),
-		VersionNumber INT NOT NULL,
-		ChangeDate DATETIME DEFAULT GETDATE()
+		VersionID INT PRIMARY KEY identity(1,1),
+		Do VARCHAR(100),
+		Undo VARCHAR(100)
 	);
-
+	
+	
     -- Create Buildings table
     CREATE TABLE Buildings (
         Building_ID INT PRIMARY KEY IDENTITY(1,1),
@@ -136,7 +140,7 @@ END;
 GO
 
 
-ALTER PROCEDURE [dbo].[InsertInitialData] AS
+CREATE OR ALTER PROCEDURE [dbo].[InsertInitialData] AS
 BEGIN
     -- Insert data into Buildings table
     INSERT INTO Buildings (Name, Address) VALUES 
@@ -214,12 +218,12 @@ BEGIN
 
     -- Insert data into Grades table
     INSERT INTO Grades (Student_ID, Course_ID, Grade) VALUES 
-    (1, 1, 8.50),
-    (2, 2, 7.75),
-    (3, 3, 9.20),
-    (4, 4, 6.80),
+    (1, 1, 8.5),
+    (2, 2, 7.7),
+    (3, 3, 9.2),
+    (4, 4, 6.8),
     (5, 5, 8.00),
-	(6,5,10.00);
+	(6,5,9.0);
 
     -- Insert data into Student_Courses table
     INSERT INTO Student_Courses (Student_ID, Course_ID) VALUES 
@@ -239,14 +243,14 @@ BEGIN
 END 
 go
 
-ALTER PROCEDURE InvalidInsert AS
+CREATE OR ALTER PROCEDURE InvalidInsert AS
 BEGIN
 	INSERT INTO Students(Name,Profile_ID)
 	VALUES('ION',999);
 END
 go
 
-Alter PROCEDURE [dbo].[UpdateEntries] AS
+CREATE or ALTER PROCEDURE [dbo].[UpdateEntries] AS
 BEGIN
     -- Update Buildings table
     UPDATE Buildings
@@ -359,7 +363,7 @@ END;
 GO
 
 go
-Alter PROCEDURE DeleteEntries AS
+CREATE or ALTER PROCEDURE DeleteEntries AS
 BEGIN
     -- Delete from Course_Rooms table
     DELETE FROM Course_Rooms WHERE Course_ID = 1 AND Room_ID = 1;
@@ -411,7 +415,7 @@ BEGIN
 END;
 GO
 
-ALTER PROCEDURE UnionQueries AS
+CREATE OR ALTER PROCEDURE UnionQueries AS
 BEGIN
     -- Query 1: Union using UNION ALL
     SELECT Name FROM Students WHERE Enrollment_Date >= '2023-01-01'
@@ -425,7 +429,7 @@ BEGIN
 END
 GO
 
-ALTER PROCEDURE IntersectionQueries AS
+CREATE OR ALTER PROCEDURE IntersectionQueries AS
 BEGIN
     -- Query 1: Intersection using INTERSECT
     SELECT Name FROM Students WHERE Enrollment_Date >= '2023-01-01'
@@ -437,7 +441,7 @@ BEGIN
 END
 GO
 
-ALTER PROCEDURE DifferenceQueries AS
+CREATE OR ALTER PROCEDURE DifferenceQueries AS
 BEGIN
     -- Query 1: Difference using EXCEPT
     SELECT Name FROM Students
@@ -450,7 +454,7 @@ END
 GO
 
 
-ALTER PROCEDURE JoinQueries AS
+CREATE OR ALTER PROCEDURE JoinQueries AS
 BEGIN
     -- INNER JOIN: Join at least 3 tables
     SELECT Students.Name AS Student_Name, Profiles.Name AS Profile_Name, Faculties.Name AS Faculty_Name
@@ -475,7 +479,7 @@ BEGIN
 END
 GO
 
-ALTER PROCEDURE SubqueryInWhere AS
+CREATE OR ALTER PROCEDURE SubqueryInWhere AS
 BEGIN
     -- Query 1: Using IN with a subquery
     SELECT Name FROM Students 
@@ -490,7 +494,7 @@ BEGIN
 END
 GO
 
-ALTER PROCEDURE ExistsQueries AS
+CREATE OR ALTER PROCEDURE ExistsQueries AS
 BEGIN
     -- Query 1: Using EXISTS
     SELECT Name FROM Students
@@ -502,7 +506,7 @@ BEGIN
 END
 GO
 
-ALTER PROCEDURE SubqueryInFrom AS
+CREATE OR ALTER PROCEDURE SubqueryInFrom AS
 BEGIN
     -- Query 1: Subquery in FROM clause for counting professors by faculty
     SELECT A.Faculty_ID, A.Faculty_Count
@@ -521,7 +525,7 @@ GO
 
 
 
-ALTER PROCEDURE GroupByQueries AS
+CREATE OR ALTER PROCEDURE GroupByQueries AS
 BEGIN
 	-- Query 1: GROUP BY with COUNT of students by Profile
 	SELECT Profiles.Profile_ID, COUNT(Students.Student_ID) AS Student_Count
@@ -554,7 +558,7 @@ BEGIN
 END
 GO
 --
-ALTER PROCEDURE FinalQueries AS
+CREATE OR ALTER PROCEDURE FinalQueries AS
 BEGIN
     
 	-- Query 1: List all Students with their respective Profiles
@@ -584,7 +588,7 @@ END
 GO
 
 
-ALTER PROCEDURE AnyAllQueries AS
+CREATE OR ALTER PROCEDURE AnyAllQueries AS
 BEGIN
     -- Query 1: ANY with subquery
     SELECT Name FROM Students
@@ -603,6 +607,225 @@ BEGIN
     WHERE Profile_ID NOT IN (SELECT Profile_ID FROM Profiles WHERE Duration_Years > ALL (SELECT Duration_Years FROM Profiles));
 END
 GO
-`/*
-for each change there is a new version number
+
+
+/*
+Sometimes, after you design a database, you need to change its
+structure. Unfortunately, changes aren't correct every time,so they must
+be reverted. Your task is to create a versioning mechanism that allows
+you to easily switch between database versions.
+Write SQL scripts that:
+a. modify the type of a column;
+b. add / remove a column;
+c. add / remove a DEFAULT constraint;
+d. add / remove a primary key;
+e. add / remove a candidate key;
+f. add / remove a foreign key;
+g. create / drop a table.
+For each of the scripts above, write another one that reverts the
+operation. Create a new table that holds the current version of the
+database schema. For simplicity, the version is assumed to be an integer
+number.
+Place each of the scripts in a stored procedure. Use a simple, intuitive
+naming convention.
+Write another stored procedure that receives as a parameter a version
+number and brings the database to that version.
 */
+
+
+
+--a. modify the type of a column;
+CREATE OR ALTER PROCEDURE GradeToFloat AS
+BEGIN
+	ALTER TABLE Grades
+	ALTER COLUMN GRADE FLOAT;
+
+END;
+GO
+
+CREATE OR ALTER PROCEDURE GadeToDecimal AS
+BEGIN
+	ALTER TABLE Grades
+	ALTER COLUMN GRADE DECIMAL(3,2);
+END;
+GO
+
+--b. add / remove a column;
+CREATE OR ALTER PROCEDURE AddAgeStudents AS
+BEGIN
+    ALTER TABLE Students
+    ADD Age INT;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE RemoveAgeStudents AS
+BEGIN
+    ALTER TABLE Students
+    DROP COLUMN Age;
+END;
+GO
+
+--c. add / remove a DEFAULT constraint;
+CREATE OR ALTER PROCEDURE AddDefaultEmail AS
+BEGIN
+    ALTER TABLE Students
+    ADD CONSTRAINT DF_Students_Email DEFAULT ''
+    FOR Email;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE RemoveDefaultEmail AS
+BEGIN
+    ALTER TABLE Students
+    DROP CONSTRAINT DF_Students_Email;
+END;
+GO
+
+--d. add / remove a primary key;
+CREATE OR ALTER PROCEDURE AddStudentsPrimaryKey AS
+BEGIN
+    ALTER TABLE Students
+    ADD CONSTRAINT PK_Students PRIMARY KEY (Student_ID);    
+END;
+GO
+
+CREATE OR ALTER PROCEDURE RemoveStudentsPrimaryKey AS
+BEGIN
+    ALTER TABLE Students
+    DROP CONSTRAINT PK_Students;
+END;
+GO
+
+--e. add / remove a candidate key;
+CREATE OR ALTER PROCEDURE AddStudentsCandidateKey AS
+BEGIN
+    ALTER TABLE Students
+    ADD CONSTRAINT AK_Students_Email UNIQUE (Email);
+END;
+GO
+
+CREATE OR ALTER PROCEDURE RemoveStudentsCandidateKey AS
+BEGIN
+    ALTER TABLE Students
+    DROP CONSTRAINT AK_Students_Email;
+END;
+GO
+
+--f. add / remove a foreign key;
+CREATE OR ALTER PROCEDURE AddStudentsProfileForeignKey AS
+BEGIN
+    ALTER TABLE Students
+    ADD CONSTRAINT FK_Students_Profiles FOREIGN KEY (Profile_ID) REFERENCES Profiles(Profile_ID);
+
+END;
+GO
+
+CREATE OR ALTER PROCEDURE RemoveStudentsProfileForeignKey AS
+BEGIN
+    ALTER TABLE Students
+    DROP CONSTRAINT FK_Students_Profiles;
+END;
+GO
+
+--g. create / drop a table.
+CREATE OR ALTER PROCEDURE CreateTestTable AS
+BEGIN
+    CREATE TABLE TestTable (
+        Test_ID INT PRIMARY KEY,
+        Test_Name VARCHAR(100)
+    );
+END;
+GO
+
+CREATE OR ALTER PROCEDURE DropTestTable AS
+BEGIN
+    DROP TABLE TestTable;
+END;
+GO
+
+
+-- Versioning Table
+CREATE TABLE VersioningTable (
+    Current_Procedure NVARCHAR(50),
+    Previous_Procedure NVARCHAR(50),
+    versionTO INT
+);
+
+-- Insert versioning procedures
+INSERT INTO VersioningTable (Current_Procedure, Previous_Procedure, versionTO) VALUES
+('GradeToFloat', 'GadeToDecimal', 1),
+('AddAgeStudents', 'RemoveAgeStudents', 2),
+('AddDefaultEmail', 'RemoveDefaultEmail', 3),
+('AddStudentsPrimaryKey', 'RemoveStudentsPrimaryKey', 4),
+('AddStudentsCandidateKey', 'RemoveStudentsCandidateKey', 5),
+('AddStudentsProfileForeignKey', 'RemoveStudentsProfileForeignKey', 6),
+('CreateTestTable', 'DropTestTable', 7);
+
+-- Current Version Table
+DROP TABLE IF EXISTS CurrentVersion;
+CREATE TABLE CurrentVersion (
+    currentVersion INT DEFAULT 0
+);
+
+INSERT INTO CurrentVersion VALUES (0);
+
+GO
+
+-- Version Management Procedure
+CREATE OR ALTER PROCEDURE goToVersion(@version INT)
+AS
+BEGIN
+    DECLARE @currentVersion INT;
+    DECLARE @currentProcedure NVARCHAR(50);
+
+    -- Parameter validity check
+    IF @version < 0 OR @version > 7
+    BEGIN
+        RAISERROR('Invalid version! Please choose a version between 0 and 7.', 17, 1);
+        RETURN;
+    END
+
+    -- Retrieve the current version
+    SET @currentVersion = (SELECT currentVersion FROM CurrentVersion);
+
+    -- Check if already at the desired version
+    IF @version = @currentVersion
+    BEGIN
+        PRINT 'We are already on this version!';
+        RETURN;
+    END
+
+    -- Go forward to the desired version
+    IF @currentVersion < @version
+    BEGIN
+        WHILE @currentVersion < @version
+        BEGIN
+            PRINT'Upgrading to version ' + CAST(@currentVersion + 1 AS NVARCHAR(10));
+            SET @currentProcedure = (SELECT Current_Procedure FROM VersioningTable WHERE versionTO = @currentVersion + 1);
+            EXEC(@currentProcedure);
+            SET @currentVersion = @currentVersion + 1;
+        END
+    END
+
+    -- Roll back to the desired version
+    ELSE IF @currentVersion > @version
+    BEGIN
+        WHILE @currentVersion > @version
+        BEGIN
+            PRINT 'Downgrading to version ' + CAST(@currentVersion - 1 AS NVARCHAR(10));
+            SET @currentProcedure = (SELECT Previous_Procedure FROM VersioningTable WHERE versionTO = @currentVersion);
+            EXEC(@currentProcedure);
+            SET @currentVersion = @currentVersion - 1;
+        END
+    END
+
+    -- Update the current version
+    UPDATE CurrentVersion
+    SET currentVersion = @currentVersion;
+
+    PRINT 'Current version updated!';
+    PRINT 'Now at version: ' + CAST(@currentVersion AS NVARCHAR(10));
+END;
+GO
+
+--repair some problems but in general it works;

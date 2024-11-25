@@ -1,10 +1,7 @@
 package model.statement;
 
 import model.ProgramState;
-import model.exception.AdtException;
-import model.exception.ExpressionException;
-import model.exception.FileException;
-import model.exception.VariableNotDefinedException;
+import model.exception.*;
 import model.expresion.IExpression;
 import model.expresion.VariableExpression;
 import model.type.StringType;
@@ -24,11 +21,11 @@ public class ReadFileStatement implements IStatement{
     }
 
     @Override
-    public ProgramState execute(ProgramState state) throws ExpressionException, AdtException {
+    public ProgramState execute(ProgramState state) throws ExpressionException, AdtException, ExecutionException {
         if(!state.getSymbolTable().isDefined(varName))
             throw new VariableNotDefinedException("Variable \""+ varName+"\" not defined");
 
-        IValue value = expression.evaluate(state.getSymbolTable());
+        IValue value = expression.evaluate(state);
         if(!value.getType().equals(new StringType()))
             throw new VariableNotDefinedException("Expression evaluation must be a string");
         StringValue stringValue = (StringValue) value;

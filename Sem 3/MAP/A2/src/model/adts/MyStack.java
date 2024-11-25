@@ -32,6 +32,11 @@ public class MyStack<T> implements MyIStack<T>{
     }
 
     @Override
+    public T peek() {
+        return stack.peek();
+    }
+
+    @Override
     public String toString() {
         String outS = "";
         for (T el : stack) {

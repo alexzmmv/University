@@ -4,7 +4,7 @@ import model.adts.MyDictionary;
 import model.exception.AdtException;
 import model.values.IValue;
 
-public class SymbolTable extends MyDictionary<String, IValue> {
+public class SymbolTable extends MyDictionary<String, IValue> implements ISymbolTable {
     @Override
     public void put(String key, IValue value) throws AdtException {
         super.put(key, value);

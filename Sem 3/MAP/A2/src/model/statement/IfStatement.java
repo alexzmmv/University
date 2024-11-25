@@ -2,6 +2,7 @@ package model.statement;
 
 import model.ProgramState;
 import model.exception.AdtException;
+import model.exception.ExecutionException;
 import model.exception.ExpressionException;
 import model.expresion.IExpression;
 import model.type.BoolType;
@@ -20,8 +21,8 @@ public class IfStatement implements IStatement {
     }
 
     @Override
-    public ProgramState execute(ProgramState state) throws AdtException, ExpressionException {
-        IValue val = exp.evaluate(state.getSymbolTable());
+    public ProgramState execute(ProgramState state) throws AdtException, ExpressionException, ExecutionException {
+        IValue val = exp.evaluate(state);
         if (!val.getType().equals(new BoolType()))
             throw new ExpressionException("If condition is not a boolean");
         BoolValue bval = (BoolValue) val;

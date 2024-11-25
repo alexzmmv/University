@@ -1,13 +1,11 @@
 package controller;
 
 import model.ProgramState;
-import model.exception.AdtException;
-import model.exception.ExecutionException;
-import model.exception.ExpressionException;
-import model.exception.FileException;
+import model.exception.*;
 import repository.IRepo;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 public class SingleThreadedController implements IController{
     IRepo repo;
@@ -16,17 +14,30 @@ public class SingleThreadedController implements IController{
         this.repo = repo;
     }
     @Override
-    public void executeOneStep() throws AdtException, ExpressionException, ExecutionException, FileException {
+    public void executeOneStep() throws AdtException, ExpressionException, ExecutionException, FileException, LogFileException {
         ProgramState programState = repo.getCurrentProgram();
         programState.oneStep();
+
+        try {
+            repo.logProgramStateExecution();
+        } catch (IOException e) {
+            throw new LogFileException("Could not log program state execution:"+e.getMessage());
+        }
     }
 
     @Override
-    public void executeAll() throws AdtException, ExpressionException, ExecutionException, IOException {
+    public void executeAll(Boolean flag) throws AdtException, ExpressionException, ExecutionException {
         ProgramState programState = repo.getCurrentProgram();
         while (!programState.getExecutionStack().isEmpty()){
             programState.oneStep();
-            repo.logProgramStateExecution();
+            try {
+                repo.logProgramStateExecution();
+            } catch (IOException e) {
+                throw new LogFileException("Could not log program state execution:"+e.getMessage());
+            }
+
+            if(flag)
+                System.out.println(programState);
         }
     }
 

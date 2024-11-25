@@ -2,6 +2,7 @@ package model.statement;
 
 import model.ProgramState;
 import model.exception.AdtException;
+import model.exception.ExecutionException;
 import model.exception.ExpressionException;
 import model.exception.FileException;
 import model.expresion.IExpression;
@@ -20,8 +21,8 @@ public class CloseReadFileStatement implements IStatement{
 
 
     @Override
-    public ProgramState execute(ProgramState state) throws ExpressionException, AdtException {
-        IValue value = expression.evaluate(state.getSymbolTable());
+    public ProgramState execute(ProgramState state) throws ExpressionException, AdtException, ExecutionException {
+        IValue value = expression.evaluate(state);
         if(!value.getType().equals(new StringType()))
             throw new ExpressionException("Expression evaluation must be a string");
         StringValue stringValue = (StringValue) value;

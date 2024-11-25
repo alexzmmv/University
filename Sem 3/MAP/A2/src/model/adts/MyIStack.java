@@ -8,4 +8,6 @@ public interface MyIStack <T>{
     T top();
     String toString();
     boolean isEmpty();
+
+    T peek();
 }

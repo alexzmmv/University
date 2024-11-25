@@ -1,6 +1,8 @@
 package model.expresion;
 
+import model.ProgramState;
 import model.exception.AdtException;
+import model.exception.ExecutionException;
 import model.exception.ExpressionException;
 import model.programStateComponents.SymbolTable;
 import model.type.IntType;
@@ -20,9 +22,10 @@ public class ComparisonExpression implements IExpression {
     }
 
     @Override
-    public IValue evaluate(SymbolTable table) throws ExpressionException, AdtException {
-        IValue v1=e1.evaluate(table);
-        IValue v2=e2.evaluate(table);
+    public IValue evaluate(ProgramState state) throws ExpressionException, AdtException, ExecutionException {
+        SymbolTable table = state.getSymbolTable();
+        IValue v1=e1.evaluate(state);
+        IValue v2=e2.evaluate(state);
         if(!v1.getType().equals(new IntType()) || !v2.getType().equals(new IntType()))
             throw new ExpressionException("Both part of a comparison must be integer types");
 

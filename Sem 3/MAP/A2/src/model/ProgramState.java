@@ -6,7 +6,7 @@ import model.adts.MyIStack;
 import model.exception.AdtException;
 import model.exception.ExecutionException;
 import model.exception.ExpressionException;
-import model.programStateComponents.SymbolTable;
+import model.programStateComponents.*;
 import model.statement.IStatement;
 import model.values.IValue;
 import model.values.StringValue;
@@ -14,12 +14,39 @@ import model.values.StringValue;
 import java.io.BufferedReader;
 
 public class ProgramState {
-    public ProgramState(MyIStack<IStatement> executionStack, MyIDictionary<String, IValue> symbolTable, MyIList<IValue> output, MyIDictionary<StringValue, BufferedReader> fileTable, IStatement originalProgram) {
-        this.executionStack = executionStack;
-        this.symbolTable = symbolTable;
-        this.output = output;
+
+    public HeapTable getHeapTable() {
+        return heapTable;
+    }
+
+    public void setHeapTable(HeapTable heapTable) {
+        this.heapTable = heapTable;
+    }
+
+    public void setFileTable(FileTable fileTable) {
         this.fileTable = fileTable;
+    }
+
+    public void setOutput(Output output) {
+        this.output = output;
+    }
+
+    public void setSymbolTable(SymbolTable symbolTable) {
+        this.symbolTable = symbolTable;
+    }
+
+    public void setExecutionStack(ExecutionStack executionStack) {
+        this.executionStack = executionStack;
+    }
+
+    public ProgramState(MyIStack<IStatement> executionStack, MyIDictionary<String, IValue> symbolTable, MyIList<IValue> output, MyIDictionary<StringValue, BufferedReader> fileTable, IStatement originalProgram, HeapTable heapTable) {
+        this.executionStack = (ExecutionStack) executionStack;
+        this.symbolTable = (SymbolTable) symbolTable;
+        this.output = (Output) output;
+        this.fileTable = (FileTable) fileTable;
+        this.heapTable = heapTable;
         this.originalProgram = originalProgram;
+
         executionStack.push(originalProgram);
     }
 
@@ -28,7 +55,7 @@ public class ProgramState {
     }
 
     public void setExecutionStack(MyIStack<IStatement> executionStack) {
-        this.executionStack = executionStack;
+        this.executionStack = (ExecutionStack) executionStack;
     }
 
     public SymbolTable getSymbolTable() {
@@ -36,7 +63,7 @@ public class ProgramState {
     }
 
     public void setSymbolTable(MyIDictionary<String, IValue> symbolTable) {
-        this.symbolTable = symbolTable;
+        this.symbolTable = (SymbolTable) symbolTable;
     }
 
     public MyIList<IValue> getOutput() {
@@ -44,21 +71,31 @@ public class ProgramState {
     }
 
     public void setOutput(MyIList<IValue> output) {
-        this.output = output;
+        this.output = (Output) output;
     }
 
     public MyIDictionary<StringValue, BufferedReader> getFileTable() {
         return fileTable;
     }
 
-    public void setFileTable(MyIDictionary<StringValue, BufferedReader> fileTable) {
+    public ProgramState(ExecutionStack executionStack, SymbolTable symbolTable, Output output, FileTable fileTable, HeapTable heapTable, IStatement originalProgram) {
+        this.executionStack = executionStack;
+        this.symbolTable = symbolTable;
+        this.output = output;
         this.fileTable = fileTable;
+        this.heapTable = heapTable;
+        this.originalProgram = originalProgram;
     }
 
-    MyIStack<IStatement> executionStack;
-    MyIDictionary<String, IValue> symbolTable;
-    MyIList<IValue> output;
-    MyIDictionary<StringValue, BufferedReader> fileTable;
+    public void setFileTable(MyIDictionary<StringValue, BufferedReader> fileTable) {
+        this.fileTable = (FileTable) fileTable;
+    }
+
+    ExecutionStack executionStack;
+    SymbolTable symbolTable;
+    Output output;
+    FileTable fileTable;
+    HeapTable heapTable;
     IStatement originalProgram;
 
 
@@ -89,5 +126,9 @@ public class ProgramState {
         }
         IStatement currentStatement = executionStack.pop();
         return currentStatement.execute(this);
+    }
+
+    public boolean isDefined(String varName) {
+        return symbolTable.isDefined(varName);
     }
 }

@@ -1,7 +1,12 @@
 package repository;
 
 import model.ProgramState;
+import model.adts.MyTree;
+import model.exception.AdtException;
 import model.exception.ExecutionException;
+import model.exception.LogFileException;
+import model.programStateComponents.FileTable;
+import model.statement.IStatement;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -33,12 +38,20 @@ public class SingleThreadRepo implements IRepo {
     }
 
     @Override
-    public void logProgramStateExecution() throws ExecutionException, IOException {
-        PrintWriter logFile = new PrintWriter(new BufferedWriter(new FileWriter(logFilePath, true)));
-        logFile.println("ExeStack:");
+    public void logProgramStateExecution() throws LogFileException, AdtException {
+        PrintWriter logFile;
+        try {
+            logFile = new PrintWriter(new BufferedWriter(new FileWriter(logFilePath, true)));
+        }
+        catch(IOException e){
+            throw new LogFileException("Could not open file:"+e.getMessage());
+        }
+
+
+        logFile.println("Execution Stack:");
         String executionStackString = currentProgram.getExecutionStack().toString();
         executionStackString=executionStackString.replace("|", "\n");
-        //executionStackString=executionStackString.replace(",", "\n");
+
         logFile.println(executionStackString);
         logFile.println("SymTable:");
         String symbolTableString = currentProgram.getSymbolTable().toString();
@@ -49,10 +62,16 @@ public class SingleThreadRepo implements IRepo {
         outString=outString.replace("|", "\n");
         logFile.println(outString);
         logFile.println("FileTable:");
-        String fileTableString = currentProgram.getFileTable().toString();
-        fileTableString=fileTableString.replace("|", "\n");
+        FileTable fileTable = (FileTable) currentProgram.getFileTable();
+        String fileTableString = fileTable.toString();
         logFile.println(fileTableString);
-        logFile.println("------------------------------------");
+        /*
+        logFile.println("Heap:");
+        Heap heap = (Heap) currentProgram.getHeap();
+        String heapString = heap.toString();
+        logFile.println(heapString);
+         */
+        logFile.println("--------------------------------------");
         logFile.close();
     }
 

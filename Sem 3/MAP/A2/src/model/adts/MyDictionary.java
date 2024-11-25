@@ -5,7 +5,7 @@ import model.exception.AdtException;
 import java.util.HashMap;
 
 public class MyDictionary<K,V> implements MyIDictionary<K,V> {
-    HashMap<K,V> dict;
+    protected HashMap<K,V> dict;
     public MyDictionary(){
         dict = new HashMap<K,V>();
     }

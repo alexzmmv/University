@@ -1,6 +1,8 @@
 package model.expresion;
 
+import model.ProgramState;
 import model.exception.AdtException;
+import model.exception.ExecutionException;
 import model.exception.ExpressionException;
 import model.programStateComponents.SymbolTable;
 import model.type.BoolType;
@@ -20,11 +22,12 @@ public class LogicExpression implements IExpression{
 
 
     @Override
-    public IValue evaluate(SymbolTable table) throws ExpressionException, AdtException {
+    public IValue evaluate(ProgramState state) throws ExpressionException, AdtException, ExecutionException {
+        SymbolTable table = state.getSymbolTable();
         if(op == 1){
-            IValue v1 = e1.evaluate(table);
+            IValue v1 = e1.evaluate(state);
             if(v1.getType().equals(new BoolType())){
-                IValue v2 = e2.evaluate(table);
+                IValue v2 = e2.evaluate(state);
                 if(v2.getType().equals(new BoolType())){
                     boolean b1 = ((BoolValue)v1).getVal();
                     boolean b2 = ((BoolValue)v2).getVal();
@@ -37,9 +40,9 @@ public class LogicExpression implements IExpression{
                 throw new ExpressionException("First operand is not a boolean");
         }
         else if(op == 2){
-            IValue v1 = e1.evaluate(table);
+            IValue v1 = e1.evaluate(state);
             if(v1.getType().equals(new BoolType())){
-                IValue v2 = e2.evaluate(table);
+                IValue v2 = e2.evaluate(state);
                 if(v2.getType().equals(new BoolType())){
                     boolean b1 = ((BoolValue)v1).getVal();
                     boolean b2 = ((BoolValue)v2).getVal();
@@ -52,7 +55,7 @@ public class LogicExpression implements IExpression{
                 throw new ExpressionException("First operand is not a boolean");
         }
         else if(op == 3){
-            IValue v1 = e1.evaluate(table);
+            IValue v1 = e1.evaluate(state);
             if(v1.getType().equals(new BoolType())){
                 boolean b1 = ((BoolValue)v1).getVal();
                 return new BoolValue(!b1);

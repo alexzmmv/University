@@ -41,6 +41,10 @@ public class FileTable extends MyDictionary<StringValue, BufferedReader> {
     }
 
     public String toString() {
-        return super.toString();
+        String result = "";
+        for(StringValue key : dict.keySet()) {
+            result =result+key.toString() +"\n";
+        }
+        return result;
     }
 }

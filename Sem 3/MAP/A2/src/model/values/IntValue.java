@@ -30,6 +30,7 @@ public class IntValue implements IValue {
         return false;
     }
 
+
     public int getVal() {
         return val;
     }

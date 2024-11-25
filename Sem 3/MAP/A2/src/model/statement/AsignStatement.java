@@ -3,6 +3,7 @@ package model.statement;
 import model.ProgramState;
 import model.adts.MyIStack;
 import model.exception.AdtException;
+import model.exception.ExecutionException;
 import model.exception.ExpressionException;
 import model.exception.VariableNotDefinedException;
 import model.expresion.IExpression;
@@ -20,11 +21,11 @@ public class AsignStatement implements IStatement {
     }
 
     @Override
-    public ProgramState execute(ProgramState state) throws ExpressionException , AdtException {
+    public ProgramState execute(ProgramState state) throws ExpressionException, AdtException, ExecutionException {
         MyIStack<IStatement> stack = state.getExecutionStack();
         SymbolTable symbolTable = state.getSymbolTable();
         if (symbolTable.isDefined(id)) {
-            IValue value = expression.evaluate(symbolTable);
+            IValue value = expression.evaluate(state);
             IType type = symbolTable.lookup(id).getType();
             if (value.getType().equals(type)) {
                 symbolTable.give(id, value);

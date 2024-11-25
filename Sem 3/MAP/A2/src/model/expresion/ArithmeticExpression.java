@@ -1,7 +1,9 @@
 package model.expresion;
 
+import model.ProgramState;
 import model.exception.AdtException;
 import model.exception.DivisionByZeroException;
+import model.exception.ExecutionException;
 import model.exception.ExpressionException;
 import model.programStateComponents.SymbolTable;
 import model.type.IntType;
@@ -19,11 +21,12 @@ public class ArithmeticExpression implements IExpression {
     }
 
     @Override
-    public IValue evaluate(SymbolTable table) throws ExpressionException, AdtException {
+    public IValue evaluate(ProgramState state) throws ExpressionException, AdtException, ExecutionException {
+        SymbolTable table = state.getSymbolTable();
         IValue v1, v2;
-        v1 = exp1.evaluate(table);
+        v1 = exp1.evaluate(state);
         if(v1.getType().equals(new IntType())) {
-           v2 = exp2.evaluate(table);
+           v2 = exp2.evaluate(state);
            if(v2.getType().equals(new IntType())){
                IntValue i1 = (IntValue)v1;
                 IntValue i2 = (IntValue)v2;

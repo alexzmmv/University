@@ -1,5 +1,6 @@
 package model.expresion;
 
+import model.ProgramState;
 import model.exception.AdtException;
 import model.exception.ExpressionException;
 import model.exception.VariableNotDefinedException;
@@ -15,7 +16,8 @@ public class VariableExpression implements IExpression {
     }
 
     @Override
-    public IValue evaluate(SymbolTable table) throws ExpressionException, AdtException {
+    public IValue evaluate(ProgramState state) throws ExpressionException, AdtException {
+        SymbolTable table = state.getSymbolTable();
         if(!table.isDefined(id))
             throw new VariableNotDefinedException("Variable " + id + " is not defined");
         return table.lookup(id);

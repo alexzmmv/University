@@ -7,8 +7,5 @@ public interface MyIDictionary<K,V> {
     void give(K key, V value) throws AdtException;
     V lookup(K key) throws AdtException;
     boolean isDefined(K id);
-
-    String toString();
-
     void remove(K stringValue);
 }

@@ -1,5 +1,6 @@
 package model.expresion;
 
+import model.ProgramState;
 import model.exception.ExpressionException;
 import model.programStateComponents.SymbolTable;
 import model.values.IValue;
@@ -14,7 +15,7 @@ public class ValueExpression implements IExpression {
     }
 
     @Override
-    public IValue evaluate(SymbolTable table) throws ExpressionException {
+    public IValue evaluate(ProgramState state) throws ExpressionException {
         return value;
     }
 

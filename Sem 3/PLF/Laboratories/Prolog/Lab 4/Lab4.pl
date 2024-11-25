@@ -3,8 +3,17 @@ decompose(N, A, K) :-
     Sum is (2 * A + K) * (K + 1) / 2,
     Sum =:= N.
 
+mybetween(Low,High,Num) :-
+    Low =< High,
+    Num =  Low.
+
+mybetween(Low,High,Num) :-
+    Low < High,
+    LowNext is Low + 1,
+    mybetween(LowNext,High,Num).
+
 find_decompositions(N, L) :-  
-    findall([A, K], (between(1, N, A), between(0, N, K), decompose(N, A, K)), Decompositions),
+    findall([A, K], (mybetween(1, N, A), mybetween(0, N, K), decompose(N, A, K)), Decompositions),
     transform_sublists(Decompositions, L). 
 
 
