@@ -1,7 +1,7 @@
 package model.programStateComponents;
 
-import model.exception.AdtException;
-import model.exception.InvalidAddressException;
+import exception.AdtException;
+import exception.InvalidAddressException;
 import model.values.IValue;
 
 import java.util.Map;
@@ -16,4 +16,6 @@ public interface IHeap {
     IValue read(int address) throws InvalidAddressException;
 
     boolean contains(int address);
+
+    Map<Integer, IValue> toMap();
 }

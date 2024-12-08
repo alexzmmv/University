@@ -1,12 +1,14 @@
 package model.programStateComponents;
 
 import model.adts.MyDictionary;
-import model.exception.AdtException;
+import exception.AdtException;
+import model.values.IValue;
 import model.values.StringValue;
 
 import java.io.BufferedReader;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class FileTable extends MyDictionary<StringValue, BufferedReader> {
+public class FileTable extends MyDictionary<StringValue, BufferedReader> implements IFileTable {
     public FileTable() {
         super();
     }

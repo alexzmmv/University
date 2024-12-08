@@ -1,8 +1,9 @@
 package model.adts;
 
-import model.exception.AdtException;
+import exception.AdtException;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class MyDictionary<K,V> implements MyIDictionary<K,V> {
     protected HashMap<K,V> dict;
@@ -46,5 +47,10 @@ public class MyDictionary<K,V> implements MyIDictionary<K,V> {
             outS = outS + key.toString() + " --> " + dict.get(key).toString() + "|";
         }
         return outS;
+    }
+
+    @Override
+    public Map<K, V> toMap() {
+        return this.dict;
     }
 }

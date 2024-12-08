@@ -1,13 +1,19 @@
 package repository;
 
 import model.ProgramState;
-import model.exception.AdtException;
-import model.exception.ExecutionException;
+import exception.AdtException;
+import exception.ExecutionException;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface IRepo {
-    void logProgramStateExecution() throws ExecutionException, IOException, AdtException;
-    ProgramState getCurrentProgram();
-    void setCurrentProgram(ProgramState currentProgram);
+    void logProgramStateExecution(ProgramState prg) throws ExecutionException, IOException, AdtException;
+    List<ProgramState> getProgramList();
+    void setProgramList(List<ProgramState> programList);
+
+    void addProgram(ProgramState e);
+
+    void clear();
+
 }

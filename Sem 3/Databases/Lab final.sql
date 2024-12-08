@@ -1,9 +1,10 @@
-
-
+create database University;
+go
+use University;
+go
 CREATE OR ALTER PROCEDURE UniversityCreate AS
 BEGIN
-	
-	
+
 	--create VersionTable
 	CREATE TABLE VersionTable (
 		VersionID INT PRIMARY KEY identity(1,1),
@@ -415,6 +416,7 @@ BEGIN
 END;
 GO
 
+go 
 CREATE OR ALTER PROCEDURE UnionQueries AS
 BEGIN
     -- Query 1: Union using UNION ALL
@@ -609,29 +611,6 @@ END
 GO
 
 
-/*
-Sometimes, after you design a database, you need to change its
-structure. Unfortunately, changes aren't correct every time,so they must
-be reverted. Your task is to create a versioning mechanism that allows
-you to easily switch between database versions.
-Write SQL scripts that:
-a. modify the type of a column;
-b. add / remove a column;
-c. add / remove a DEFAULT constraint;
-d. add / remove a primary key;
-e. add / remove a candidate key;
-f. add / remove a foreign key;
-g. create / drop a table.
-For each of the scripts above, write another one that reverts the
-operation. Create a new table that holds the current version of the
-database schema. For simplicity, the version is assumed to be an integer
-number.
-Place each of the scripts in a stored procedure. Use a simple, intuitive
-naming convention.
-Write another stored procedure that receives as a parameter a version
-number and brings the database to that version.
-*/
-
 
 
 --a. modify the type of a column;
@@ -643,7 +622,7 @@ BEGIN
 END;
 GO
 
-CREATE OR ALTER PROCEDURE GadeToDecimal AS
+CREATE OR ALTER PROCEDURE GradeToDecimal AS
 BEGIN
 	ALTER TABLE Grades
 	ALTER COLUMN GRADE DECIMAL(3,2);
@@ -678,21 +657,6 @@ CREATE OR ALTER PROCEDURE RemoveDefaultEmail AS
 BEGIN
     ALTER TABLE Students
     DROP CONSTRAINT DF_Students_Email;
-END;
-GO
-
---d. add / remove a primary key;
-CREATE OR ALTER PROCEDURE AddStudentsPrimaryKey AS
-BEGIN
-    ALTER TABLE Students
-    ADD CONSTRAINT PK_Students PRIMARY KEY (Student_ID);    
-END;
-GO
-
-CREATE OR ALTER PROCEDURE RemoveStudentsPrimaryKey AS
-BEGIN
-    ALTER TABLE Students
-    DROP CONSTRAINT PK_Students;
 END;
 GO
 
@@ -731,7 +695,7 @@ GO
 CREATE OR ALTER PROCEDURE CreateTestTable AS
 BEGIN
     CREATE TABLE TestTable (
-        Test_ID INT PRIMARY KEY,
+        Test_ID INT NOT NULL,
         Test_Name VARCHAR(100)
     );
 END;
@@ -743,7 +707,22 @@ BEGIN
 END;
 GO
 
+--d. add / remove a primary key;-dosen't work
+CREATE OR ALTER PROCEDURE AddTestTablePrimaryKey AS
+	 BEGIN
+      ALTER TABLE TestTable
+        ADD CONSTRAINT PK_TestTable PRIMARY KEY (Test_ID);
+    END
+GO
 
+CREATE OR ALTER PROCEDURE RemoveTestTablePrimaryKey AS
+	 BEGIN
+		 ALTER TABLE TestTable
+        DROP CONSTRAINT PK_TestTable;
+	END
+ GO
+
+drop table VersioningTable;
 -- Versioning Table
 CREATE TABLE VersioningTable (
     Current_Procedure NVARCHAR(50),
@@ -756,10 +735,10 @@ INSERT INTO VersioningTable (Current_Procedure, Previous_Procedure, versionTO) V
 ('GradeToFloat', 'GadeToDecimal', 1),
 ('AddAgeStudents', 'RemoveAgeStudents', 2),
 ('AddDefaultEmail', 'RemoveDefaultEmail', 3),
-('AddStudentsPrimaryKey', 'RemoveStudentsPrimaryKey', 4),
-('AddStudentsCandidateKey', 'RemoveStudentsCandidateKey', 5),
-('AddStudentsProfileForeignKey', 'RemoveStudentsProfileForeignKey', 6),
-('CreateTestTable', 'DropTestTable', 7);
+('AddStudentsCandidateKey', 'RemoveStudentsCandidateKey', 4),
+('AddStudentsProfileForeignKey', 'RemoveStudentsProfileForeignKey', 5),
+('CreateTestTable', 'DropTestTable', 6),
+('AddTestTablePrimaryKey','RemoveTestTablePrimaryKey',7);
 
 -- Current Version Table
 DROP TABLE IF EXISTS CurrentVersion;
@@ -768,7 +747,6 @@ CREATE TABLE CurrentVersion (
 );
 
 INSERT INTO CurrentVersion VALUES (0);
-
 GO
 
 -- Version Management Procedure
@@ -778,24 +756,20 @@ BEGIN
     DECLARE @currentVersion INT;
     DECLARE @currentProcedure NVARCHAR(50);
 
-    -- Parameter validity check
     IF @version < 0 OR @version > 7
     BEGIN
         RAISERROR('Invalid version! Please choose a version between 0 and 7.', 17, 1);
         RETURN;
     END
 
-    -- Retrieve the current version
     SET @currentVersion = (SELECT currentVersion FROM CurrentVersion);
 
-    -- Check if already at the desired version
     IF @version = @currentVersion
     BEGIN
         PRINT 'We are already on this version!';
         RETURN;
     END
 
-    -- Go forward to the desired version
     IF @currentVersion < @version
     BEGIN
         WHILE @currentVersion < @version
@@ -807,8 +781,7 @@ BEGIN
         END
     END
 
-    -- Roll back to the desired version
-    ELSE IF @currentVersion > @version
+    IF @currentVersion > @version
     BEGIN
         WHILE @currentVersion > @version
         BEGIN
@@ -819,7 +792,6 @@ BEGIN
         END
     END
 
-    -- Update the current version
     UPDATE CurrentVersion
     SET currentVersion = @currentVersion;
 
@@ -828,4 +800,117 @@ BEGIN
 END;
 GO
 
---repair some problems but in general it works;
+exec goToVersion 1;
+select * from Students;
+GO
+CREATE or ALTER VIEW View_BuildingDetails AS
+	SELECT Name, Address
+	FROM Buildings
+GO
+
+CREATE OR ALTER VIEW View_BuildingRooms AS
+	SELECT 
+    R.Name AS RoomName,
+    B.Name AS BuildingName,
+    R.Capacity,
+    R.Floor
+FROM Buildings B
+INNER JOIN Rooms R ON B.Building_ID = R.Building_ID;
+
+GO
+CREATE OR ALTER VIEW View_BuildingRoomSummary AS
+SELECT 
+    B.Building_ID,
+    B.Name AS BuildingName,
+    COUNT(R.Room_ID) AS TotalRooms,
+    SUM(R.Capacity) AS TotalCapacity
+FROM Buildings B
+LEFT JOIN Rooms R ON B.Building_ID = R.Building_ID
+GROUP BY B.Building_ID, B.Name;
+GO
+
+CREATE OR ALTER PROCEDURE InsertIntoBuilding(@RecNum INT) AS
+BEGIN
+    DECLARE @Counter INT = 1;
+
+    WHILE @Counter <= @RecNum
+    BEGIN
+        INSERT INTO Buildings (Name, Address)
+        VALUES 
+            (CONCAT('Building', @Counter), CONCAT('Address', @Counter));
+        
+        SET @Counter = @Counter + 1;
+    END
+END
+GO
+
+CREATE OR ALTER PROCEDURE DeleteFromBuilding(@RecNum INT) AS
+BEGIN
+	DELETE FROM Buildings
+	WHERE Building_ID in(
+	select TOP(@RecNum) Building_ID
+	FROM Buildings
+	ORDER BY Building_ID DESC
+	)
+END
+GO
+
+CREATE OR ALTER PROCEDURE InsertIntoRooms(@RecNum INT) AS
+BEGIN
+    DECLARE @Counter INT = 1;
+    if not exists(select * from Buildings where Name = 'TEST')
+        Insert into Buildings(Name,Address) values('TEST','Test');
+    WHILE @Counter <= @RecNum
+    BEGIN
+        INSERT INTO Rooms (Name, Building_ID,Capacity,Floor,Equipment,AV_Facilities)
+        VALUES 
+            (CONCAT('RoomTestTest', @Counter), (SELECT Building_ID FROM Buildings WHERE Name = 'TEST'),@Counter,RAND(),RAND(),CONCAT('Equipment', @Counter),CONCAT('AV_Facilities', @Counter));
+        
+        SET @Counter = @Counter + 1;
+    END
+END
+GO
+
+CREATE OR ALTER PROCEDURE DeleteFromRooms(@RecNum INT) AS
+BEGIN
+	DELETE FROM Rooms
+	WHERE Room_ID in(
+	select TOP(@RecNum) Room_ID
+	FROM Rooms
+    WHERE Name like 'RoomTestTest%'
+	ORDER BY Room_ID DESC
+	)
+    if @@ROWCOUNT < @RecNum
+        print 'There were less than ' + CAST(@RecNum AS NVARCHAR(10)) + ' records to delete';
+
+    if not exists(select * from Rooms where Name like 'RoomTestTest%')
+        delete from Buildings where Name = 'TEST';
+END
+GO
+
+
+CREATE OR ALTER PROCEDURE InsertIntoSecretaries(@RecNum INT) AS
+BEGIN
+    DECLARE @Counter INT = 1;
+
+    WHILE @Counter <= @RecNum
+    BEGIN
+        INSERT INTO Secretaries(Name)
+        VALUES 
+            (CONCAT('TestSecretary', @Counter));
+        
+        SET @Counter = @Counter + 1;
+    END
+END
+GO
+
+CREATE OR ALTER PROCEDURE DeleteFromSecretaries(@RecNum INT) AS
+BEGIN
+	DELETE FROM Secretaries
+	WHERE Secretary_ID in(
+	select TOP(@RecNum) Secretary_ID
+	FROM Secretaries
+	ORDER BY Secretary_ID DESC
+	)
+END
+GO

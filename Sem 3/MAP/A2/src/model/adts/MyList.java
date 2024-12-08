@@ -1,7 +1,7 @@
 package model.adts;
 
 
-import model.exception.AdtException;
+import exception.AdtException;
 
 import java.util.LinkedList;
 import java.util.List;

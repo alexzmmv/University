@@ -1,7 +1,7 @@
 package model.statement;
 
 import model.ProgramState;
-import model.exception.*;
+import exception.*;
 import model.expresion.IExpression;
 import model.expresion.VariableExpression;
 import model.type.StringType;
@@ -50,7 +50,7 @@ public class ReadFileStatement implements IStatement{
                 state.getSymbolTable().give(varName, new IntValue(0));
             }
         }
-        return state;
+        return null;
     }
 
     @Override

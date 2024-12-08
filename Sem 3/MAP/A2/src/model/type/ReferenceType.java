@@ -12,7 +12,7 @@ public class ReferenceType implements IType{
     IType inner;
     public ReferenceType(IType inner) {this.inner=inner;}
     public ReferenceType() {};
-    IType getInner() {return inner;}
+    public IType getInner() {return inner;}
 
     public boolean equals(Object another) {
         if (another instanceof ReferenceType)

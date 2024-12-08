@@ -1,6 +1,6 @@
 package model.adts;
 
-import model.exception.AdtException;
+import exception.AdtException;
 
 public interface MyIStack <T>{
     T pop() throws AdtException;

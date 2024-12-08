@@ -1,9 +1,9 @@
 package model.statement;
 
 import model.ProgramState;
-import model.exception.AdtException;
-import model.exception.ExecutionException;
-import model.exception.ExpressionException;
+import exception.AdtException;
+import exception.ExecutionException;
+import exception.ExpressionException;
 import model.expresion.IExpression;
 import model.type.BoolType;
 import model.values.BoolValue;
@@ -29,7 +29,7 @@ public class whileStatement implements IStatement{
             state.getExecutionStack().push(this);
             state.getExecutionStack().push(statement);
         }
-        return state;
+        return null;
     }
 
     @Override

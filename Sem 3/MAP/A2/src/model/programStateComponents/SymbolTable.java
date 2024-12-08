@@ -1,8 +1,11 @@
 package model.programStateComponents;
 
 import model.adts.MyDictionary;
-import model.exception.AdtException;
+import exception.AdtException;
 import model.values.IValue;
+
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class SymbolTable extends MyDictionary<String, IValue> implements ISymbolTable {
     @Override
@@ -44,4 +47,15 @@ public class SymbolTable extends MyDictionary<String, IValue> implements ISymbol
     }
 
 
+    public SymbolTable copy() {
+        SymbolTable newTable = new SymbolTable();
+        for (String key : super.dict.keySet()){
+            newTable.dict.put(key, super.dict.get(key));
+        }
+        return newTable;
+    }
+
+    public Map<String, IValue> toMap(){
+        return super.toMap();
+    }
 }

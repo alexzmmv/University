@@ -1,115 +1,102 @@
 package model;
 
-import model.adts.MyIDictionary;
-import model.adts.MyIList;
-import model.adts.MyIStack;
-import model.exception.AdtException;
-import model.exception.ExecutionException;
-import model.exception.ExpressionException;
+import exception.AdtException;
+import exception.ExecutionException;
+import exception.ExpressionException;
 import model.programStateComponents.*;
 import model.statement.IStatement;
-import model.values.IValue;
-import model.values.StringValue;
-
-import java.io.BufferedReader;
 
 public class ProgramState {
-
-    public HeapTable getHeapTable() {
-        return heapTable;
-    }
-
-    public void setHeapTable(HeapTable heapTable) {
-        this.heapTable = heapTable;
-    }
-
-    public void setFileTable(FileTable fileTable) {
-        this.fileTable = fileTable;
-    }
-
-    public void setOutput(Output output) {
-        this.output = output;
-    }
-
-    public void setSymbolTable(SymbolTable symbolTable) {
-        this.symbolTable = symbolTable;
-    }
-
-    public void setExecutionStack(ExecutionStack executionStack) {
-        this.executionStack = executionStack;
-    }
-
-    public ProgramState(MyIStack<IStatement> executionStack, MyIDictionary<String, IValue> symbolTable, MyIList<IValue> output, MyIDictionary<StringValue, BufferedReader> fileTable, IStatement originalProgram, HeapTable heapTable) {
-        this.executionStack = (ExecutionStack) executionStack;
-        this.symbolTable = (SymbolTable) symbolTable;
-        this.output = (Output) output;
-        this.fileTable = (FileTable) fileTable;
-        this.heapTable = heapTable;
-        this.originalProgram = originalProgram;
-
-        executionStack.push(originalProgram);
-    }
-
-    public MyIStack<IStatement> getExecutionStack() {
-        return executionStack;
-    }
-
-    public void setExecutionStack(MyIStack<IStatement> executionStack) {
-        this.executionStack = (ExecutionStack) executionStack;
-    }
-
-    public SymbolTable getSymbolTable() {
-        return (SymbolTable) symbolTable;
-    }
-
-    public void setSymbolTable(MyIDictionary<String, IValue> symbolTable) {
-        this.symbolTable = (SymbolTable) symbolTable;
-    }
-
-    public MyIList<IValue> getOutput() {
-        return output;
-    }
-
-    public void setOutput(MyIList<IValue> output) {
-        this.output = (Output) output;
-    }
-
-    public MyIDictionary<StringValue, BufferedReader> getFileTable() {
-        return fileTable;
-    }
-
-    public ProgramState(ExecutionStack executionStack, SymbolTable symbolTable, Output output, FileTable fileTable, HeapTable heapTable, IStatement originalProgram) {
-        this.executionStack = executionStack;
-        this.symbolTable = symbolTable;
-        this.output = output;
-        this.fileTable = fileTable;
-        this.heapTable = heapTable;
-        this.originalProgram = originalProgram;
-    }
-
-    public void setFileTable(MyIDictionary<StringValue, BufferedReader> fileTable) {
-        this.fileTable = (FileTable) fileTable;
-    }
 
     ExecutionStack executionStack;
     SymbolTable symbolTable;
     Output output;
     FileTable fileTable;
-    HeapTable heapTable;
+    IHeap heapTable;
     IStatement originalProgram;
+    int id;
+    static int nextID = 0;
 
+    public ProgramState(IExecutionStack executionStack,ISymbolTable symTable,IOutput output,IFileTable fileTable,IHeap heap,IStatement statement){
+        synchronized (ProgramState.class){
+            this.id = nextID++;
+        }
 
+        this.executionStack = (ExecutionStack) executionStack;
+        this.symbolTable = (SymbolTable) symTable;
+        this.output = (Output) output;
+        this.fileTable = (FileTable) fileTable;
+        this.heapTable = heap;
+        this.originalProgram = statement;
+        this.executionStack.push(statement);
+    }
     public ProgramState(){}
 
     @Override
     public String toString() {
-        return "ProgramState{" +
+        return "ProgramState(id= " + id + "){"+
                 "executionStack=" + executionStack.toString() +
                 "; symbolTable=" + symbolTable.toString() +
                 "; output=" + output.toString() +
                 "; fileTable=" + fileTable.toString() +
                 "; originalProgram=" + originalProgram.toString() +
                 '}';
+    }
+
+    public boolean isNotCompletedYet(){
+        return !executionStack.isEmpty();
+    }
+
+    public ProgramState oneStep() throws AdtException, ExpressionException, ExecutionException {
+        if(executionStack.isEmpty())
+            throw new ExecutionException("Execution stack is empty");
+        IStatement currentStatement = executionStack.pop();
+        return currentStatement.execute(this);
+    }
+
+    public boolean isDefined(String varName) {
+        return symbolTable.isDefined(varName);
+    }
+
+
+    public ExecutionStack getExecutionStack() {
+        return executionStack;
+    }
+
+    public void setExecutionStack(ExecutionStack executionStack) {
+        this.executionStack = executionStack;
+    }
+
+    public SymbolTable getSymbolTable() {
+        return symbolTable;
+    }
+
+    public void setSymbolTable(SymbolTable symbolTable) {
+        this.symbolTable = symbolTable;
+    }
+
+    public Output getOutput() {
+        return output;
+    }
+
+    public void setOutput(Output output) {
+        this.output = output;
+    }
+
+    public FileTable getFileTable() {
+        return fileTable;
+    }
+
+    public void setFileTable(FileTable fileTable) {
+        this.fileTable = fileTable;
+    }
+
+    public IHeap getHeapTable() {
+        return heapTable;
+    }
+
+    public void setHeapTable(HeapTable heapTable) {
+        this.heapTable = heapTable;
     }
 
     public IStatement getOriginalProgram() {
@@ -120,15 +107,19 @@ public class ProgramState {
         this.originalProgram = originalProgram;
     }
 
-    public ProgramState oneStep() throws ExecutionException, AdtException, ExpressionException {
-        if (executionStack.isEmpty()) {
-            throw new ExecutionException("Execution stack is empty");
-        }
-        IStatement currentStatement = executionStack.pop();
-        return currentStatement.execute(this);
+    public int getId() {
+        return id;
     }
 
-    public boolean isDefined(String varName) {
-        return symbolTable.isDefined(varName);
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public static int getNextID() {
+        return nextID;
+    }
+
+    public static void setNextID(int nextID) {
+        ProgramState.nextID = nextID;
     }
 }

@@ -2,8 +2,8 @@ package model.statement;
 
 import model.ProgramState;
 import model.adts.MyIDictionary;
-import model.exception.AdtException;
-import model.exception.ExpressionException;
+import exception.AdtException;
+import exception.ExpressionException;
 import model.type.IType;
 import model.values.IValue;
 
@@ -24,7 +24,7 @@ public class VariableDeclarationStatement implements IStatement{
             throw new ExpressionException("Variable " + name + " is already declared");
         }
         symbolTable.put(name, type.defaultValue());
-        return state;
+        return null;
     }
 
     @Override

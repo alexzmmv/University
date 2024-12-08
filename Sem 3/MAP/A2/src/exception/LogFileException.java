@@ -1,4 +1,4 @@
-package model.exception;
+package exception;
 
 public class LogFileException extends RuntimeException {
     public LogFileException(String message) {

@@ -1,9 +1,9 @@
 package model.statement;
 
 import model.ProgramState;
-import model.exception.AdtException;
-import model.exception.ExecutionException;
-import model.exception.ExpressionException;
+import exception.AdtException;
+import exception.ExecutionException;
+import exception.ExpressionException;
 import model.expresion.IExpression;
 import model.type.BoolType;
 import model.values.BoolValue;
@@ -30,7 +30,7 @@ public class IfStatement implements IStatement {
             state.getExecutionStack().push(thenS);
         else
             state.getExecutionStack().push(elseS);
-        return state;
+        return null;
     }
 
     @Override

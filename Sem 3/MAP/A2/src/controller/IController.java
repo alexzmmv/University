@@ -1,16 +1,20 @@
 package controller;
 
-import model.exception.AdtException;
-import model.exception.ExecutionException;
-import model.exception.ExpressionException;
-import repository.IRepo;
+import exception.InterpreterException;
+import model.ProgramState;
+import model.statement.IStatement;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Scanner;
+import java.util.List;
 
 public interface IController {
-    void executeOneStep() throws AdtException, ExpressionException, ExecutionException;
-    void executeAll(Boolean displayFlag) throws AdtException, ExpressionException, ExecutionException;
-}
+    public void executeOneStep() throws InterpreterException;
+    public void displayCurrentState() throws InterpreterException;
+    public void removeCompletedPrograms();
+    void executeAllSteps() throws InterpreterException;
 
+    public void setDisplayFlag(boolean displayFlag);
+    void setProgram(IStatement statement) throws InterpreterException;
+    void setProgramList(List<ProgramState> programList);
+    public List<ProgramState> getProgramList();
+
+}

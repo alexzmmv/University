@@ -1,9 +1,9 @@
 package model.statement;
 
 import model.ProgramState;
-import model.exception.AdtException;
-import model.exception.ExecutionException;
-import model.exception.ExpressionException;
+import exception.AdtException;
+import exception.ExecutionException;
+import exception.ExpressionException;
 
 
 public interface IStatement {

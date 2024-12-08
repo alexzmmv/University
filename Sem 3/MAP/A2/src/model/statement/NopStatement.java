@@ -1,14 +1,14 @@
 package model.statement;
 
 import model.ProgramState;
-import model.exception.AdtException;
-import model.exception.ExpressionException;
+import exception.AdtException;
+import exception.ExpressionException;
 
 public class NopStatement implements IStatement {
 
     @Override
     public ProgramState execute(ProgramState state) throws ExpressionException, AdtException {
-        return state;
+        return null;
     }
 
     public String toString() {

@@ -2,10 +2,10 @@ package model.statement;
 
 import model.ProgramState;
 import model.adts.MyIStack;
-import model.exception.AdtException;
-import model.exception.ExecutionException;
-import model.exception.ExpressionException;
-import model.exception.VariableNotDefinedException;
+import exception.AdtException;
+import exception.ExecutionException;
+import exception.ExpressionException;
+import exception.VariableNotDefinedException;
 import model.expresion.IExpression;
 import model.programStateComponents.SymbolTable;
 import model.type.IType;
@@ -34,7 +34,7 @@ public class AsignStatement implements IStatement {
             }
         }
         else throw new VariableNotDefinedException("The used variable " + id + " was not declared before");
-        return state;
+        return null;
     }
 
     @Override

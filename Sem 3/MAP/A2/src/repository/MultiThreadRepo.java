@@ -1,33 +1,29 @@
 package repository;
 
 import model.ProgramState;
-import model.adts.MyTree;
-import model.exception.AdtException;
-import model.exception.ExecutionException;
-import model.exception.LogFileException;
+import exception.AdtException;
+import exception.LogFileException;
 import model.programStateComponents.FileTable;
-import model.statement.IStatement;
+import model.programStateComponents.HeapTable;
+import model.programStateComponents.IHeap;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
-public class SingleThreadRepo implements IRepo {
+public class MultiThreadRepo implements IRepo {
 
-    private ProgramState currentProgram;
     private String logFilePath;
+    private List<ProgramState> programStates;
 
-
-    public SingleThreadRepo(ProgramState currentProgram, String logFilePath) {
-        this.currentProgram = currentProgram;
+    public MultiThreadRepo(ProgramState currentProgram, String logFilePath) {
+        programStates = new ArrayList<>();
+        programStates.add(currentProgram);
         this.logFilePath = logFilePath;
     }
-
-    public void setCurrentProgram(ProgramState currentProgram) {
-        this.currentProgram = currentProgram;
-    }
-
 
     public void setLogFilePath(String logFilePath) {
         this.logFilePath = logFilePath;
@@ -38,7 +34,7 @@ public class SingleThreadRepo implements IRepo {
     }
 
     @Override
-    public void logProgramStateExecution() throws LogFileException, AdtException {
+    public void logProgramStateExecution(ProgramState currentProgram) throws LogFileException {
         PrintWriter logFile;
         try {
             logFile = new PrintWriter(new BufferedWriter(new FileWriter(logFilePath, true)));
@@ -47,39 +43,55 @@ public class SingleThreadRepo implements IRepo {
             throw new LogFileException("Could not open file:"+e.getMessage());
         }
 
-
+        logFile.println("Program ID: " + currentProgram.getId());
         logFile.println("Execution Stack:");
         String executionStackString = currentProgram.getExecutionStack().toString();
         executionStackString=executionStackString.replace("|", "\n");
-
         logFile.println(executionStackString);
+
         logFile.println("SymTable:");
         String symbolTableString = currentProgram.getSymbolTable().toString();
         symbolTableString=symbolTableString.replace("|", "\n");
         logFile.println(symbolTableString);
+
         logFile.println("Out:");
         String outString = currentProgram.getOutput().toString();
         outString=outString.replace("|", "\n");
         logFile.println(outString);
+
         logFile.println("FileTable:");
         FileTable fileTable = (FileTable) currentProgram.getFileTable();
         String fileTableString = fileTable.toString();
         logFile.println(fileTableString);
-        /*
+
         logFile.println("Heap:");
-        Heap heap = (Heap) currentProgram.getHeap();
-        String heapString = heap.toString();
-        logFile.println(heapString);
-         */
+        IHeap heap = currentProgram.getHeapTable();
+        outString = heap.toString();
+        outString=outString.replace("|", "\n");
+        logFile.println(outString);
         logFile.println("--------------------------------------");
         logFile.close();
     }
 
     @Override
-    public ProgramState getCurrentProgram() {
-        return currentProgram;
+    public List<ProgramState> getProgramList() {
+        return programStates;
     }
 
+    @Override
+    public void setProgramList(List<ProgramState> programList) {
+        this.programStates = programList;
+    }
+
+    @Override
+    public void addProgram(ProgramState e) {
+        programStates.add(e);
+    }
+
+    @Override
+    public void clear() {
+        programStates.clear();
+    }
 
 
 }

@@ -1,6 +1,6 @@
 package model.adts;
 
-import model.exception.AdtException;
+import exception.AdtException;
 
 public interface MyIList<T> {
     void add(T el);

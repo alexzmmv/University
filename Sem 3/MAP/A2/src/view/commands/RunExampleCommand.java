@@ -15,15 +15,8 @@ public class RunExampleCommand extends Command {
 
     @Override
     public void execute() {
-        System.out.println("Display flag? (y/n)");
-
-        String flag = new Scanner(System.in).nextLine();
-        while(!flag.equals("y") && !flag.equals("n")) {
-            System.out.println("Invalid flag. Please enter y or n.");
-            flag = new Scanner(System.in).nextLine();
-        }
         try {
-            controller.executeAll(flag.equals("y"));
+            controller.executeAllSteps();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

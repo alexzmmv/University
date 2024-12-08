@@ -1,10 +1,10 @@
 package model.expresion;
 
 import model.ProgramState;
-import model.exception.AdtException;
-import model.exception.DivisionByZeroException;
-import model.exception.ExecutionException;
-import model.exception.ExpressionException;
+import exception.AdtException;
+import exception.DivisionByZeroException;
+import exception.ExecutionException;
+import exception.ExpressionException;
 import model.programStateComponents.SymbolTable;
 import model.type.IntType;
 import model.values.IValue;

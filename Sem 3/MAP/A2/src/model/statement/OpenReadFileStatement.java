@@ -1,10 +1,10 @@
 package model.statement;
 
 import model.ProgramState;
-import model.exception.AdtException;
-import model.exception.ExecutionException;
-import model.exception.ExpressionException;
-import model.exception.FileException;
+import exception.AdtException;
+import exception.ExecutionException;
+import exception.ExpressionException;
+import exception.FileException;
 import model.expresion.IExpression;
 import model.type.StringType;
 import model.values.IValue;
@@ -39,7 +39,7 @@ public class OpenReadFileStatement implements IStatement{
         }
 
         state.getFileTable().put(stringValue, bufferedReader);
-        return state;
+        return null;
      }
 
     @Override

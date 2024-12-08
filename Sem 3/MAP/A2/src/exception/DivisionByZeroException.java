@@ -1,4 +1,4 @@
-package model.exception;
+package exception;
 
 public class DivisionByZeroException extends ExpressionException{
     public DivisionByZeroException(String message) {

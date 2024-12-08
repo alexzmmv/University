@@ -1,11 +1,7 @@
 package model.programStateComponents;
 
 import model.adts.MyStack;
-import model.exception.AdtException;
 import model.statement.IStatement;
-import model.values.StringValue;
-
-import java.io.BufferedReader;
 
 public class ExecutionStack extends MyStack<IStatement> implements IExecutionStack {
     public ExecutionStack() {
@@ -23,4 +19,9 @@ public class ExecutionStack extends MyStack<IStatement> implements IExecutionSta
     public String toString() {
         return super.toString();
     }
+    @Override
+    public boolean isEmpty() {
+        return super.isEmpty();
+    }
+
 }

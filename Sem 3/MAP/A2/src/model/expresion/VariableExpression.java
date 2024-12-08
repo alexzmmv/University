@@ -1,9 +1,9 @@
 package model.expresion;
 
 import model.ProgramState;
-import model.exception.AdtException;
-import model.exception.ExpressionException;
-import model.exception.VariableNotDefinedException;
+import exception.AdtException;
+import exception.ExpressionException;
+import exception.VariableNotDefinedException;
 import model.programStateComponents.SymbolTable;
 import model.values.IValue;
 

@@ -1,8 +1,7 @@
 package model.expresion;
 
 import model.ProgramState;
-import model.exception.ExpressionException;
-import model.programStateComponents.SymbolTable;
+import exception.ExpressionException;
 import model.values.IValue;
 
 public class ValueExpression implements IExpression {

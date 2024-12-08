@@ -1,11 +1,12 @@
 package model.statement;
 
 import model.ProgramState;
-import model.exception.AdtException;
-import model.exception.ExecutionException;
-import model.exception.ExpressionException;
+import exception.AdtException;
+import exception.ExecutionException;
+import exception.ExpressionException;
 import model.expresion.IExpression;
-import model.type.IType;
+import model.expresion.ValueExpression;
+import model.type.ReferenceType;
 import model.values.IValue;
 import model.values.ReferenceValue;
 
@@ -18,18 +19,19 @@ public class wHStatement implements IStatement{
         this.expression = expression;
     }
 
+
     @Override
     public ProgramState execute(ProgramState state) throws ExpressionException, AdtException, ExecutionException {
         IValue value = adress.evaluate(state);
         IValue value2 = expression.evaluate(state);
-        if(!(value.getType() instanceof ReferenceValue)){
+        if(!(value.getType() instanceof ReferenceType)){
             throw new ExecutionException("Heap should only be accessed through references");
         }
-        if(!(value2.getType().equals(((ReferenceValue)value).getType()))){
+        if(!value2.getType().equals( ((ReferenceType)value.getType()).getInner()) ){
             throw new ExecutionException("Type mismatch");
         }
         state.getHeapTable().write(((ReferenceValue)value).getAddress(), value2);
-        return state;
+        return null;
     }
 
     @Override

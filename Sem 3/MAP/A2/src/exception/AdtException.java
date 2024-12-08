@@ -1,4 +1,4 @@
-package model.exception;
+package exception;
 
 public class AdtException extends Exception {
     public AdtException(String message) {

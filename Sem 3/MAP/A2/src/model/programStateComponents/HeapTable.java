@@ -2,9 +2,11 @@ package model.programStateComponents;
 
 import model.adts.MyDictionary;
 import model.adts.MyIDictionary;
-import model.exception.AdtException;
-import model.exception.InvalidAddressException;
+import exception.AdtException;
+import exception.InvalidAddressException;
 import model.values.IValue;
+
+import java.util.Map;
 
 public class HeapTable implements IHeap {
     MyIDictionary<Integer, IValue> heapTable;
@@ -58,6 +60,11 @@ public class HeapTable implements IHeap {
     @Override
     public boolean contains(int address) {
         return this.heapTable.isDefined(address);
+    }
+
+    @Override
+    public Map<Integer, IValue> toMap() {
+        return this.heapTable.toMap();
     }
 
     @Override

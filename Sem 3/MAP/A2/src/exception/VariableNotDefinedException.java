@@ -1,4 +1,4 @@
-package model.exception;
+package exception;
 
 public class VariableNotDefinedException extends ExpressionException {
     public VariableNotDefinedException(String message) {
