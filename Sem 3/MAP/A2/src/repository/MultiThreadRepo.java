@@ -28,10 +28,11 @@ public class MultiThreadRepo implements IRepo {
     public void setLogFilePath(String logFilePath) {
         this.logFilePath = logFilePath;
     }
-
+    @Override
     public String getLogFilePath() {
         return logFilePath;
     }
+
 
     @Override
     public void logProgramStateExecution(ProgramState currentProgram) throws LogFileException {

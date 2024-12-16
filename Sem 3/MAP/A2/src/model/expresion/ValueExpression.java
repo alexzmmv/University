@@ -1,7 +1,11 @@
 package model.expresion;
 
+import exception.AdtException;
+import exception.TypeNotMatchException;
 import model.ProgramState;
 import exception.ExpressionException;
+import model.adts.MyDictionary;
+import model.type.IType;
 import model.values.IValue;
 
 public class ValueExpression implements IExpression {
@@ -21,5 +25,10 @@ public class ValueExpression implements IExpression {
     @Override
     public String toString() {
         return value.toString();
+    }
+
+    @Override
+    public IType typeCheck(MyDictionary<String, IType> typeEnv) throws TypeNotMatchException, AdtException {
+        return value.getType();
     }
 }

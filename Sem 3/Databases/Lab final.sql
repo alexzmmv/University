@@ -31,16 +31,15 @@ BEGIN
         AV_Facilities VARCHAR(200),
         FOREIGN KEY (Building_ID) REFERENCES Buildings(Building_ID)
     );
-
     -- Create Secretaries table
     CREATE TABLE Secretaries (
-        Secretary_ID INT PRIMARY KEY IDENTITY(1,1),
+        Secretary_ID INT IDENTITY(1,1),
         Name VARCHAR(100),
         Email VARCHAR(100),
         Phone VARCHAR(15),
-        Office_Location VARCHAR(100)
+        Office_Location VARCHAR(100),
+		CONSTRAINT PK_Secretary_ID PRIMARY KEY (Secretary_ID,name)
     );
-
     -- Create Faculties table
     CREATE TABLE Faculties (
         Faculty_ID INT PRIMARY KEY IDENTITY(1,1),
@@ -800,15 +799,19 @@ BEGIN
 END;
 GO
 
-exec goToVersion 1;
+exec goToVersion 0;
 select * from Students;
 GO
-CREATE or ALTER VIEW View_BuildingDetails AS
-	SELECT Name, Address
-	FROM Buildings
+
+CREATE OR ALTER VIEW View_1 AS
+SELECT
+	S.Name,
+	S.Email,
+	S.Office_Location
+FROM Secretaries S
 GO
 
-CREATE OR ALTER VIEW View_BuildingRooms AS
+CREATE OR ALTER VIEW View_2 AS
 	SELECT 
     R.Name AS RoomName,
     B.Name AS BuildingName,
@@ -818,7 +821,7 @@ FROM Buildings B
 INNER JOIN Rooms R ON B.Building_ID = R.Building_ID;
 
 GO
-CREATE OR ALTER VIEW View_BuildingRoomSummary AS
+CREATE OR ALTER VIEW View_3 AS
 SELECT 
     B.Building_ID,
     B.Name AS BuildingName,
@@ -855,16 +858,14 @@ BEGIN
 END
 GO
 
-CREATE OR ALTER PROCEDURE InsertIntoRooms(@RecNum INT) AS
+CREATE OR ALTER PROCEDURE InsertIntoRooms(@RecNum INT,@IdToAttach INT) AS
 BEGIN
     DECLARE @Counter INT = 1;
-    if not exists(select * from Buildings where Name = 'TEST')
-        Insert into Buildings(Name,Address) values('TEST','Test');
     WHILE @Counter <= @RecNum
     BEGIN
         INSERT INTO Rooms (Name, Building_ID,Capacity,Floor,Equipment,AV_Facilities)
         VALUES 
-            (CONCAT('RoomTestTest', @Counter), (SELECT Building_ID FROM Buildings WHERE Name = 'TEST'),@Counter,RAND(),RAND(),CONCAT('Equipment', @Counter),CONCAT('AV_Facilities', @Counter));
+            (CONCAT('RoomTestTest', @Counter), @IdToAttach,@Counter,RAND(),CONCAT('Equipment', @Counter),CONCAT('AV_Facilities', @Counter));
         
         SET @Counter = @Counter + 1;
     END
@@ -882,9 +883,7 @@ BEGIN
 	)
     if @@ROWCOUNT < @RecNum
         print 'There were less than ' + CAST(@RecNum AS NVARCHAR(10)) + ' records to delete';
-
-    if not exists(select * from Rooms where Name like 'RoomTestTest%')
-        delete from Buildings where Name = 'TEST';
+    
 END
 GO
 
@@ -895,9 +894,13 @@ BEGIN
 
     WHILE @Counter <= @RecNum
     BEGIN
-        INSERT INTO Secretaries(Name)
+        INSERT INTO Secretaries(Name,Email,Office_Location,Phone)
         VALUES 
-            (CONCAT('TestSecretary', @Counter));
+            (CONCAT('TestSecretary', @Counter),
+			CONCAT('TestSecretary', @Counter,'@gmail.com'),
+			CONCAT('Street num ', @Counter),
+			CONCAT('+34.', @Counter)
+			);
         
         SET @Counter = @Counter + 1;
     END
@@ -913,4 +916,163 @@ BEGIN
 	ORDER BY Secretary_ID DESC
 	)
 END
+GO
+
+--run DB_CSEn_Script_lab4
+
+INSERT INTO Tables(Name) VALUES 
+	('Buildings'),
+	('Rooms'),
+	('Secretaries');
+select * from Tables;
+
+INSERT INTO Views(Name) VALUES 
+	('View_1'),
+	('View_2'),
+	('View_3');
+select * from Views;
+
+INSERT INTO Tests(Name) VALUES
+	('insert/view_1/delete-Secretaries'),
+	('insert/view_2/delete-Rooms'),
+	('insert/view_3/delete-Rooms&Buildings');
+
+select * from Tests;
+
+INSERT INTO TestViews(TestID,ViewID) VALUES
+	(1,1),
+	(2,2),
+	(3,3);
+
+select * from TestViews;
+
+INSERT INTO TestTables(TestID,TableID,NoOfRows,Position) VALUES
+	(1,3,2000,3),
+	(2,2,1520,1),
+	(3,2,500,1);
+
+
+select * from Tables;
+select * from TestTables;
+select * from Tests;
+select * from TestViews;
+select * from Views;
+select * from TestTables;
+
+select * from TestRunTables;
+select * from TestRunViews;
+select * from TestRuns;
+
+
+INSERT INTO TestRuns (Description) VALUES 
+	('insert/view_1/delete-Secretaries'),
+	('insert/view_2/delete-Rooms'),
+	('insert/view_3/delete-Buildings');
+
+
+
+GO
+CREATE OR ALTER PROCEDURE PerformTestRun
+    @TableId INT,
+    @ViewId INT,
+    @OperationType INT, -- 1: Insert/Delete, 2: View, 3: Insert/View/Delete
+    @NoOfRows INT
+AS
+BEGIN
+    DECLARE @StartAt DATETIME;
+    DECLARE @EndAt DATETIME;
+    DECLARE @MaxBuildingId INT;
+    DECLARE @TableName NVARCHAR(255);
+    DECLARE @ViewName NVARCHAR(255);
+    DECLARE @MaxTestRunID INT;
+
+    SELECT @TableName = T.name FROM Tables T WHERE TableID = @TableId;
+    SELECT @ViewName = V.name FROM Views V WHERE ViewID = @ViewId;
+
+    SET @StartAt = GETDATE();
+
+    IF @OperationType = 1 OR @OperationType = 3
+    BEGIN
+        IF @TableId = 1
+            EXEC InsertIntoSecretaries @NoOfRows;
+        ELSE IF @TableId = 2
+            EXEC InsertIntoRooms @NoOfRows, @TableId;
+        ELSE IF @TableId = 3
+            EXEC InsertIntoBuilding @NoOfRows;
+
+        IF @OperationType = 3
+        BEGIN
+            IF @ViewId = 1
+                SELECT * FROM View_1;
+            ELSE IF @ViewId = 2
+                SELECT * FROM View_2;
+            ELSE IF @ViewId = 3
+                SELECT * FROM View_3;
+        END
+
+        IF @TableId = 1
+            EXEC DeleteFromSecretaries @NoOfRows;
+        ELSE IF @TableId = 2
+            EXEC DeleteFromRooms @NoOfRows;
+        ELSE IF @TableId = 3
+            EXEC DeleteFromBuilding @NoOfRows;
+    END
+
+    IF @OperationType = 2
+    BEGIN
+        IF @ViewId = 1
+            SELECT * FROM View_1;
+        ELSE IF @ViewId = 2
+            SELECT * FROM View_2;
+        ELSE IF @ViewId = 3
+            SELECT * FROM View_3;
+    END
+
+    SET @EndAt = GETDATE();
+
+    IF @OperationType = 1
+    BEGIN
+        INSERT INTO TestRuns (Description, StartAt, EndAt)
+        VALUES (CONCAT('Insert/Delete: ', @TableName, ':', @NoOfRows), @StartAt, @EndAt);
+
+        SELECT @MaxTestRunID = MAX(TestRunID) FROM TestRuns;
+
+        INSERT INTO TestRunTables (TestRunID, StartAt, EndAt)
+        VALUES (@MaxTestRunID, @StartAt, @EndAt);
+    END
+    ELSE IF @OperationType = 2
+    BEGIN
+        INSERT INTO TestRuns (Description, StartAt, EndAt)
+        VALUES (@ViewName, @StartAt, @EndAt);
+
+        SELECT @MaxTestRunID = MAX(TestRunID) FROM TestRuns;
+
+        INSERT INTO TestRunViews (TestRunID, StartAt, EndAt)
+        VALUES (@MaxTestRunID, @StartAt, @EndAt);
+    END
+    ELSE IF @OperationType = 3
+    BEGIN
+        INSERT INTO TestRuns (Description, StartAt, EndAt)
+        VALUES (CONCAT('Insert/', @ViewName, '/Delete: ', @TableName, ':', @NoOfRows), @StartAt, @EndAt);
+
+        SELECT @MaxTestRunID = MAX(TestRunID) FROM TestRuns;
+
+        INSERT INTO TestRunTables (TestRunID,TableID, StartAt, EndAt)
+        VALUES (@MaxTestRunID,@TableId, @StartAt, @EndAt);
+
+        INSERT INTO TestRunViews (TestRunID,ViewID,StartAt, EndAt)
+        VALUES (@MaxTestRunID, @ViewId,@StartAt, @EndAt);
+    END
+
+END
+GO
+
+exec PerformTestRun 3,1,3,100;
+
+SELECT 
+    tr.*, 
+    DATEDIFF(MILLISECOND, tr.StartAt, tr.EndAt) AS DurationInMiliSeconds
+FROM 
+    TestRuns tr;
+
 GO

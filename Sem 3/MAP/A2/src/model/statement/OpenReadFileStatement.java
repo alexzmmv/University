@@ -1,11 +1,10 @@
 package model.statement;
 
+import exception.*;
 import model.ProgramState;
-import exception.AdtException;
-import exception.ExecutionException;
-import exception.ExpressionException;
-import exception.FileException;
+import model.adts.MyDictionary;
 import model.expresion.IExpression;
+import model.type.IType;
 import model.type.StringType;
 import model.values.IValue;
 import model.values.StringValue;
@@ -45,6 +44,20 @@ public class OpenReadFileStatement implements IStatement{
     @Override
     public String toString() {
         return "ORF["+ expression + ']';
+    }
+
+    @Override
+    public MyDictionary<String, IType> typecheck(MyDictionary<String, IType>  typeEnv) throws TypeNotMatchException {
+        IType type = null;
+        try {
+            type = expression.typeCheck(typeEnv);
+        } catch (AdtException e) {
+            throw new TypeNotMatchException("OpenReadFileStatement: " + e.getMessage());
+        }
+        if(!type.equals(new StringType())){
+            throw new TypeNotMatchException("OpenReadFileStatement: Expression must be a string");
+        }
+        return typeEnv;
     }
 
 }

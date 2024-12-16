@@ -11,6 +11,7 @@ public interface IRepo {
     void logProgramStateExecution(ProgramState prg) throws ExecutionException, IOException, AdtException;
     List<ProgramState> getProgramList();
     void setProgramList(List<ProgramState> programList);
+    public String getLogFilePath();
 
     void addProgram(ProgramState e);
 

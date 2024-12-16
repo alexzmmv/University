@@ -1,6 +1,8 @@
 package model.statement;
 
+import exception.TypeNotMatchException;
 import model.ProgramState;
+import model.adts.MyDictionary;
 import model.adts.MyIDictionary;
 import exception.AdtException;
 import exception.ExpressionException;
@@ -30,5 +32,15 @@ public class VariableDeclarationStatement implements IStatement{
     @Override
     public String toString() {
         return type.toString() + " " + name;
+    }
+
+    @Override
+    public MyDictionary<String, IType> typecheck(MyDictionary<String, IType>  typeEnv) throws TypeNotMatchException {
+        try {
+            typeEnv.put(name, type);
+        } catch (AdtException e) {
+            throw new TypeNotMatchException("Variable declaration statement: " + e.getMessage());
+        }
+        return typeEnv;
     }
 }

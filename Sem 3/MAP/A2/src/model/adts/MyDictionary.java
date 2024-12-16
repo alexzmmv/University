@@ -11,6 +11,7 @@ public class MyDictionary<K,V> implements MyIDictionary<K,V> {
         dict = new HashMap<K,V>();
     }
 
+    @Override
     public void put(K key, V value) throws AdtException {
         if(dict.containsKey(key))
             throw new AdtException("Key already exists in dictionary");
@@ -52,5 +53,13 @@ public class MyDictionary<K,V> implements MyIDictionary<K,V> {
     @Override
     public Map<K, V> toMap() {
         return this.dict;
+    }
+
+    public MyDictionary<K,V> copy() {
+        MyDictionary<K,V> newDict = new MyDictionary<>();
+        for (K key : dict.keySet()) {
+            newDict.dict.put(key, dict.get(key));
+        }
+        return newDict;
     }
 }

@@ -1,11 +1,14 @@
 package model.statement;
 
+import exception.TypeNotMatchException;
 import model.ProgramState;
 import exception.AdtException;
 import exception.ExecutionException;
 import exception.ExpressionException;
+import model.adts.MyDictionary;
 import model.expresion.IExpression;
 import model.type.BoolType;
+import model.type.IType;
 import model.values.BoolValue;
 import model.values.IValue;
 
@@ -16,6 +19,21 @@ public class whileStatement implements IStatement{
     public whileStatement(IExpression expression, IStatement statement) {
         this.expression = expression;
         this.statement = statement;
+    }
+
+    @Override
+    public MyDictionary<String, IType> typecheck(MyDictionary<String, IType>  typeEnv) throws TypeNotMatchException {
+        IType type = null;
+        try {
+            type = expression.typeCheck(typeEnv);
+        } catch (AdtException e) {
+            throw new TypeNotMatchException("While statement: " + e.getMessage());
+        }
+        if(!(type instanceof BoolType)){
+            throw new TypeNotMatchException("The while condition should evaluate to a Boolean Type");
+        }
+        statement.typecheck(typeEnv);
+        return typeEnv;
     }
 
     @Override

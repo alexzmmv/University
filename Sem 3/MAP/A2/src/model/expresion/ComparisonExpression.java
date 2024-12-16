@@ -1,10 +1,13 @@
 package model.expresion;
 
+import exception.TypeNotMatchException;
 import model.ProgramState;
 import exception.AdtException;
 import exception.ExecutionException;
 import exception.ExpressionException;
+import model.adts.MyDictionary;
 import model.programStateComponents.SymbolTable;
+import model.type.IType;
 import model.type.IntType;
 import model.values.BoolValue;
 import model.values.IValue;
@@ -60,5 +63,15 @@ public class ComparisonExpression implements IExpression {
     @Override
     public String toString() {
         return e1.toString() + " " + op + " " + e2.toString();
+    }
+
+    @Override
+    public IType typeCheck(MyDictionary<String, IType> typeEnv) throws TypeNotMatchException, AdtException {
+        IType t1=e1.typeCheck(typeEnv);
+        IType t2=e2.typeCheck(typeEnv);
+        if(t1.equals(new IntType()) && t2.equals(new IntType()))
+            return new BoolValue(true).getType();
+        else
+            throw new TypeNotMatchException("Comparison operands must be integers");
     }
 }

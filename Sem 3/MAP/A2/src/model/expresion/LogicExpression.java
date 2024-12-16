@@ -1,11 +1,14 @@
 package model.expresion;
 
+import exception.TypeNotMatchException;
 import model.ProgramState;
 import exception.AdtException;
 import exception.ExecutionException;
 import exception.ExpressionException;
+import model.adts.MyDictionary;
 import model.programStateComponents.SymbolTable;
 import model.type.BoolType;
+import model.type.IType;
 import model.values.BoolValue;
 import model.values.IValue;
 
@@ -78,6 +81,16 @@ public class LogicExpression implements IExpression{
             return "!" + e1.toString();
         else
             return "Invalid operation";
+    }
+
+    @Override
+    public IType typeCheck(MyDictionary<String, IType> typeEnv) throws TypeNotMatchException, AdtException {
+        IType t1 = e1.typeCheck(typeEnv);
+        IType t2 = e2.typeCheck(typeEnv);
+        if(t1.equals(new BoolType()) && t2.equals(new BoolType()))
+            return new BoolType();
+        else
+            throw new TypeNotMatchException("Operands of a logic expression must be boolean");
     }
 
 }

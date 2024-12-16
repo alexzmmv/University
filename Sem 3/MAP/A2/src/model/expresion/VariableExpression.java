@@ -1,10 +1,13 @@
 package model.expresion;
 
+import exception.TypeNotMatchException;
 import model.ProgramState;
 import exception.AdtException;
 import exception.ExpressionException;
 import exception.VariableNotDefinedException;
+import model.adts.MyDictionary;
 import model.programStateComponents.SymbolTable;
+import model.type.IType;
 import model.values.IValue;
 
 public class VariableExpression implements IExpression {
@@ -26,5 +29,10 @@ public class VariableExpression implements IExpression {
     @Override
     public String toString() {
         return id;
+    }
+
+    @Override
+    public IType typeCheck(MyDictionary<String, IType> typeEnv) throws TypeNotMatchException, AdtException {
+        return typeEnv.lookup(id);
     }
 }

@@ -2,8 +2,10 @@ package model.statement;
 
 import model.ProgramState;
 import exception.*;
+import model.adts.MyDictionary;
 import model.expresion.IExpression;
 import model.expresion.VariableExpression;
+import model.type.IType;
 import model.type.StringType;
 import model.values.IValue;
 import model.values.IntValue;
@@ -56,5 +58,18 @@ public class ReadFileStatement implements IStatement{
     @Override
     public String toString() {
         return "RF[" + expression.toString() + ','+ varName + ']';
+    }
+
+    @Override
+    public MyDictionary<String, IType> typecheck(MyDictionary<String, IType>  typeEnv) throws TypeNotMatchException {
+        IType type = null;
+        try {
+            type = expression.typeCheck(typeEnv);
+        } catch (AdtException e) {
+            throw new TypeNotMatchException("ReadFile statement: " + e.getMessage());
+        }
+        if(!type.equals(new StringType()))
+            throw new TypeNotMatchException("ReadFile statement: Expression must be a string");
+        return typeEnv;
     }
 }

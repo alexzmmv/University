@@ -1,11 +1,10 @@
 package model.expresion;
 
+import exception.*;
 import model.ProgramState;
-import exception.AdtException;
-import exception.DivisionByZeroException;
-import exception.ExecutionException;
-import exception.ExpressionException;
+import model.adts.MyDictionary;
 import model.programStateComponents.SymbolTable;
+import model.type.IType;
 import model.type.IntType;
 import model.values.IValue;
 import model.values.IntValue;
@@ -73,6 +72,17 @@ public class ArithmeticExpression implements IExpression {
                 break;
         }
         return exp1.toString() + s + exp2.toString();
+    }
+
+    @Override
+    public IType typeCheck(MyDictionary<String, IType> typeEnv) throws TypeNotMatchException, AdtException {
+        IType t1, t2;
+        t1 = exp1.typeCheck(typeEnv);
+        t2 = exp2.typeCheck(typeEnv);
+        if(t1.equals(new IntType()) && t2.equals(new IntType()))
+            return new IntType();
+        else
+            throw new TypeNotMatchException("Arithmetic operands must be integers");
     }
 
 }

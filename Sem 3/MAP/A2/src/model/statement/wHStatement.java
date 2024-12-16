@@ -1,11 +1,13 @@
 package model.statement;
 
+import exception.TypeNotMatchException;
 import model.ProgramState;
 import exception.AdtException;
 import exception.ExecutionException;
 import exception.ExpressionException;
+import model.adts.MyDictionary;
 import model.expresion.IExpression;
-import model.expresion.ValueExpression;
+import model.type.IType;
 import model.type.ReferenceType;
 import model.values.IValue;
 import model.values.ReferenceValue;
@@ -19,6 +21,25 @@ public class wHStatement implements IStatement{
         this.expression = expression;
     }
 
+
+    @Override
+    public MyDictionary<String, IType> typecheck(MyDictionary<String, IType>  typeEnv) throws TypeNotMatchException {
+        IType type1, type2;
+        try {
+            type1 = adress.typeCheck(typeEnv);
+        } catch (AdtException e) {
+            throw new TypeNotMatchException("wH statement: " + e.getMessage());
+        }
+        try {
+            type2 = expression.typeCheck(typeEnv);
+        } catch (AdtException e) {
+            throw new TypeNotMatchException("wH statement: " + e.getMessage());
+        }
+        if(type1.equals(new ReferenceType(type2))){
+            return typeEnv;
+        }
+        throw new TypeNotMatchException("Type mismatch");
+    }
 
     @Override
     public ProgramState execute(ProgramState state) throws ExpressionException, AdtException, ExecutionException {

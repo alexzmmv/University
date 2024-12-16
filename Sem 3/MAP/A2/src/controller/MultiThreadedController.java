@@ -73,11 +73,12 @@ public class MultiThreadedController implements IController{
                         } catch (java.util.concurrent.ExecutionException e) {
                             try {
                                 this.setProgram(new NopStatement());
+                                //log on log file the error
+                                throw new RuntimeException("Program execution stopped, error:"+e.getMessage());
                             } catch (InterpreterException ex) {
                                 throw new RuntimeException(ex);
                             }
                         }
-                        return null;
                     })
                     .filter(Objects::nonNull)
                     .toList();

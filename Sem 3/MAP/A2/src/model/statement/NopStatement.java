@@ -1,8 +1,11 @@
 package model.statement;
 
+import exception.TypeNotMatchException;
 import model.ProgramState;
 import exception.AdtException;
 import exception.ExpressionException;
+import model.adts.MyDictionary;
+import model.type.IType;
 
 public class NopStatement implements IStatement {
 
@@ -13,5 +16,10 @@ public class NopStatement implements IStatement {
 
     public String toString() {
         return "nop";
+    }
+
+    @Override
+    public MyDictionary<String, IType> typecheck(MyDictionary<String, IType>  typeEnv) throws TypeNotMatchException {
+        return typeEnv;
     }
 }

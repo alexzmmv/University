@@ -1,11 +1,9 @@
 package model.statement;
 
+import exception.*;
 import model.ProgramState;
+import model.adts.MyDictionary;
 import model.adts.MyIStack;
-import exception.AdtException;
-import exception.ExecutionException;
-import exception.ExpressionException;
-import exception.VariableNotDefinedException;
 import model.expresion.IExpression;
 import model.programStateComponents.SymbolTable;
 import model.type.IType;
@@ -40,6 +38,26 @@ public class AsignStatement implements IStatement {
     @Override
     public String toString() {
         return id + " = " + expression.toString();
+    }
+
+    @Override
+    public MyDictionary<String, IType> typecheck(MyDictionary<String, IType>  typeEnv) throws TypeNotMatchException {
+        IType typevar = null;
+        try {
+            typevar = typeEnv.lookup(id);
+        } catch (AdtException e) {
+            throw new TypeNotMatchException("Assignment statement: " + e.getMessage());
+        }
+        IType typexp = null;
+        try {
+            typexp = expression.typeCheck(typeEnv);
+        } catch (AdtException e) {
+            throw new TypeNotMatchException("Assignment statement: " + e.getMessage());
+        }
+        if (typevar.equals(typexp))
+            return typeEnv;
+        else
+            throw new TypeNotMatchException("Assignment statement: right hand side and left hand side have different types ");
     }
 
 }
