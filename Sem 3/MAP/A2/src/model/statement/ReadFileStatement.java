@@ -6,6 +6,7 @@ import model.adts.MyDictionary;
 import model.expresion.IExpression;
 import model.expresion.VariableExpression;
 import model.type.IType;
+import model.type.IntType;
 import model.type.StringType;
 import model.values.IValue;
 import model.values.IntValue;
@@ -62,9 +63,13 @@ public class ReadFileStatement implements IStatement{
 
     @Override
     public MyDictionary<String, IType> typecheck(MyDictionary<String, IType>  typeEnv) throws TypeNotMatchException {
-        IType type = null;
+        IType type ;
         try {
             type = expression.typeCheck(typeEnv);
+            if(type instanceof StringType)
+                throw new TypeNotMatchException("ReadFile statement: Expression must be a string");
+            if(typeEnv.lookup(varName).equals(new IntType()))
+                throw new TypeNotMatchException("ReadFile statement: Variable must be a IntType");
         } catch (AdtException e) {
             throw new TypeNotMatchException("ReadFile statement: " + e.getMessage());
         }

@@ -23,7 +23,7 @@ public class Interpreter {
         IStatement ex1 = new CompoundStatement(
                 new VariableDeclarationStatement("v", new IntType()),
                 new CompoundStatement(
-                        new AsignStatement("v", new ValueExpression(new IntValue(2))),
+                        new AsignStatement("v", new ValueExpression(new StringValue("idk"))),
                         new PrintStatement(new VariableExpression("v"))
                 )
         );
@@ -34,7 +34,7 @@ public class Interpreter {
             IController ctr1 = new MultiThreadedController(repo1);
             menu.addCommand(new RunExampleCommand("1", ex1.toString(), ctr1));
         } catch (TypeNotMatchException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage()+"\n");
         }
         IStatement ex2= new CompoundStatement(
                 new VariableDeclarationStatement("varf", new StringType()),
