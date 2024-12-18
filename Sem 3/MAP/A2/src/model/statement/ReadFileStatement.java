@@ -66,9 +66,10 @@ public class ReadFileStatement implements IStatement{
         IType type ;
         try {
             type = expression.typeCheck(typeEnv);
-            if(type instanceof StringType)
-                throw new TypeNotMatchException("ReadFile statement: Expression must be a string");
-            if(typeEnv.lookup(varName).equals(new IntType()))
+            if(!(type instanceof StringType)){
+                throw new TypeNotMatchException("OpenReadFileStatement: Expression must be a string");
+            }
+            if(!typeEnv.lookup(varName).equals(new IntType()))
                 throw new TypeNotMatchException("ReadFile statement: Variable must be a IntType");
         } catch (AdtException e) {
             throw new TypeNotMatchException("ReadFile statement: " + e.getMessage());

@@ -47,7 +47,7 @@ public class CloseReadFileStatement implements IStatement{
         IType type = null;
         try {
             type = expression.typeCheck(typeEnv);
-            if(type.equals(new StringType()))
+            if(!type.equals(new StringType()))
                 throw new TypeNotMatchException("CloseReadFileStatement: Expression must be a string");
         } catch (AdtException e) {
             throw new TypeNotMatchException("CloseReadFileStatement: " + e.getMessage());

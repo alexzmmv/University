@@ -51,8 +51,10 @@ public class OpenReadFileStatement implements IStatement{
         IType type = null;
         try {
             type = expression.typeCheck(typeEnv);
-            if(type instanceof StringType)
+
+            if(!(type instanceof StringType)){
                 throw new TypeNotMatchException("OpenReadFileStatement: Expression must be a string");
+            }
         } catch (AdtException e) {
             throw new TypeNotMatchException("OpenReadFileStatement: " + e.getMessage());
         }
