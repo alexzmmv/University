@@ -1,0 +1,87 @@
+CREATE OR ALTER PROCEDURE InsertRowsTa
+    @NumRows INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @Counter INT = 1;
+    DECLARE @StartPK INT;
+
+    SELECT @StartPK = ISNULL(MAX(aid), 0) 
+    FROM Ta;
+
+    WHILE @Counter <= @NumRows
+    BEGIN
+        INSERT INTO Ta (aid, a2)
+        VALUES (@StartPK + @Counter, (@StartPK + @Counter) * 10);
+
+        SET @Counter = @Counter + 1;
+    END
+END;
+GO
+
+CREATE OR ALTER PROCEDURE InsertRowsTb
+    @NumRows INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @Counter INT = 1;
+    DECLARE @StartPK INT;
+
+    SELECT @StartPK = ISNULL(MAX(bid), 0) 
+    FROM Tb;
+
+    WHILE @Counter <= @NumRows
+    BEGIN
+        INSERT INTO Tb (bid,b2)
+        VALUES (@StartPK + @Counter,@Counter * 10);
+
+        SET @Counter = @Counter + 1;
+    END
+END;
+GO
+
+CREATE OR ALTER PROCEDURE InsertRowsTc
+    @NumRows INT,
+    @AidID INT,
+    @BidID INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @Counter INT = 1;
+    DECLARE @StartPK INT;
+
+    SELECT @StartPK = ISNULL(MAX(cid), 0) 
+    FROM Tc;
+
+    WHILE @Counter <= @NumRows
+    BEGIN
+        INSERT INTO Tc (cid, aid, bid)
+        VALUES (@StartPK + @Counter, @AidID, @BidID);
+
+        SET @Counter = @Counter + 1;
+    END
+END;
+GO
+
+ALTER VIEW ViewTaTb AS
+SELECT 
+    T.aid, 
+    T.a2, 
+    B.bid, 
+    B.b2, 
+    C.cid
+FROM 
+    Ta T
+JOIN 
+    Tb B 
+ON 
+    T.aid = B.bid
+JOIN 
+    Tc C
+ON 
+    T.aid = C.aid AND B.bid = C.bid
+WHERE 
+    T.a2 > 10;

@@ -1,0 +1,686 @@
+<ShowPlanXML xmlns="http://schemas.microsoft.com/sqlserver/2004/07/showplan" Version="1.539"
+    Build="15.0.4415.2">
+    <BatchSequence>
+        <Batch>
+            <Statements>
+                <StmtSimple StatementText="SELECT * FROM Ta" StatementId="1" StatementCompId="1"
+                    StatementType="SELECT" RetrievedFromCache="true"
+                    StatementSubTreeCost="0.00671422" StatementEstRows="1100"
+                    SecurityPolicyApplied="false" StatementOptmLevel="TRIVIAL"
+                    QueryHash="0x7DEB846B577847F1" QueryPlanHash="0x5F4625CC88927BFD"
+                    CardinalityEstimationModelVersion="150">
+                    <StatementSetOptions QUOTED_IDENTIFIER="true" ARITHABORT="false"
+                        CONCAT_NULL_YIELDS_NULL="true" ANSI_NULLS="true" ANSI_PADDING="true"
+                        ANSI_WARNINGS="true" NUMERIC_ROUNDABORT="false"></StatementSetOptions>
+                    <QueryPlan DegreeOfParallelism="1" CachedPlanSize="16" CompileTime="1"
+                        CompileCPU="1" CompileMemory="80">
+                        <MemoryGrantInfo SerialRequiredMemory="0" SerialDesiredMemory="0"
+                            GrantedMemory="0" MaxUsedMemory="0"></MemoryGrantInfo>
+                        <OptimizerHardwareDependentProperties EstimatedAvailableMemoryGrant="121344"
+                            EstimatedPagesCached="30336" EstimatedAvailableDegreeOfParallelism="2"
+                            MaxCompileMemory="2658848"></OptimizerHardwareDependentProperties>
+                        <QueryTimeStats ElapsedTime="1" CpuTime="1"></QueryTimeStats>
+                        <RelOp NodeId="0" PhysicalOp="Index Scan" LogicalOp="Index Scan"
+                            EstimateRows="1100" EstimatedRowsRead="1100" EstimateIO="0.00534722"
+                            EstimateCPU="0.001367" AvgRowSize="15"
+                            EstimatedTotalSubtreeCost="0.00671422" TableCardinality="1100"
+                            Parallel="0" EstimateRebinds="0" EstimateRewinds="0"
+                            EstimatedExecutionMode="Row">
+                            <OutputList>
+                                <ColumnReference Database="[master]" Schema="[dbo]" Table="[Ta]"
+                                    Column="aid"></ColumnReference>
+                                <ColumnReference Database="[master]" Schema="[dbo]" Table="[Ta]"
+                                    Column="a2"></ColumnReference>
+                            </OutputList>
+                            <RunTimeInformation>
+                                <RunTimeCountersPerThread Thread="0" ActualRows="1100" Batches="0"
+                                    ActualExecutionMode="Row" ActualElapsedms="0" ActualCPUms="0"
+                                    ActualScans="1" ActualLogicalReads="6" ActualPhysicalReads="0"
+                                    ActualReadAheads="0" ActualLobLogicalReads="0"
+                                    ActualLobPhysicalReads="0" ActualLobReadAheads="0"
+                                    ActualRowsRead="1100" ActualEndOfScans="1" ActualExecutions="1"></RunTimeCountersPerThread>
+                            </RunTimeInformation>
+                            <IndexScan Ordered="0" ForcedIndex="0" ForceSeek="0" ForceScan="0"
+                                NoExpandHint="0" Storage="RowStore">
+                                <DefinedValues>
+                                    <DefinedValue>
+                                        <ColumnReference Database="[master]" Schema="[dbo]"
+                                            Table="[Ta]" Column="aid"></ColumnReference>
+                                    </DefinedValue>
+                                    <DefinedValue>
+                                        <ColumnReference Database="[master]" Schema="[dbo]"
+                                            Table="[Ta]" Column="a2"></ColumnReference>
+                                    </DefinedValue>
+                                </DefinedValues>
+                                <Object Database="[master]" Schema="[dbo]" Table="[Ta]"
+                                    Index="[UQ__Ta__3213A9FAE384146B]" IndexKind="NonClustered"
+                                    Storage="RowStore"></Object>
+                            </IndexScan>
+                        </RelOp>
+                    </QueryPlan>
+                </StmtSimple>
+            </Statements>
+        </Batch>
+    </BatchSequence>
+</ShowPlanXML>
+
+<ShowPlanXML xmlns="http://schemas.microsoft.com/sqlserver/2004/07/showplan" Version="1.539"
+    Build="15.0.4415.2">
+    <BatchSequence>
+        <Batch>
+            <Statements>
+                <StmtSimple StatementText="SELECT * FROM [Ta] WHERE [aid]=@1" StatementId="1"
+                    StatementCompId="1" StatementType="SELECT" RetrievedFromCache="true"
+                    StatementSubTreeCost="0.0032831" StatementEstRows="1"
+                    SecurityPolicyApplied="false" StatementOptmLevel="TRIVIAL"
+                    QueryHash="0xAC06C0F2B7E0A88F" QueryPlanHash="0xF9C952A107BB4C8F"
+                    CardinalityEstimationModelVersion="150">
+                    <StatementSetOptions QUOTED_IDENTIFIER="true" ARITHABORT="false"
+                        CONCAT_NULL_YIELDS_NULL="true" ANSI_NULLS="true" ANSI_PADDING="true"
+                        ANSI_WARNINGS="true" NUMERIC_ROUNDABORT="false"></StatementSetOptions>
+                    <QueryPlan DegreeOfParallelism="1" CachedPlanSize="24" CompileTime="2"
+                        CompileCPU="2" CompileMemory="104">
+                        <MemoryGrantInfo SerialRequiredMemory="0" SerialDesiredMemory="0"
+                            GrantedMemory="0" MaxUsedMemory="0"></MemoryGrantInfo>
+                        <OptimizerHardwareDependentProperties EstimatedAvailableMemoryGrant="121344"
+                            EstimatedPagesCached="30336" EstimatedAvailableDegreeOfParallelism="2"
+                            MaxCompileMemory="2659416"></OptimizerHardwareDependentProperties>
+                        <QueryTimeStats ElapsedTime="0" CpuTime="0"></QueryTimeStats>
+                        <RelOp NodeId="0" PhysicalOp="Clustered Index Seek"
+                            LogicalOp="Clustered Index Seek" EstimateRows="1" EstimatedRowsRead="1"
+                            EstimateIO="0.003125" EstimateCPU="0.0001581" AvgRowSize="15"
+                            EstimatedTotalSubtreeCost="0.0032831" TableCardinality="1100"
+                            Parallel="0" EstimateRebinds="0" EstimateRewinds="0"
+                            EstimatedExecutionMode="Row">
+                            <OutputList>
+                                <ColumnReference Database="[master]" Schema="[dbo]" Table="[Ta]"
+                                    Column="aid"></ColumnReference>
+                                <ColumnReference Database="[master]" Schema="[dbo]" Table="[Ta]"
+                                    Column="a2"></ColumnReference>
+                            </OutputList>
+                            <RunTimeInformation>
+                                <RunTimeCountersPerThread Thread="0" ActualRows="1" Batches="0"
+                                    ActualExecutionMode="Row" ActualElapsedms="0" ActualCPUms="0"
+                                    ActualScans="0" ActualLogicalReads="2" ActualPhysicalReads="0"
+                                    ActualReadAheads="0" ActualLobLogicalReads="0"
+                                    ActualLobPhysicalReads="0" ActualLobReadAheads="0"
+                                    ActualRowsRead="1" ActualEndOfScans="1" ActualExecutions="1"></RunTimeCountersPerThread>
+                            </RunTimeInformation>
+                            <IndexScan Ordered="1" ScanDirection="FORWARD" ForcedIndex="0"
+                                ForceSeek="0" ForceScan="0" NoExpandHint="0" Storage="RowStore">
+                                <DefinedValues>
+                                    <DefinedValue>
+                                        <ColumnReference Database="[master]" Schema="[dbo]"
+                                            Table="[Ta]" Column="aid"></ColumnReference>
+                                    </DefinedValue>
+                                    <DefinedValue>
+                                        <ColumnReference Database="[master]" Schema="[dbo]"
+                                            Table="[Ta]" Column="a2"></ColumnReference>
+                                    </DefinedValue>
+                                </DefinedValues>
+                                <Object Database="[master]" Schema="[dbo]" Table="[Ta]"
+                                    Index="[PK__Ta__DE508E2E64B2B287]" IndexKind="Clustered"
+                                    Storage="RowStore"></Object>
+                                <SeekPredicates>
+                                    <SeekPredicateNew>
+                                        <SeekKeys>
+                                            <Prefix ScanType="EQ">
+                                                <RangeColumns>
+                                                    <ColumnReference Database="[master]"
+                                                        Schema="[dbo]" Table="[Ta]" Column="aid"></ColumnReference>
+                                                </RangeColumns>
+                                                <RangeExpressions>
+                                                    <ScalarOperator
+                                                        ScalarString="CONVERT_IMPLICIT(int,[@1],0)">
+                                                        <Convert DataType="int" Style="0"
+                                                            Implicit="1">
+                                                            <ScalarOperator>
+                                                                <Identifier>
+                                                                    <ColumnReference Column="@1"></ColumnReference>
+                                                                </Identifier>
+                                                            </ScalarOperator>
+                                                        </Convert>
+                                                    </ScalarOperator>
+                                                </RangeExpressions>
+                                            </Prefix>
+                                        </SeekKeys>
+                                    </SeekPredicateNew>
+                                </SeekPredicates>
+                            </IndexScan>
+                        </RelOp>
+                        <ParameterList>
+                            <ColumnReference Column="@1" ParameterDataType="tinyint"
+                                ParameterCompiledValue="(10)" ParameterRuntimeValue="(10)"></ColumnReference>
+                        </ParameterList>
+                    </QueryPlan>
+                </StmtSimple>
+            </Statements>
+        </Batch>
+    </BatchSequence>
+</ShowPlanXML>
+
+
+<ShowPlanXML xmlns="http://schemas.microsoft.com/sqlserver/2004/07/showplan" Version="1.539"
+    Build="15.0.4415.2">
+    <BatchSequence>
+        <Batch>
+            <Statements>
+                <StmtSimple StatementText="SELECT * FROM [Ta] WHERE [a2]=@1" StatementId="2"
+                    StatementCompId="5" StatementType="SELECT" RetrievedFromCache="true"
+                    StatementSubTreeCost="0.0032831" StatementEstRows="1"
+                    SecurityPolicyApplied="false" StatementOptmLevel="TRIVIAL"
+                    QueryHash="0x97229A0BEEE9894F" QueryPlanHash="0xF9C952A107BB4C8F"
+                    CardinalityEstimationModelVersion="150">
+                    <StatementSetOptions QUOTED_IDENTIFIER="true" ARITHABORT="false"
+                        CONCAT_NULL_YIELDS_NULL="true" ANSI_NULLS="true" ANSI_PADDING="true"
+                        ANSI_WARNINGS="true" NUMERIC_ROUNDABORT="false"></StatementSetOptions>
+                    <QueryPlan DegreeOfParallelism="1" CachedPlanSize="24" CompileTime="1"
+                        CompileCPU="1" CompileMemory="104">
+                        <MemoryGrantInfo SerialRequiredMemory="0" SerialDesiredMemory="0"
+                            GrantedMemory="0" MaxUsedMemory="0"></MemoryGrantInfo>
+                        <OptimizerHardwareDependentProperties EstimatedAvailableMemoryGrant="121344"
+                            EstimatedPagesCached="30336" EstimatedAvailableDegreeOfParallelism="2"
+                            MaxCompileMemory="2658768"></OptimizerHardwareDependentProperties>
+                        <QueryTimeStats ElapsedTime="0" CpuTime="0"></QueryTimeStats>
+                        <RelOp NodeId="0" PhysicalOp="Index Seek" LogicalOp="Index Seek"
+                            EstimateRows="1" EstimatedRowsRead="1" EstimateIO="0.003125"
+                            EstimateCPU="0.0001581" AvgRowSize="15"
+                            EstimatedTotalSubtreeCost="0.0032831" TableCardinality="1100"
+                            Parallel="0" EstimateRebinds="0" EstimateRewinds="0"
+                            EstimatedExecutionMode="Row">
+                            <OutputList>
+                                <ColumnReference Database="[master]" Schema="[dbo]" Table="[Ta]"
+                                    Column="aid"></ColumnReference>
+                                <ColumnReference Database="[master]" Schema="[dbo]" Table="[Ta]"
+                                    Column="a2"></ColumnReference>
+                            </OutputList>
+                            <RunTimeInformation>
+                                <RunTimeCountersPerThread Thread="0" ActualRows="0" Batches="0"
+                                    ActualExecutionMode="Row" ActualElapsedms="0" ActualCPUms="0"
+                                    ActualScans="0" ActualLogicalReads="2" ActualPhysicalReads="0"
+                                    ActualReadAheads="0" ActualLobLogicalReads="0"
+                                    ActualLobPhysicalReads="0" ActualLobReadAheads="0"
+                                    ActualEndOfScans="1" ActualExecutions="1"></RunTimeCountersPerThread>
+                            </RunTimeInformation>
+                            <IndexScan Ordered="1" ScanDirection="FORWARD" ForcedIndex="0"
+                                ForceSeek="0" ForceScan="0" NoExpandHint="0" Storage="RowStore">
+                                <DefinedValues>
+                                    <DefinedValue>
+                                        <ColumnReference Database="[master]" Schema="[dbo]"
+                                            Table="[Ta]" Column="aid"></ColumnReference>
+                                    </DefinedValue>
+                                    <DefinedValue>
+                                        <ColumnReference Database="[master]" Schema="[dbo]"
+                                            Table="[Ta]" Column="a2"></ColumnReference>
+                                    </DefinedValue>
+                                </DefinedValues>
+                                <Object Database="[master]" Schema="[dbo]" Table="[Ta]"
+                                    Index="[UQ__Ta__3213A9FAE384146B]" IndexKind="NonClustered"
+                                    Storage="RowStore"></Object>
+                                <SeekPredicates>
+                                    <SeekPredicateNew>
+                                        <SeekKeys>
+                                            <Prefix ScanType="EQ">
+                                                <RangeColumns>
+                                                    <ColumnReference Database="[master]"
+                                                        Schema="[dbo]" Table="[Ta]" Column="a2"></ColumnReference>
+                                                </RangeColumns>
+                                                <RangeExpressions>
+                                                    <ScalarOperator
+                                                        ScalarString="CONVERT_IMPLICIT(int,[@1],0)">
+                                                        <Convert DataType="int" Style="0"
+                                                            Implicit="1">
+                                                            <ScalarOperator>
+                                                                <Identifier>
+                                                                    <ColumnReference Column="@1"></ColumnReference>
+                                                                </Identifier>
+                                                            </ScalarOperator>
+                                                        </Convert>
+                                                    </ScalarOperator>
+                                                </RangeExpressions>
+                                            </Prefix>
+                                        </SeekKeys>
+                                    </SeekPredicateNew>
+                                </SeekPredicates>
+                            </IndexScan>
+                        </RelOp>
+                        <ParameterList>
+                            <ColumnReference Column="@1" ParameterDataType="tinyint"
+                                ParameterCompiledValue="(1)" ParameterRuntimeValue="(1)"></ColumnReference>
+                        </ParameterList>
+                    </QueryPlan>
+                </StmtSimple>
+            </Statements>
+        </Batch>
+    </BatchSequence>
+</ShowPlanXML>
+
+<ShowPlanXML xmlns="http://schemas.microsoft.com/sqlserver/2004/07/showplan" Version="1.539"
+    Build="15.0.4415.2">
+    <BatchSequence>
+        <Batch>
+            <Statements>
+                <StmtSimple StatementText="SELECT * FROM [Ta] WHERE [a2]=@1" StatementId="1"
+                    StatementCompId="4" StatementType="SELECT" RetrievedFromCache="true"
+                    StatementSubTreeCost="0.0032831" StatementEstRows="1"
+                    SecurityPolicyApplied="false" StatementOptmLevel="TRIVIAL"
+                    QueryHash="0x97229A0BEEE9894F" QueryPlanHash="0xF9C952A107BB4C8F"
+                    CardinalityEstimationModelVersion="150">
+                    <StatementSetOptions QUOTED_IDENTIFIER="true" ARITHABORT="false"
+                        CONCAT_NULL_YIELDS_NULL="true" ANSI_NULLS="true" ANSI_PADDING="true"
+                        ANSI_WARNINGS="true" NUMERIC_ROUNDABORT="false"></StatementSetOptions>
+                    <QueryPlan DegreeOfParallelism="1" CachedPlanSize="24" CompileTime="2"
+                        CompileCPU="2" CompileMemory="104">
+                        <MemoryGrantInfo SerialRequiredMemory="0" SerialDesiredMemory="0"
+                            GrantedMemory="0" MaxUsedMemory="0"></MemoryGrantInfo>
+                        <OptimizerHardwareDependentProperties EstimatedAvailableMemoryGrant="121344"
+                            EstimatedPagesCached="30336" EstimatedAvailableDegreeOfParallelism="2"
+                            MaxCompileMemory="2657592"></OptimizerHardwareDependentProperties>
+                        <QueryTimeStats ElapsedTime="0" CpuTime="0"></QueryTimeStats>
+                        <RelOp NodeId="0" PhysicalOp="Index Seek" LogicalOp="Index Seek"
+                            EstimateRows="1" EstimatedRowsRead="1" EstimateIO="0.003125"
+                            EstimateCPU="0.0001581" AvgRowSize="15"
+                            EstimatedTotalSubtreeCost="0.0032831" TableCardinality="1100"
+                            Parallel="0" EstimateRebinds="0" EstimateRewinds="0"
+                            EstimatedExecutionMode="Row">
+                            <OutputList>
+                                <ColumnReference Database="[master]" Schema="[dbo]" Table="[Ta]"
+                                    Column="aid"></ColumnReference>
+                                <ColumnReference Database="[master]" Schema="[dbo]" Table="[Ta]"
+                                    Column="a2"></ColumnReference>
+                            </OutputList>
+                            <RunTimeInformation>
+                                <RunTimeCountersPerThread Thread="0" ActualRows="1" Batches="0"
+                                    ActualExecutionMode="Row" ActualElapsedms="0" ActualCPUms="0"
+                                    ActualScans="0" ActualLogicalReads="2" ActualPhysicalReads="0"
+                                    ActualReadAheads="0" ActualLobLogicalReads="0"
+                                    ActualLobPhysicalReads="0" ActualLobReadAheads="0"
+                                    ActualRowsRead="1" ActualEndOfScans="1" ActualExecutions="1"></RunTimeCountersPerThread>
+                            </RunTimeInformation>
+                            <IndexScan Ordered="1" ScanDirection="FORWARD" ForcedIndex="0"
+                                ForceSeek="0" ForceScan="0" NoExpandHint="0" Storage="RowStore">
+                                <DefinedValues>
+                                    <DefinedValue>
+                                        <ColumnReference Database="[master]" Schema="[dbo]"
+                                            Table="[Ta]" Column="aid"></ColumnReference>
+                                    </DefinedValue>
+                                    <DefinedValue>
+                                        <ColumnReference Database="[master]" Schema="[dbo]"
+                                            Table="[Ta]" Column="a2"></ColumnReference>
+                                    </DefinedValue>
+                                </DefinedValues>
+                                <Object Database="[master]" Schema="[dbo]" Table="[Ta]"
+                                    Index="[UQ__Ta__3213A9FAE384146B]" IndexKind="NonClustered"
+                                    Storage="RowStore"></Object>
+                                <SeekPredicates>
+                                    <SeekPredicateNew>
+                                        <SeekKeys>
+                                            <Prefix ScanType="EQ">
+                                                <RangeColumns>
+                                                    <ColumnReference Database="[master]"
+                                                        Schema="[dbo]" Table="[Ta]" Column="a2"></ColumnReference>
+                                                </RangeColumns>
+                                                <RangeExpressions>
+                                                    <ScalarOperator
+                                                        ScalarString="CONVERT_IMPLICIT(int,[@1],0)">
+                                                        <Convert DataType="int" Style="0"
+                                                            Implicit="1">
+                                                            <ScalarOperator>
+                                                                <Identifier>
+                                                                    <ColumnReference Column="@1"></ColumnReference>
+                                                                </Identifier>
+                                                            </ScalarOperator>
+                                                        </Convert>
+                                                    </ScalarOperator>
+                                                </RangeExpressions>
+                                            </Prefix>
+                                        </SeekKeys>
+                                    </SeekPredicateNew>
+                                </SeekPredicates>
+                            </IndexScan>
+                        </RelOp>
+                        <ParameterList>
+                            <ColumnReference Column="@1" ParameterDataType="tinyint"
+                                ParameterCompiledValue="(50)" ParameterRuntimeValue="(50)"></ColumnReference>
+                        </ParameterList>
+                    </QueryPlan>
+                </StmtSimple>
+            </Statements>
+        </Batch>
+    </BatchSequence>
+</ShowPlanXML>
+<ShowPlanXML xmlns="http://schemas.microsoft.com/sqlserver/2004/07/showplan" Version="1.539"
+    Build="15.0.4415.2">
+    <BatchSequence>
+        <Batch>
+            <Statements>
+                <StmtSimple StatementText="SELECT [aid],[a2] FROM [Ta] WHERE [a2]=@1"
+                    StatementId="1" StatementCompId="4" StatementType="SELECT"
+                    RetrievedFromCache="true" StatementSubTreeCost="0.0032831" StatementEstRows="1"
+                    SecurityPolicyApplied="false" StatementOptmLevel="TRIVIAL"
+                    QueryHash="0x97229A0BEEE9894F" QueryPlanHash="0xF9C952A107BB4C8F"
+                    CardinalityEstimationModelVersion="150">
+                    <StatementSetOptions QUOTED_IDENTIFIER="true" ARITHABORT="false"
+                        CONCAT_NULL_YIELDS_NULL="true" ANSI_NULLS="true" ANSI_PADDING="true"
+                        ANSI_WARNINGS="true" NUMERIC_ROUNDABORT="false"></StatementSetOptions>
+                    <QueryPlan DegreeOfParallelism="1" CachedPlanSize="24" CompileTime="2"
+                        CompileCPU="2" CompileMemory="104">
+                        <MemoryGrantInfo SerialRequiredMemory="0" SerialDesiredMemory="0"
+                            GrantedMemory="0" MaxUsedMemory="0"></MemoryGrantInfo>
+                        <OptimizerHardwareDependentProperties EstimatedAvailableMemoryGrant="121344"
+                            EstimatedPagesCached="30336" EstimatedAvailableDegreeOfParallelism="2"
+                            MaxCompileMemory="2657160"></OptimizerHardwareDependentProperties>
+                        <QueryTimeStats ElapsedTime="0" CpuTime="0"></QueryTimeStats>
+                        <RelOp NodeId="0" PhysicalOp="Index Seek" LogicalOp="Index Seek"
+                            EstimateRows="1" EstimatedRowsRead="1" EstimateIO="0.003125"
+                            EstimateCPU="0.0001581" AvgRowSize="15"
+                            EstimatedTotalSubtreeCost="0.0032831" TableCardinality="1100"
+                            Parallel="0" EstimateRebinds="0" EstimateRewinds="0"
+                            EstimatedExecutionMode="Row">
+                            <OutputList>
+                                <ColumnReference Database="[master]" Schema="[dbo]" Table="[Ta]"
+                                    Column="aid"></ColumnReference>
+                                <ColumnReference Database="[master]" Schema="[dbo]" Table="[Ta]"
+                                    Column="a2"></ColumnReference>
+                            </OutputList>
+                            <RunTimeInformation>
+                                <RunTimeCountersPerThread Thread="0" ActualRows="1" Batches="0"
+                                    ActualExecutionMode="Row" ActualElapsedms="0" ActualCPUms="0"
+                                    ActualScans="0" ActualLogicalReads="2" ActualPhysicalReads="0"
+                                    ActualReadAheads="0" ActualLobLogicalReads="0"
+                                    ActualLobPhysicalReads="0" ActualLobReadAheads="0"
+                                    ActualRowsRead="1" ActualEndOfScans="1" ActualExecutions="1"></RunTimeCountersPerThread>
+                            </RunTimeInformation>
+                            <IndexScan Ordered="1" ScanDirection="FORWARD" ForcedIndex="0"
+                                ForceSeek="0" ForceScan="0" NoExpandHint="0" Storage="RowStore">
+                                <DefinedValues>
+                                    <DefinedValue>
+                                        <ColumnReference Database="[master]" Schema="[dbo]"
+                                            Table="[Ta]" Column="aid"></ColumnReference>
+                                    </DefinedValue>
+                                    <DefinedValue>
+                                        <ColumnReference Database="[master]" Schema="[dbo]"
+                                            Table="[Ta]" Column="a2"></ColumnReference>
+                                    </DefinedValue>
+                                </DefinedValues>
+                                <Object Database="[master]" Schema="[dbo]" Table="[Ta]"
+                                    Index="[UQ__Ta__3213A9FAE384146B]" IndexKind="NonClustered"
+                                    Storage="RowStore"></Object>
+                                <SeekPredicates>
+                                    <SeekPredicateNew>
+                                        <SeekKeys>
+                                            <Prefix ScanType="EQ">
+                                                <RangeColumns>
+                                                    <ColumnReference Database="[master]"
+                                                        Schema="[dbo]" Table="[Ta]" Column="a2"></ColumnReference>
+                                                </RangeColumns>
+                                                <RangeExpressions>
+                                                    <ScalarOperator
+                                                        ScalarString="CONVERT_IMPLICIT(int,[@1],0)">
+                                                        <Convert DataType="int" Style="0"
+                                                            Implicit="1">
+                                                            <ScalarOperator>
+                                                                <Identifier>
+                                                                    <ColumnReference Column="@1"></ColumnReference>
+                                                                </Identifier>
+                                                            </ScalarOperator>
+                                                        </Convert>
+                                                    </ScalarOperator>
+                                                </RangeExpressions>
+                                            </Prefix>
+                                        </SeekKeys>
+                                    </SeekPredicateNew>
+                                </SeekPredicates>
+                            </IndexScan>
+                        </RelOp>
+                        <ParameterList>
+                            <ColumnReference Column="@1" ParameterDataType="tinyint"
+                                ParameterCompiledValue="(50)" ParameterRuntimeValue="(50)"></ColumnReference>
+                        </ParameterList>
+                    </QueryPlan>
+                </StmtSimple>
+            </Statements>
+        </Batch>
+    </BatchSequence>
+</ShowPlanXML>
+b
+
+<ShowPlanXML xmlns="http://schemas.microsoft.com/sqlserver/2004/07/showplan" Version="1.539"
+    Build="15.0.4415.2">
+    <BatchSequence>
+        <Batch>
+            <Statements>
+                <StmtSimple StatementText="SELECT * FROM [Tb] WHERE [b2]=@1" StatementId="1"
+                    StatementCompId="4" StatementType="SELECT" RetrievedFromCache="true"
+                    StatementSubTreeCost="0.0106672" StatementEstRows="1"
+                    SecurityPolicyApplied="false" StatementOptmLevel="TRIVIAL"
+                    QueryHash="0x77B75F1FFFDC78FD" QueryPlanHash="0xBB3CF13E4592F103"
+                    CardinalityEstimationModelVersion="150">
+                    <StatementSetOptions QUOTED_IDENTIFIER="true" ARITHABORT="false"
+                        CONCAT_NULL_YIELDS_NULL="true" ANSI_NULLS="true" ANSI_PADDING="true"
+                        ANSI_WARNINGS="true" NUMERIC_ROUNDABORT="false"></StatementSetOptions>
+                    <QueryPlan DegreeOfParallelism="1" CachedPlanSize="24" CompileTime="14"
+                        CompileCPU="13" CompileMemory="168">
+                        <MemoryGrantInfo SerialRequiredMemory="0" SerialDesiredMemory="0"
+                            GrantedMemory="0" MaxUsedMemory="0"></MemoryGrantInfo>
+                        <OptimizerHardwareDependentProperties EstimatedAvailableMemoryGrant="121344"
+                            EstimatedPagesCached="30336" EstimatedAvailableDegreeOfParallelism="2"
+                            MaxCompileMemory="2656536"></OptimizerHardwareDependentProperties>
+                        <OptimizerStatsUsage>
+                            <StatisticsInfo LastUpdate="2024-12-20T09:42:27.39"
+                                ModificationCount="0" SamplingPercent="100"
+                                Statistics="[_WA_Sys_00000002_184C96B4]" Table="[Tb]" Schema="[dbo]"
+                                Database="[master]"></StatisticsInfo>
+                        </OptimizerStatsUsage>
+                        <QueryTimeStats ElapsedTime="2" CpuTime="2"></QueryTimeStats>
+                        <RelOp NodeId="0" PhysicalOp="Clustered Index Scan"
+                            LogicalOp="Clustered Index Scan" EstimateRows="1"
+                            EstimatedRowsRead="2000" EstimateIO="0.00831019" EstimateCPU="0.002357"
+                            AvgRowSize="15" EstimatedTotalSubtreeCost="0.0106672"
+                            TableCardinality="2000" Parallel="0" EstimateRebinds="0"
+                            EstimateRewinds="0" EstimatedExecutionMode="Row">
+                            <OutputList>
+                                <ColumnReference Database="[master]" Schema="[dbo]" Table="[Tb]"
+                                    Column="bid"></ColumnReference>
+                                <ColumnReference Database="[master]" Schema="[dbo]" Table="[Tb]"
+                                    Column="b2"></ColumnReference>
+                            </OutputList>
+                            <RunTimeInformation>
+                                <RunTimeCountersPerThread Thread="0" ActualRows="1" Batches="0"
+                                    ActualExecutionMode="Row" ActualElapsedms="1" ActualCPUms="1"
+                                    ActualScans="1" ActualLogicalReads="10" ActualPhysicalReads="0"
+                                    ActualReadAheads="0" ActualLobLogicalReads="0"
+                                    ActualLobPhysicalReads="0" ActualLobReadAheads="0"
+                                    ActualRowsRead="2000" ActualEndOfScans="1" ActualExecutions="1"></RunTimeCountersPerThread>
+                            </RunTimeInformation>
+                            <IndexScan Ordered="0" ForcedIndex="0" ForceScan="0" NoExpandHint="0"
+                                Storage="RowStore">
+                                <DefinedValues>
+                                    <DefinedValue>
+                                        <ColumnReference Database="[master]" Schema="[dbo]"
+                                            Table="[Tb]" Column="bid"></ColumnReference>
+                                    </DefinedValue>
+                                    <DefinedValue>
+                                        <ColumnReference Database="[master]" Schema="[dbo]"
+                                            Table="[Tb]" Column="b2"></ColumnReference>
+                                    </DefinedValue>
+                                </DefinedValues>
+                                <Object Database="[master]" Schema="[dbo]" Table="[Tb]"
+                                    Index="[PK__Tb__DE90ADE73C3F16D1]" IndexKind="Clustered"
+                                    Storage="RowStore"></Object>
+                                <Predicate>
+                                    <ScalarOperator
+                                        ScalarString="[master].[dbo].[Tb].[b2]=CONVERT_IMPLICIT(int,[@1],0)">
+                                        <Compare CompareOp="EQ">
+                                            <ScalarOperator>
+                                                <Identifier>
+                                                    <ColumnReference Database="[master]"
+                                                        Schema="[dbo]" Table="[Tb]" Column="b2"></ColumnReference>
+                                                </Identifier>
+                                            </ScalarOperator>
+                                            <ScalarOperator>
+                                                <Identifier>
+                                                    <ColumnReference Column="ConstExpr1002">
+                                                        <ScalarOperator>
+                                                            <Convert DataType="int" Style="0"
+                                                                Implicit="1">
+                                                                <ScalarOperator>
+                                                                    <Identifier>
+                                                                        <ColumnReference Column="@1"></ColumnReference>
+                                                                    </Identifier>
+                                                                </ScalarOperator>
+                                                            </Convert>
+                                                        </ScalarOperator>
+                                                    </ColumnReference>
+                                                </Identifier>
+                                            </ScalarOperator>
+                                        </Compare>
+                                    </ScalarOperator>
+                                </Predicate>
+                            </IndexScan>
+                        </RelOp>
+                        <ParameterList>
+                            <ColumnReference Column="@1" ParameterDataType="tinyint"
+                                ParameterCompiledValue="(10)" ParameterRuntimeValue="(10)"></ColumnReference>
+                        </ParameterList>
+                    </QueryPlan>
+                </StmtSimple>
+            </Statements>
+        </Batch>
+    </BatchSequence>
+</ShowPlanXML>
+---
+<ShowPlanXML xmlns="http://schemas.microsoft.com/sqlserver/2004/07/showplan" Version="1.539"
+    Build="15.0.4415.2">
+    <BatchSequence>
+        <Batch>
+            <Statements>
+                <StmtSimple StatementText="SELECT * FROM [Tb] WHERE [b2]=@1" StatementId="2"
+                    StatementCompId="8" StatementType="SELECT" RetrievedFromCache="true"
+                    StatementSubTreeCost="0.0032831" StatementEstRows="1"
+                    SecurityPolicyApplied="false" StatementOptmLevel="TRIVIAL"
+                    QueryHash="0x77B75F1FFFDC78FD" QueryPlanHash="0xDEF3F76AE5E2B3A0"
+                    CardinalityEstimationModelVersion="150">
+                    <StatementSetOptions QUOTED_IDENTIFIER="true" ARITHABORT="false"
+                        CONCAT_NULL_YIELDS_NULL="true" ANSI_NULLS="true" ANSI_PADDING="true"
+                        ANSI_WARNINGS="true" NUMERIC_ROUNDABORT="false"></StatementSetOptions>
+                    <QueryPlan DegreeOfParallelism="1" CachedPlanSize="24" CompileTime="1"
+                        CompileCPU="1" CompileMemory="152">
+                        <MemoryGrantInfo SerialRequiredMemory="0" SerialDesiredMemory="0"
+                            GrantedMemory="0" MaxUsedMemory="0"></MemoryGrantInfo>
+                        <OptimizerHardwareDependentProperties EstimatedAvailableMemoryGrant="121344"
+                            EstimatedPagesCached="30336" EstimatedAvailableDegreeOfParallelism="2"
+                            MaxCompileMemory="2656488"></OptimizerHardwareDependentProperties>
+                        <OptimizerStatsUsage>
+                            <StatisticsInfo LastUpdate="2024-12-20T09:42:27.39"
+                                ModificationCount="0" SamplingPercent="100"
+                                Statistics="[_WA_Sys_00000002_184C96B4]" Table="[Tb]" Schema="[dbo]"
+                                Database="[master]"></StatisticsInfo>
+                        </OptimizerStatsUsage>
+                        <QueryTimeStats ElapsedTime="0" CpuTime="0"></QueryTimeStats>
+                        <RelOp NodeId="0" PhysicalOp="Index Seek" LogicalOp="Index Seek"
+                            EstimateRows="1" EstimatedRowsRead="1" EstimateIO="0.003125"
+                            EstimateCPU="0.0001581" AvgRowSize="15"
+                            EstimatedTotalSubtreeCost="0.0032831" TableCardinality="2000"
+                            Parallel="0" EstimateRebinds="0" EstimateRewinds="0"
+                            EstimatedExecutionMode="Row">
+                            <OutputList>
+                                <ColumnReference Database="[master]" Schema="[dbo]" Table="[Tb]"
+                                    Column="bid"></ColumnReference>
+                                <ColumnReference Database="[master]" Schema="[dbo]" Table="[Tb]"
+                                    Column="b2"></ColumnReference>
+                            </OutputList>
+                            <RunTimeInformation>
+                                <RunTimeCountersPerThread Thread="0" ActualRows="1" Batches="0"
+                                    ActualExecutionMode="Row" ActualElapsedms="0" ActualCPUms="0"
+                                    ActualScans="1" ActualLogicalReads="2" ActualPhysicalReads="0"
+                                    ActualReadAheads="0" ActualLobLogicalReads="0"
+                                    ActualLobPhysicalReads="0" ActualLobReadAheads="0"
+                                    ActualRowsRead="1" ActualEndOfScans="1" ActualExecutions="1"></RunTimeCountersPerThread>
+                            </RunTimeInformation>
+                            <IndexScan Ordered="1" ScanDirection="FORWARD" ForcedIndex="0"
+                                ForceSeek="0" ForceScan="0" NoExpandHint="0" Storage="RowStore">
+                                <DefinedValues>
+                                    <DefinedValue>
+                                        <ColumnReference Database="[master]" Schema="[dbo]"
+                                            Table="[Tb]" Column="bid"></ColumnReference>
+                                    </DefinedValue>
+                                    <DefinedValue>
+                                        <ColumnReference Database="[master]" Schema="[dbo]"
+                                            Table="[Tb]" Column="b2"></ColumnReference>
+                                    </DefinedValue>
+                                </DefinedValues>
+                                <Object Database="[master]" Schema="[dbo]" Table="[Tb]"
+                                    Index="[idx_Tb_b2]" IndexKind="NonClustered" Storage="RowStore"></Object>
+                                <SeekPredicates>
+                                    <SeekPredicateNew>
+                                        <SeekKeys>
+                                            <Prefix ScanType="EQ">
+                                                <RangeColumns>
+                                                    <ColumnReference Database="[master]"
+                                                        Schema="[dbo]" Table="[Tb]" Column="b2"></ColumnReference>
+                                                </RangeColumns>
+                                                <RangeExpressions>
+                                                    <ScalarOperator
+                                                        ScalarString="CONVERT_IMPLICIT(int,[@1],0)">
+                                                        <Identifier>
+                                                            <ColumnReference Column="ConstExpr1002">
+                                                                <ScalarOperator>
+                                                                    <Convert DataType="int"
+                                                                        Style="0" Implicit="1">
+                                                                        <ScalarOperator>
+                                                                            <Identifier>
+                                                                                <ColumnReference
+                                                                                    Column="@1"></ColumnReference>
+                                                                            </Identifier>
+                                                                        </ScalarOperator>
+                                                                    </Convert>
+                                                                </ScalarOperator>
+                                                            </ColumnReference>
+                                                        </Identifier>
+                                                    </ScalarOperator>
+                                                </RangeExpressions>
+                                            </Prefix>
+                                        </SeekKeys>
+                                    </SeekPredicateNew>
+                                </SeekPredicates>
+                            </IndexScan>
+                        </RelOp>
+                        <ParameterList>
+                            <ColumnReference Column="@1" ParameterDataType="tinyint"
+                                ParameterCompiledValue="(10)" ParameterRuntimeValue="(10)"></ColumnReference>
+                        </ParameterList>
+                    </QueryPlan>
+                </StmtSimple>
+            </Statements>
+        </Batch>
+    </BatchSequence>
+</ShowPlanXML>
+
+c
+before
+<ShowPlanXML xmlns="http://schemas.microsoft.com/sqlserver/2004/07/showplan" Version="1.539">
+    <BatchSequence>
+        <Batch>
+            <Statements>
+                <StmtSimple StatementText="SELECT * FROM ViewTaTb" StatementId="1"
+                    StatementCompId="1" StatementType="SELECT" RetrievedFromCache="true"
+                    StatementSubTreeCost="0.0868778" StatementEstRows="222.298">
+                </StmtSimple>
+            </Statements>
+        </Batch>
+    </BatchSequence>
+</ShowPlanXML>
+after
+<ShowPlanXML xmlns="http://schemas.microsoft.com/sqlserver/2004/07/showplan" Version="1.539">
+    <BatchSequence>
+        <Batch>
+            <Statements>
+                <StmtSimple StatementText="SELECT * FROM ViewTaTb" StatementId="1"
+                    StatementCompId="1" StatementType="SELECT" RetrievedFromCache="true"
+                    StatementSubTreeCost="0.0831741" StatementEstRows="222.298">
+                </StmtSimple>
+            </Statements>
+        </Batch>
+    </BatchSequence>
+</ShowPlanXML>

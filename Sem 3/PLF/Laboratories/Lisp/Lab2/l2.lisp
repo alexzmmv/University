@@ -16,7 +16,9 @@
 (defun node-level (node tree)
   (find-level node tree 0))
 
-;(node-level 'D '(A (B) (C (D) (E)))) 
+(node-level 'D '(A (B) (C (D) (E)))) 
 ;(node-level '2 '(A (B) (C (D) (E)))) 
 ;(node-level 'E '(A (B) (C (D) (E)))) 
 ;(node-level 'Z '(A (B) (C (D) (E)))) 
+;model matematic 
+;6 L3
