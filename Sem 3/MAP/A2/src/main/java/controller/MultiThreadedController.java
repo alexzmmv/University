@@ -129,7 +129,7 @@ public class MultiThreadedController implements IController{
                 statement));
 
         try {
-            this.repo.logProgramStateExecution(this.repo.getProgramList().getFirst());
+            this.repo.logProgramStateExecution(this.repo.getProgramList().get(0));
         } catch (ExecutionException | IOException | AdtException e) {
             throw new InterpreterException(e.getMessage());
         }

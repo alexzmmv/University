@@ -1,4 +1,4 @@
-package view.commands;
+package CView.commands;
 
 public abstract class Command {
     private final String key;

@@ -1,9 +1,6 @@
-package view.commands;
+package CView.commands;
 
 import controller.IController;
-
-import java.io.PrintWriter;
-import java.util.Scanner;
 
 public class RunExampleCommand extends Command {
     IController controller;

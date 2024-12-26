@@ -1,9 +1,10 @@
+package CView;
+
 import controller.*;
 import model.*;
 import repository.*;
 import repository.MultiThreadRepo;
-import view.*;
-import view.commands.*;
+import CView.commands.*;
 import model.statement.*;
 import model.expresion.*;
 import model.type.*;
@@ -11,7 +12,7 @@ import model.values.*;
 import model.adts.*;
 import exception.*;
 import model.programStateComponents.*;
-import model.statement.*;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 

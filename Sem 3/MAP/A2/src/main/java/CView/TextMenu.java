@@ -1,6 +1,6 @@
-package view;
+package CView;
 
-import view.commands.Command;
+import CView.commands.Command;
 
 import java.util.HashMap;
 import java.util.Map;

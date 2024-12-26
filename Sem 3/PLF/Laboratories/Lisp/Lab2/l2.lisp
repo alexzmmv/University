@@ -20,5 +20,5 @@
 ;(node-level '2 '(A (B) (C (D) (E)))) 
 ;(node-level 'E '(A (B) (C (D) (E)))) 
 ;(node-level 'Z '(A (B) (C (D) (E)))) 
-;model matematic 
+
 ;6 L3

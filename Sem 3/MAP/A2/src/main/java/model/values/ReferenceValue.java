@@ -1,6 +1,5 @@
 package model.values;
 
-import com.sun.jdi.Value;
 import model.type.IType;
 import model.type.ReferenceType;
 
