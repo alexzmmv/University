@@ -25,6 +25,12 @@ public class MultiThreadRepo implements IRepo {
         this.logFilePath = logFilePath;
     }
 
+    public MultiThreadRepo() {
+        programStates = new ArrayList<>();
+        this.logFilePath = "xlog.txt";
+
+    }
+
     public void setLogFilePath(String logFilePath) {
         this.logFilePath = logFilePath;
     }

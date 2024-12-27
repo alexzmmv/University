@@ -18,4 +18,5 @@ public interface IHeap {
     boolean contains(int address);
 
     Map<Integer, IValue> toMap();
+
 }

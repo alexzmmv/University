@@ -2,6 +2,7 @@ package model.adts;
 
 
 import exception.AdtException;
+import model.values.IValue;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -41,5 +42,9 @@ public class MyList <T> implements MyIList<T> {
             outStr = outStr + el.toString() + "|";
         }
         return outStr;
+    }
+
+    protected List<T> getList() {
+        return (List<T>) list;
     }
 }

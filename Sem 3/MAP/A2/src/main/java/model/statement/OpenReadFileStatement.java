@@ -31,6 +31,8 @@ public class OpenReadFileStatement implements IStatement{
             throw new FileException("File with that name already opened");
         }
         BufferedReader bufferedReader;
+
+
         try {
             bufferedReader = new BufferedReader(new FileReader(stringValue.getVal()));
         }catch (IOException e) {

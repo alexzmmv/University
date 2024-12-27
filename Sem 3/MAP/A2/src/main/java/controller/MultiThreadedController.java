@@ -125,7 +125,7 @@ public class MultiThreadedController implements IController{
                 new SymbolTable(),
                 new Output(),
                 new FileTable(),
-                new HeapTable(),
+                new ConcurentHeapTable(),
                 statement));
 
         try {

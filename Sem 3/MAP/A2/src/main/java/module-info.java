@@ -1,8 +1,11 @@
 module com.compa.demo {
     requires javafx.controls;
     requires javafx.fxml;
+    requires jdk.jdi;
 
 
-    opens GView to javafx.fxml;
-    exports GView;
+    opens GUI to javafx.fxml;
+    exports GUI;
+    exports controller;
+    opens controller to javafx.fxml;
 }

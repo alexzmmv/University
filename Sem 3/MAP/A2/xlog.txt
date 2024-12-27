@@ -1,0 +1,769 @@
+Program ID: 0
+Execution Stack:
+String varf , varf = "test.in" , ORF[varf] , Integer varc , RF[varf,varc] , print[varc] , RF[varf,varc] , print[varc] , CRF[varf]
+
+SymTable:
+
+Out:
+
+FileTable:
+
+Heap:
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+varf = "test.in" , ORF[varf] , Integer varc , RF[varf,varc] , print[varc] , RF[varf,varc] , print[varc] , CRF[varf]
+String varf
+
+SymTable:
+
+Out:
+
+FileTable:
+
+Heap:
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+varf = "test.in" , ORF[varf] , Integer varc , RF[varf,varc] , print[varc] , RF[varf,varc] , print[varc] , CRF[varf]
+
+SymTable:
+varf --> ""
+
+Out:
+
+FileTable:
+
+Heap:
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+ORF[varf] , Integer varc , RF[varf,varc] , print[varc] , RF[varf,varc] , print[varc] , CRF[varf]
+varf = "test.in"
+
+SymTable:
+varf --> ""
+
+Out:
+
+FileTable:
+
+Heap:
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+ORF[varf] , Integer varc , RF[varf,varc] , print[varc] , RF[varf,varc] , print[varc] , CRF[varf]
+
+SymTable:
+varf --> "test.in"
+
+Out:
+
+FileTable:
+
+Heap:
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+Integer varc , RF[varf,varc] , print[varc] , RF[varf,varc] , print[varc] , CRF[varf]
+ORF[varf]
+
+SymTable:
+varf --> "test.in"
+
+Out:
+
+FileTable:
+
+Heap:
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+Integer varc , RF[varf,varc] , print[varc] , RF[varf,varc] , print[varc] , CRF[varf]
+
+SymTable:
+varf --> "test.in"
+
+Out:
+
+FileTable:
+"test.in"
+
+Heap:
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+RF[varf,varc] , print[varc] , RF[varf,varc] , print[varc] , CRF[varf]
+Integer varc
+
+SymTable:
+varf --> "test.in"
+
+Out:
+
+FileTable:
+"test.in"
+
+Heap:
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+RF[varf,varc] , print[varc] , RF[varf,varc] , print[varc] , CRF[varf]
+
+SymTable:
+varf --> "test.in"
+varc --> 0
+
+Out:
+
+FileTable:
+"test.in"
+
+Heap:
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+print[varc] , RF[varf,varc] , print[varc] , CRF[varf]
+RF[varf,varc]
+
+SymTable:
+varf --> "test.in"
+varc --> 0
+
+Out:
+
+FileTable:
+"test.in"
+
+Heap:
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+print[varc] , RF[varf,varc] , print[varc] , CRF[varf]
+
+SymTable:
+varf --> "test.in"
+varc --> 10
+
+Out:
+
+FileTable:
+"test.in"
+
+Heap:
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+RF[varf,varc] , print[varc] , CRF[varf]
+print[varc]
+
+SymTable:
+varf --> "test.in"
+varc --> 10
+
+Out:
+
+FileTable:
+"test.in"
+
+Heap:
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+RF[varf,varc] , print[varc] , CRF[varf]
+
+SymTable:
+varf --> "test.in"
+varc --> 10
+
+Out:
+10
+
+FileTable:
+"test.in"
+
+Heap:
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+print[varc] , CRF[varf]
+RF[varf,varc]
+
+SymTable:
+varf --> "test.in"
+varc --> 10
+
+Out:
+10
+
+FileTable:
+"test.in"
+
+Heap:
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+print[varc] , CRF[varf]
+
+SymTable:
+varf --> "test.in"
+varc --> 20
+
+Out:
+10
+
+FileTable:
+"test.in"
+
+Heap:
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+CRF[varf]
+print[varc]
+
+SymTable:
+varf --> "test.in"
+varc --> 20
+
+Out:
+10
+
+FileTable:
+"test.in"
+
+Heap:
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+CRF[varf]
+
+SymTable:
+varf --> "test.in"
+varc --> 20
+
+Out:
+10
+20
+
+FileTable:
+"test.in"
+
+Heap:
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+
+SymTable:
+varf --> "test.in"
+varc --> 20
+
+Out:
+10
+20
+
+FileTable:
+
+Heap:
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+Integer v , Ref(Integer) a , v = 10 , new(a,22) , fork(wH(a,100) , v = 32 , print[v] , print[rH(a)]) , print[rH(a)] , new(a,1000) , print[v] , fork(new(a,999))
+
+SymTable:
+
+Out:
+
+FileTable:
+
+Heap:
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+Ref(Integer) a , v = 10 , new(a,22) , fork(wH(a,100) , v = 32 , print[v] , print[rH(a)]) , print[rH(a)] , new(a,1000) , print[v] , fork(new(a,999))
+Integer v
+
+SymTable:
+
+Out:
+
+FileTable:
+
+Heap:
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+Ref(Integer) a , v = 10 , new(a,22) , fork(wH(a,100) , v = 32 , print[v] , print[rH(a)]) , print[rH(a)] , new(a,1000) , print[v] , fork(new(a,999))
+
+SymTable:
+v --> 0
+
+Out:
+
+FileTable:
+
+Heap:
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+v = 10 , new(a,22) , fork(wH(a,100) , v = 32 , print[v] , print[rH(a)]) , print[rH(a)] , new(a,1000) , print[v] , fork(new(a,999))
+Ref(Integer) a
+
+SymTable:
+v --> 0
+
+Out:
+
+FileTable:
+
+Heap:
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+v = 10 , new(a,22) , fork(wH(a,100) , v = 32 , print[v] , print[rH(a)]) , print[rH(a)] , new(a,1000) , print[v] , fork(new(a,999))
+
+SymTable:
+a --> (0,Integer)
+v --> 0
+
+Out:
+
+FileTable:
+
+Heap:
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+new(a,22) , fork(wH(a,100) , v = 32 , print[v] , print[rH(a)]) , print[rH(a)] , new(a,1000) , print[v] , fork(new(a,999))
+v = 10
+
+SymTable:
+a --> (0,Integer)
+v --> 0
+
+Out:
+
+FileTable:
+
+Heap:
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+new(a,22) , fork(wH(a,100) , v = 32 , print[v] , print[rH(a)]) , print[rH(a)] , new(a,1000) , print[v] , fork(new(a,999))
+
+SymTable:
+a --> (0,Integer)
+v --> 10
+
+Out:
+
+FileTable:
+
+Heap:
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+fork(wH(a,100) , v = 32 , print[v] , print[rH(a)]) , print[rH(a)] , new(a,1000) , print[v] , fork(new(a,999))
+new(a,22)
+
+SymTable:
+a --> (0,Integer)
+v --> 10
+
+Out:
+
+FileTable:
+
+Heap:
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+fork(wH(a,100) , v = 32 , print[v] , print[rH(a)]) , print[rH(a)] , new(a,1000) , print[v] , fork(new(a,999))
+
+SymTable:
+a --> (1,Integer)
+v --> 10
+
+Out:
+
+FileTable:
+
+Heap:
+1 --> 22
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+print[rH(a)] , new(a,1000) , print[v] , fork(new(a,999))
+fork(wH(a,100) , v = 32 , print[v] , print[rH(a)])
+
+SymTable:
+a --> (1,Integer)
+v --> 10
+
+Out:
+
+FileTable:
+
+Heap:
+1 --> 22
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+print[rH(a)] , new(a,1000) , print[v] , fork(new(a,999))
+
+SymTable:
+a --> (1,Integer)
+v --> 10
+
+Out:
+
+FileTable:
+
+Heap:
+1 --> 22
+
+--------------------------------------
+Program ID: 1
+Execution Stack:
+wH(a,100) , v = 32 , print[v] , print[rH(a)]
+
+SymTable:
+a --> (1,Integer)
+v --> 10
+
+Out:
+
+FileTable:
+
+Heap:
+1 --> 22
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+new(a,1000) , print[v] , fork(new(a,999))
+print[rH(a)]
+
+SymTable:
+a --> (1,Integer)
+v --> 10
+
+Out:
+
+FileTable:
+
+Heap:
+1 --> 22
+
+--------------------------------------
+Program ID: 1
+Execution Stack:
+print[v] , print[rH(a)]
+wH(a,100) , v = 32
+
+SymTable:
+a --> (1,Integer)
+v --> 10
+
+Out:
+
+FileTable:
+
+Heap:
+1 --> 22
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+new(a,1000) , print[v] , fork(new(a,999))
+
+SymTable:
+a --> (1,Integer)
+v --> 10
+
+Out:
+22
+
+FileTable:
+
+Heap:
+1 --> 22
+
+--------------------------------------
+Program ID: 1
+Execution Stack:
+print[v] , print[rH(a)]
+v = 32
+wH(a,100)
+
+SymTable:
+a --> (1,Integer)
+v --> 10
+
+Out:
+22
+
+FileTable:
+
+Heap:
+1 --> 22
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+print[v] , fork(new(a,999))
+new(a,1000)
+
+SymTable:
+a --> (1,Integer)
+v --> 10
+
+Out:
+22
+
+FileTable:
+
+Heap:
+1 --> 100
+
+--------------------------------------
+Program ID: 1
+Execution Stack:
+print[v] , print[rH(a)]
+v = 32
+
+SymTable:
+a --> (1,Integer)
+v --> 10
+
+Out:
+22
+
+FileTable:
+
+Heap:
+1 --> 100
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+print[v] , fork(new(a,999))
+
+SymTable:
+a --> (2,Integer)
+v --> 10
+
+Out:
+22
+
+FileTable:
+
+Heap:
+1 --> 100
+2 --> 1000
+
+--------------------------------------
+Program ID: 1
+Execution Stack:
+print[v] , print[rH(a)]
+
+SymTable:
+a --> (1,Integer)
+v --> 32
+
+Out:
+22
+
+FileTable:
+
+Heap:
+1 --> 100
+2 --> 1000
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+fork(new(a,999))
+print[v]
+
+SymTable:
+a --> (2,Integer)
+v --> 10
+
+Out:
+22
+
+FileTable:
+
+Heap:
+1 --> 100
+2 --> 1000
+
+--------------------------------------
+Program ID: 1
+Execution Stack:
+print[rH(a)]
+print[v]
+
+SymTable:
+a --> (1,Integer)
+v --> 32
+
+Out:
+22
+
+FileTable:
+
+Heap:
+1 --> 100
+2 --> 1000
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+fork(new(a,999))
+
+SymTable:
+a --> (2,Integer)
+v --> 10
+
+Out:
+22
+10
+32
+
+FileTable:
+
+Heap:
+1 --> 100
+2 --> 1000
+
+--------------------------------------
+Program ID: 1
+Execution Stack:
+print[rH(a)]
+
+SymTable:
+a --> (1,Integer)
+v --> 32
+
+Out:
+22
+10
+32
+
+FileTable:
+
+Heap:
+1 --> 100
+2 --> 1000
+
+--------------------------------------
+Program ID: 0
+Execution Stack:
+
+SymTable:
+a --> (2,Integer)
+v --> 10
+
+Out:
+22
+10
+32
+100
+
+FileTable:
+
+Heap:
+1 --> 100
+2 --> 1000
+
+--------------------------------------
+Program ID: 1
+Execution Stack:
+
+SymTable:
+a --> (1,Integer)
+v --> 32
+
+Out:
+22
+10
+32
+100
+
+FileTable:
+
+Heap:
+1 --> 100
+2 --> 1000
+
+--------------------------------------
+Program ID: 2
+Execution Stack:
+new(a,999)
+
+SymTable:
+a --> (2,Integer)
+v --> 10
+
+Out:
+22
+10
+32
+100
+
+FileTable:
+
+Heap:
+1 --> 100
+2 --> 1000
+
+--------------------------------------
+Program ID: 2
+Execution Stack:
+
+SymTable:
+a --> (3,Integer)
+v --> 10
+
+Out:
+22
+10
+32
+100
+
+FileTable:
+
+Heap:
+3 --> 999
+
+--------------------------------------

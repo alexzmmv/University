@@ -2,7 +2,9 @@ package model.adts;
 
 import exception.AdtException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -56,5 +58,9 @@ public class ConcurentMyDictionary<K,V> implements MyIDictionary<K,V>{
             outS = outS + key.toString() + " --> " + dict.get(key).toString() + "|";
         }
         return outS;
+    }
+
+    public List<K> getKeys() {
+        return new ArrayList<>(dict.keySet());
     }
 }

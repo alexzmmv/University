@@ -6,6 +6,8 @@ import model.values.IValue;
 import model.values.StringValue;
 
 import java.io.BufferedReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class FileTable extends MyDictionary<StringValue, BufferedReader> implements IFileTable {
@@ -49,4 +51,10 @@ public class FileTable extends MyDictionary<StringValue, BufferedReader> impleme
         }
         return result;
     }
+
+    @Override
+    public List<IValue> getFileList() {
+        return new ArrayList<>(super.getKeys());
+    }
+
 }

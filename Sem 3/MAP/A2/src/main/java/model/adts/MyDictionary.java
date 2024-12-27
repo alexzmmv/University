@@ -1,14 +1,18 @@
 package model.adts;
 
 import exception.AdtException;
+import model.values.IValue;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class MyDictionary<K,V> implements MyIDictionary<K,V> {
     protected HashMap<K,V> dict;
     public MyDictionary(){
         dict = new HashMap<K,V>();
+    }
+
+    protected List<V> getValues() {
+        return (List<V>) dict.values();
     }
 
     @Override
@@ -61,5 +65,9 @@ public class MyDictionary<K,V> implements MyIDictionary<K,V> {
             newDict.dict.put(key, dict.get(key));
         }
         return newDict;
+    }
+
+    protected List<IValue> getKeys() {
+        return new ArrayList<IValue>((Collection<? extends IValue>) dict.keySet());
     }
 }

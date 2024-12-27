@@ -2,6 +2,7 @@ package model.adts;
 
 import exception.AdtException;
 
+import java.util.List;
 import java.util.Stack;
 
 public class MyStack<T> implements MyIStack<T>{
@@ -45,4 +46,7 @@ public class MyStack<T> implements MyIStack<T>{
         return outS;
     }
 
+    protected List<T> getList() {
+        return (List<T>) stack;
+    }
 }
