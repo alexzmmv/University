@@ -10,7 +10,7 @@ U_x=unique(X);
 freq=hist(X,length(U_x))/S;
 [U_x;freq]
 
-
+ 
 %b) binomial
 S=input("What is the number of sim=");
 p=input("prob of succes=");
