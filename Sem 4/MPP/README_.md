@@ -315,4 +315,3 @@ npm test
 - Use HTTPS in production environments
 - Regularly update dependencies for security patches
 - Configure proper CORS settings for production
-
