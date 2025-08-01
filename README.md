@@ -171,7 +171,7 @@ Below is a comprehensive list of my coursework and projects:
   <tr>
     <td>18.</td>
     <td>⚡ <a href="https://github.com/alexzmmv/Univerisity/tree/main/Sem%204/MPP"><strong>Multi-Paradigm Programming</strong></a></td>
-    <td>Multi-threading, Synchronization, Parallel Algorithms, Distributed Systems</td>
+    <td>Full-Stack Development, Next.js, FastAPI, AWS Deployment, Supabase, Auth, 2FA, Sliding Window</td>
   </tr>
   
   <tr>
