@@ -1,0 +1,46 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="styles.css">
+<script type="text/javascript" src="scripts.js"></script>
+</head>
+<body onload="loadPuzzle()">
+<div class="container">
+  <div class="original">
+    <h3>Original Image</h3>
+    <img src="../output_parts/original.png" alt="Original Image">
+  </div>
+  <div classs="tablec">
+    <table>
+      <tr>
+        <td id="1" onClick="move(1,this);"></td>
+        <td id="2" onClick="move(2,this);"></td>
+        <td id="3" onClick="move(3,this);"></td>
+        <td id="4" onClick="move(4,this);"></td>
+      </tr>
+      <tr>
+        <td id="5" onClick="move(5,this);"></td>
+        <td id="6" onClick="move(6,this);"></td>
+        <td id="7" onClick="move(7,this);"></td>
+        <td id="8" onClick="move(8,this);"></td>
+      </tr>
+      <tr>
+        <td id="9" onClick="move(9,this);"></td>
+        <td id="10" onClick="move(10,this);"></td>
+        <td id="11" onClick="move(11,this);"></td>
+        <td id="12" onClick="move(12,this);"></td>
+      </tr>
+      <tr>
+        <td id="13" onClick="move(13,this);"></td>
+        <td id="14" onClick="move(14,this);"></td>
+        <td id="15" onClick="move(15,this);"></td>
+        <td id="16" onClick="move(16,this);"></td>
+      </tr>
+    </table>
+  <div class="button-container">
+    <button onclick="showoriginal()">Show original</button>
+    <button onclick="loadPuzzle()">Shuffle </button>
+  </div>
+  </div>
+</div>
+</body>
+</html>

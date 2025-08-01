@@ -1,0 +1,4 @@
+Fanu Curieru|20|20|1000|Bucuresti|Ploiesti
+Cargus|0|0|1000|Sat|Ploiesti
+Danut|20|20|5000|Bucuresti|Rarau|Andre
+Ana|100|232|1010|Iuliu

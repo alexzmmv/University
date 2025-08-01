@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Test page</title>
+    <style>
+          .div1 {
+          display: inline;      
+      }
+    .innerdiv {
+        display: none;       
+        margin-left: 10px;
+    }
+    .t{
+        display: flex;
+    }
+      div.div1:hover .innerdiv {
+          display: block;
+          top: 30px;
+      }
+    </style>
+</head>
+<body>
+    <header style="text-align: center; padding: 20px;">
+        <h1>Test</h1>
+    </header>
+
+    <nav style="margin: 20px 0; text-align: center;">
+        <ul style="list-style-type: none; padding: 0; text-align: center;">
+            <li style="display: inline; margin: 0 15px;"><a href="#">Option A</a></li>
+            <li style="display: inline; margin: 0 15px;"><a href="#">Option B</a></li>
+            <li style="display: inline; margin: 0 15px;"><a href="#">Option C</a></li>
+            <li style="display: inline; margin: 0 15px;"><a href="#">Option D</a></li>
+        </ul>
+    </nav>
+
+    <div style="display: flex; flex-direction: column;">
+        <div class="div1 t">
+            <span id="title1" class="t">Tab 1</span>
+            <div class="innerdiv">
+                text1
+            </div>
+        </div>
+        <div class="div1 t">
+            <span id="title2">Tab 2</span>
+            <div class="innerdiv">
+                    Text2
+            </div>
+    </div>
+    </div>
+
+    <footer>
+        <p>Explore more about Cluj food and culture!</p>
+        <p>Contact: info@clujfood.ro | Tel: +40 111 456</p>
+        <hr>
+        <div>
+            <svg width="100" height="100"></svg>
+                <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" />
+            </svg>
+        </div>
+        <p>Created by: Dumitrascu Constantin-Alexandru</p>
+        <p>&copy; 2023 Cluj Food Delights</p>
+    </footer>
+</body>
+</html>

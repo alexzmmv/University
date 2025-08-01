@@ -1,0 +1,106 @@
+body {
+    overflow: hidden;
+    background: radial-gradient(circle at center, #0f172a, #1e293b);
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+}
+    
+.triangle {
+position: absolute;
+width: 0;
+height: 0;
+animation-iteration-count: infinite;
+animation-timing-function: linear;
+}
+
+@keyframes fly-right {
+from { transform: translateX(-2000px) translateY(100px) rotate(5deg); }
+to { transform: translateX(2000px) translateY(450px) rotate(360deg); }
+}
+
+@keyframes fly-down {
+from { transform: translateY(-1300px) translateX(1344px) rotate(-10deg); }
+to { transform: translateY(1300px) translateX(576px) rotate(5deg); }
+}
+
+@keyframes fly-left {
+from { transform: translateX(2300px) translateY(648px) rotate(0deg); }
+to { transform: translateX(-2300px) translateY(324px) rotate(-20deg); }
+}
+
+@keyframes fly-up {
+from { transform: translateY(1300px) translateX(384px) rotate(8deg); }
+to { transform: translateY(-1300px) translateX(1344px) rotate(-7deg); }
+}
+
+@keyframes fly-up-alt {
+from { transform: translateY(1300px) translateX(200px) rotate(-8deg); }
+to { transform: translateY(-1300px) translateX(960px) rotate(-20deg); }
+}
+
+@keyframes fly-right-alt {
+from { transform: translateX(-2000px) translateY(50px) rotate(15deg); }
+to { transform: translateX(2000px) translateY(700px) rotate(35deg); }
+}
+
+.foreground {
+z-index: 3;
+}
+
+.middleground {
+z-index: 2;
+}
+
+.background {
+z-index: 1;
+}
+
+.triangle1 {
+border-left: 60px solid #f87171;
+border-right: 60px solid #f87171;
+border-bottom: 60px solid #f87171;
+border-top: 60px solid #f87171;
+opacity: 0.9;
+animation: fly-right 14s linear infinite;
+}
+
+.triangle2 {
+border-left: 60px solid transparent;
+border-right: 60px solid transparent;
+border-bottom: 90px solid #34d399;
+opacity: 0.9;
+animation: fly-down 14s linear infinite;
+}
+
+.triangle3 {
+border-left: 40px solid transparent;
+border-right: 40px solid transparent;
+border-bottom: 60px solid #60a5fa;
+opacity: 0.6;
+animation: fly-left 20s linear infinite;
+}
+
+.triangle4 {
+border-left: 40px solid transparent;
+border-right: 40px solid transparent;
+border-bottom: 60px solid #fbbf24;
+opacity: 0.6;
+animation: fly-up 20s linear infinite;
+}
+
+.triangle5 {
+border-left: 25px solid transparent;
+border-right: 25px solid transparent;
+border-bottom: 37.5px solid #a78bfa;
+opacity: 0.3;
+animation: fly-up-alt 28s linear infinite;
+}
+
+.triangle6 {
+border-left: 25px solid transparent;
+border-right: 25px solid transparent;
+border-bottom: 37.5px solid #f472b6;
+opacity: 0.3;
+animation: fly-right-alt 28s linear infinite;
+}

@@ -1,0 +1,2 @@
+function_name,config1,config2,effect_size,sample_size,power,adequate_power
+drop_wave,binary_1point,real_arithmetic,0.8212812797549699,10,0.6387071226977653,False

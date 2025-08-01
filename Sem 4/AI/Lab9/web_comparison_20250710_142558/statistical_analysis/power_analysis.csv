@@ -1,0 +1,7 @@
+function_name,config1,config2,effect_size,sample_size,power,adequate_power
+drop_wave,binary_1point,binary_2point,0.050213477381838366,30,0.058146972784320336,False
+drop_wave,binary_1point,real_arithmetic,1.6811579402634191,30,1.0,True
+drop_wave,binary_1point,real_blx_alpha,1.4068731164743085,30,1.0,True
+drop_wave,binary_2point,real_arithmetic,1.086436729268782,30,0.9999230315296993,True
+drop_wave,binary_2point,real_blx_alpha,0.949599810422487,30,0.9989027789420866,True
+drop_wave,real_arithmetic,real_blx_alpha,0.1033953579065854,30,0.08502355090532525,False

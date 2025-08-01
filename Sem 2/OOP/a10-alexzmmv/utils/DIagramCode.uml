@@ -1,0 +1,160 @@
+@startuml
+!theme spacelab-white
+class Activity {
+    - title: std::string
+    - description: std::string
+    - link: std::string
+    - peopleGoing: int
+    - dateTime: DateTime
+    - duration: int
+    + Activity()
+    + Activity(title: std::string, description: std::string, link: std::string, dateTime: DateTime, duration: int, peopleGoing: int)
+    + Activity(title: const char*, description: const char*, link: const char*, dateTime: DateTime, duration: int, peopleGoing: int)
+    + ~Activity()
+    + getters() : (datatype)
+    + void setters
+    + incPeopleGoing(): void
+    + decPeopleGoing(): void
+    + operator==(other: Activity&): bool
+    + operator=(other: Activity&): Activity&
+    + toString(): std::string
+}
+
+class DateTime {
+    - year: int
+    - month: int
+    - day: int
+    - hour: int
+    - minute: int
+    + DateTime()
+    + DateTime(year: int, month: int, day: int, hour: int, minute: int)
+    + DateTime(dateTime: DateTime)
+    + operator=(dateTime: DateTime): DateTime&
+    + getters(): int
+    + setters() void
+    + operator<(dateTime: DateTime): bool
+    + operator>(dateTime: DateTime): bool
+    + operator==(dateTime: DateTime): bool
+}
+
+class Repository {
+    + Repository()
+    + Repository(a: std::vector<Activity>)
+    + ~Repository()
+    + addActivity(title: std::string, description: std::string, link: std::string, dateTime: DateTime, peopleNumber: int, duration: int): void
+    + removeActivity(title: std::string): void
+    + updateActivity(title: std::string, description: std::string, link: std::string, dateTime: DateTime, peopleNumber: int, duration: int): void
+    + getActivities(): std::vector<Activity>
+    + getActivityByTitle(title: const std::string&): Activity&
+}
+
+class DataBaseRepo {
+    - db: sqlite3*
+    - dbPath: std::string
+    - loadActivities(): void
+    + DataBaseRepo(dbPath: std::string)
+    + ~DataBaseRepo()
+    + addActivity(title: std::string, description: std::string, link: std::string, dateTime: DateTime, peopleNumber: int, duration: int): void
+    + removeActivity(title: std::string): void
+    + updateActivity(title: std::string, description: std::string, link: std::string, dateTime: DateTime, peopleNumber: int, duration: int): void
+}
+
+class FileRepo {
+    - filePath: std::string
+    - loadActivities(): void
+    - saveActivities(): void
+    + FileRepo(filePath: std::string)
+    + ~FileRepo()
+    + addActivity(title: std::string, description: std::string, link: std::string, dateTime: DateTime, peopleNumber: int, duration: int): void
+    + removeActivity(title: std::string): void
+    + updateActivity(title: std::string, description: std::string, link: std::string, dateTime: DateTime, peopleNumber: int, duration: int): void
+}
+
+class RepositoryException {
+    - message: std::string
+    + RepositoryException(message: std::string)
+    + what(): const char*
+}
+
+class UserPlanner {
+    - activities: std::vector<Activity*>
+    + UserPlanner()
+    + ~UserPlanner()
+    + addActivity(activity: Activity&): void
+    + removeActivity(activity: Activity&): void
+    + getActivities(): std::vector<Activity>
+    + saveActivities(filePath: const std::string): void
+}
+
+class htmlUserPlanner {
+    + htmlUserPlanner()
+    + ~htmlUserPlanner()
+    + addActivity(activity: Activity&): void
+    + removeActivity(activity: Activity&): void
+    + saveActivities(filePath: const std::string): void
+}
+
+class csvUserPlanner {
+    + csvUserPlanner()
+    + ~csvUserPlanner()
+    + addActivity(activity: Activity&): void
+    + removeActivity(activity: Activity&): void
+    + saveActivities(filePath: const std::string): void
+}
+
+class Controller {
+    - repository: Repository*
+    - userPlanner: UserPlanner*
+    + Controller(repository: Repository*, userPlanner: UserPlanner*)
+    + ~Controller()
+    + addAdminActivity(title: std::string&, description: std::string&, link: std::string&, dateTime: DateTime&, duration: int, peopleGoing: int): void
+    + removeAdminActivity(title: std::string&): void
+    + updateAdminActivity(title: std::string&, description: std::string&, link: std::string&, dateTime: DateTime&, duration: int, peopleGoing: int): void
+    + getAdminActivities(): std::vector<Activity>
+    + addActivityToUser(title: std::string): void
+    + removeActivityFromUser(title: std::string): void
+    + getUserActivities(): std::vector<Activity>
+    + getActivities(): std::vector<Activity>
+    + getMonthActivities(month: int, year: int): std::vector<Activity>
+    + saveUserActivities(filePath: std::string): std::string
+}
+
+class sqlite3{
+    +base of database-repo
+}
+
+class Console_ui {
+    - controller: Controller*
+    + Console_ui(controller: Controller*)
+    + ~Console_ui()
+    + run(): void
+    - static printAMenu(): void
+    - static printUMenu(): void
+    - static printMenu(): void
+    - printWelcome(): void
+    - addAdminActivity(): void
+    - removeAdminActivity(): void
+    - updateAdminActivity(): void
+    - printAdminActivities(): void
+    - userMode(): void
+    - userAddActivity(): void
+    - adminMode(): void
+}
+
+UserPlanner <|-- htmlUserPlanner
+UserPlanner <|-- csvUserPlanner
+
+Activity "1" -- "1" DateTime : Contains
+
+DataBaseRepo --|> sqlite3 : Uses
+
+Repository --|> DataBaseRepo
+Repository --|> FileRepo
+Repository <|-- RepositoryException
+
+Activity "0.." --|> "1" Repository
+
+Controller -- UserPlanner : Contains
+Controller -- Repository : Contains
+Controller -- Console_ui : contains
+@enduml

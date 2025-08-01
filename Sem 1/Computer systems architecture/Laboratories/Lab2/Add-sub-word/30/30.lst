@@ -1,0 +1,42 @@
+     1                                  bits 32 
+     2                                  
+     3                                  
+     4                                  global start        
+     5                                  
+     6                                  extern exit               
+     7                                  import exit msvcrt.dll     
+     8                                  
+     9                                  ;a-b+(c-d+a)
+    10                                  ;12-8+(15-27+12)
+    11                                  ;4+0=0
+    12                                  
+    13                                  segment data use32 class=DATA
+    14 00000000 00000000                    rezult dd 0
+    15 00000004 0C00                        a dw 12
+    16 00000006 0800                        b dw 8
+    17 00000008 0F00                        c dw 15
+    18 0000000A 1B00                        d dw 27
+    19                                      
+    20                                  segment code use32 class=CODE
+    21                                      start:
+    22                                      
+    23 00000000 B800000000                  mov eax,0
+    24 00000005 BB00000000                  mov ebx,0
+    25 0000000A B900000000                  mov ecx,0
+    26 0000000F BA00000000                  mov edx,0
+    27 00000014 66A1[04000000]              mov ax, [a]
+    28 0000001A 668B1D[06000000]            mov bx, [b]
+    29 00000021 668B0D[08000000]            mov cx, [c]
+    30 00000028 668B15[0A000000]            mov dx, [d]
+    31 0000002F 29D8                        sub eax,ebx
+    32                                      
+    33 00000031 668B1D[04000000]            mov bx,[a] 
+    34 00000038 29D1                        sub ecx,edx
+    35 0000003A 01D9                        add ecx,ebx
+    36                                      
+    37 0000003C 01C8                        add eax,ecx
+    38                                      
+    39 0000003E A3[00000000]                mov [rezult],eax
+    40                                      
+    41 00000043 6A00                           push    dword 0      
+    42 00000045 FF15[00000000]                 call    [exit]  

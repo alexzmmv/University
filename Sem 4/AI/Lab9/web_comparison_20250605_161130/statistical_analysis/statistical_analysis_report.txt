@@ -1,0 +1,44 @@
+STATISTICAL ANALYSIS REPORT
+==================================================
+
+OVERVIEW
+--------------------
+Analysis performed on 120 total runs
+Functions analyzed: levy
+Configurations: binary_1point, binary_2point, real_arithmetic, real_blx_alpha
+Significance level: 0.05
+
+DESCRIPTIVE STATISTICS SUMMARY
+-----------------------------------
+
+levy:
+  Best performing configuration: real_blx_alpha (mean: 0.000000)
+  binary_1point: 0.030332 ± 0.048032
+  binary_2point: 0.054537 ± 0.111262
+  real_arithmetic: 0.000152 ± 0.000485
+  real_blx_alpha: 0.000000 ± 0.000000
+
+
+NORMALITY TEST SUMMARY
+-------------------------
+Normally distributed: 1/4 configurations
+
+
+ANOVA RESULTS
+---------------
+levy:
+  F-statistic: 5.6846, p-value: 0.001146
+  Significant differences: Yes
+  Effect size (η²): 0.1282 (medium)
+
+PAIRWISE COMPARISON SUMMARY
+------------------------------
+levy:
+  Significant differences (Bonferroni corrected): 5/6
+  Significant pairs:
+    binary_1point vs real_arithmetic: p = 0.001255
+    binary_1point vs real_blx_alpha: p = 0.000000
+    binary_2point vs real_arithmetic: p = 0.000006
+    binary_2point vs real_blx_alpha: p = 0.000000
+    real_arithmetic vs real_blx_alpha: p = 0.000034
+

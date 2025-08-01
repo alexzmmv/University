@@ -1,0 +1,55 @@
+     1                                  bits 32 
+     2                                  
+     3                                  global start        
+     4                                  
+     5                                  extern exit               
+     6                                  import exit msvcrt.dll   
+     7                                  
+     8                                  ; f*(e-2)/[3*(d-5)]
+     9                                  ;
+    10                                  segment data use32 class=data
+    11 00000000 00000000                    q_ dd 0
+    12                                      
+    13 00000004 FF                          blank db 0FFh
+    14                                      
+    15 00000005 00000000                    reminder_ dd 0 
+    16                                      
+    17 00000009 0C                          a db 12
+    18 0000000A 08                          b db 8
+    19 0000000B 0F                          c db 15
+    20 0000000C BB                          d db 0BBh
+    21 0000000D F20F                        e dw 0FF2h
+    22 0000000F F80A                        f dw 0AF8h
+    23 00000011 FB0E                        g dw 0EFBh
+    24 00000013 F20B                        h dw 0BF2h
+    25                                      
+    26                                  segment code use32 class=code
+    27                                      start:
+    28                                      
+    29 00000000 B800000000                  mov eax,0
+    30 00000005 BB00000000                  mov ebx,0
+    31 0000000A B900000000                  mov  ecx,0
+    32 0000000F BA00000000                  mov edx,0
+    33                                      
+    34 00000014 802D[0C000000]05            sub byte [d],5h;d<-d-5
+    35 0000001B B003                        mov al,3
+    36 0000001D F625[0C000000]              mul byte[d];ax<-[3*(d-5)]
+    37 00000023 89C3                        mov ebx,eax
+    38                                      ;bx<-[3*(d-5)]
+    39                                      
+    40 00000025 66BA0000                    mov dx,0
+    41 00000029 66832D[0D000000]02          sub word[e],2;e<-e-2
+    42 00000031 66A1[0D000000]              mov ax,[e]
+    43 00000037 66F725[0F000000]            mul word [f]
+    44                                      ;dx:ax<- f*(e-2)
+    45                                      
+    46 0000003E 66F7F3                      div bx
+    47                                      ;ax<-f*(e-2)/[3*(d-5)] quotient
+    48                                      ;dx<-f*(e-2)/[3*(d-5)] reminder
+    49                                      
+    50 00000041 A3[00000000]                mov [q_],eax
+    51 00000046 8915[05000000]              mov [reminder_],edx
+    52                                       
+    53                                       
+    54 0000004C 6A00                           push    dword 0      
+    55 0000004E FF15[00000000]                 call    [exit]  

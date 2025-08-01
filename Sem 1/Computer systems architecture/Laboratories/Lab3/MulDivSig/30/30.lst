@@ -1,0 +1,65 @@
+     1                                  bits 32 
+     2                                  global start        
+     3                                  
+     4                                  extern exit               
+     5                                  import exit msvcrt.dll    
+     6                                            
+     7                                  ;a*b-(100-c)/(b*b)+e+x; a-word; b,c-byte; e-doubleword; x-qword
+     8                                  segment data use32 class=data
+     9                                      ; ...
+    10 00000000 0A                          a db 0ah
+    11 00000001 19                          b db 19h
+    12 00000002 0F                          c db 0Fh
+    13 00000003 FFFF0000                    e dd 0FF_FFh
+    14 00000007 844512FA00000000            x dq 0FA124584h
+    15                                      
+    16                                  segment code use32 class=code
+    17                                      start:
+    18 00000000 B800000000                      mov eax,0
+    19 00000005 BB00000000                      mov ebx,0
+    20 0000000A B900000000                      mov ecx,0
+    21 0000000F BA00000000                      mov edx,0
+    22                                          
+    23 00000014 A0[01000000]                    mov al,[b]
+    24 00000019 F6E8                            imul al
+    25 0000001B 6689C1                          mov cx,ax
+    26                                          ;cx<-b*b
+    27                                          
+    28 0000001E A0[02000000]                    mov al,[c]
+    29 00000023 6698                            cbw
+    30 00000025 6699                            cwd
+    31 00000027 F8                              clc
+    32 00000028 6683E864                        sub ax,100
+    33 0000002C 6683DA00                        sbb dx,0
+    34                                          ;dx:cx<-100-c
+    35                                          
+    36 00000030 66F7F9                          idiv cx
+    37 00000033 66BA0000                        mov dx,0
+    38 00000037 98                              cwde
+    39 00000038 89C1                            mov ecx,eax
+    40                                          ;ecx<-(100-c)/(b*b)
+    41                                          
+    42 0000003A A0[01000000]                    mov al,[b]
+    43 0000003F 6698                            cbw
+    44 00000041 66F72D[00000000]                imul word[a]
+    45 00000048 6652                            push dx
+    46 0000004A 6650                            push ax
+    47 0000004C 58                              pop eax
+    48                                          ;eax<-a*b
+    49                                          
+    50 0000004D 29C8                            sub eax,ecx
+    51 0000004F 0305[03000000]                  add eax,[e]
+    52 00000055 BA00000000                      mov edx,0
+    53                                          ;edx:eax<-a*b-(100-c)/(b*b)+e
+    54                                          
+    55 0000005A 8B1D[07000000]                  mov ebx, dword [x+0] 
+    56 00000060 8B0D[0B000000]                  mov ecx, dword [x+4] 
+    57                                          ;ecx:ebx<-x
+    58 00000066 F8                              clc  
+    59 00000067 01D8                            add eax, ebx   
+    60 00000069 11CA                            adc edx, ecx         
+    61                                          
+    62                                          ;rezult is in edx:eax
+    63                                          
+    64 0000006B 6A00                            push    dword 0      ; push the parameter for exit onto the stack
+    65 0000006D FF15[00000000]                  call    [exit]       ; call exit to terminate the program

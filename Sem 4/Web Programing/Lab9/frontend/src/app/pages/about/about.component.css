@@ -1,0 +1,141 @@
+
+.about-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: white;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.about-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--primary-color);
+}
+
+.about-header h2 {
+  color: var(--primary-color);
+}
+
+.last-updated {
+  font-style: italic;
+  color: var(--gray-color);
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.about-section {
+  margin-bottom: 2.5rem;
+}
+
+.about-section h3 {
+  color: var(--dark-color);
+  border-left: 4px solid var(--primary-color);
+  padding-left: 1rem;
+  margin-bottom: 1rem;
+}
+
+.team-members {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.team-member {
+  background: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.team-member:hover {
+  transform: translateY(-5px);
+}
+
+.member-avatar {
+  font-size: 3rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.member-title {
+  color: var(--primary-color);
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.member-bio {
+  font-size: 0.9rem;
+}
+
+.features-list {
+  list-style: none;
+  padding: 0;
+}
+
+.features-list li {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: var(--radius);
+}
+
+.features-list i {
+  font-size: 1.8rem;
+  color: var(--primary-color);
+  margin-right: 1rem;
+  min-width: 40px;
+  text-align: center;
+}
+
+.feature-content h4 {
+  margin: 0 0 0.5rem 0;
+  color: var(--dark-color);
+}
+
+.feature-content p {
+  margin: 0;
+}
+
+.contact-info {
+  background: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: var(--radius);
+}
+
+.contact-info p {
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+}
+
+.contact-info i {
+  width: 25px;
+  color: var(--primary-color);
+  margin-right: 0.8rem;
+}
+
+.contact-info a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+.contact-info a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .team-members {
+      grid-template-columns: 1fr;
+  }
+  
+  .about-container {
+      padding: 1.5rem;
+  }
+}

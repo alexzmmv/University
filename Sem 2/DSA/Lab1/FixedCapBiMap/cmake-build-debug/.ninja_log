@@ -1,0 +1,10 @@
+# ninja log v5
+1136	1519	7316046318098662	FixedCapBiMap.exe	f2c29d6d3f97fcd3
+21	1911	7316046795636179	CMakeFiles/FixedCapBiMap.dir/D_/!Facultate/Sem2/DSA/Lab1/FixedCapBiMap/FixedCapBiMapIterator.cpp.obj	1b52401ff575c052
+27	2325	7316046814519286	CMakeFiles/FixedCapBiMap.dir/D_/!Facultate/Sem2/DSA/Lab1/FixedCapBiMap/ShortTest.cpp.obj	cdab09becf56a05a
+15	2361	7316046814929899	CMakeFiles/FixedCapBiMap.dir/D_/!Facultate/Sem2/DSA/Lab1/FixedCapBiMap/FixedCapBiMap.cpp.obj	ee334f2239c3d885
+10	2405	7316046814959911	CMakeFiles/FixedCapBiMap.dir/D_/!Facultate/Sem2/DSA/Lab1/FixedCapBiMap/ExtendedTest.cpp.obj	671ee72f71377134
+1	2408	7316046815126452	CMakeFiles/FixedCapBiMap.dir/D_/!Facultate/Sem2/DSA/Lab1/FixedCapBiMap/App.cpp.obj	c784713bc100ac7b
+2409	2656	7316046817460498	FixedCapBiMap.exe	12749da0dc2f5772
+5	844	7316046991709482	CMakeFiles/FixedCapBiMap.dir/D_/!Facultate/Sem2/DSA/Lab1/FixedCapBiMap/App.cpp.obj	c784713bc100ac7b
+845	1045	7316046993635209	FixedCapBiMap.exe	12749da0dc2f5772

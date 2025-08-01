@@ -1,0 +1,5 @@
+function_name,config_name,test,statistic,p_value,is_normal
+levy,binary_1point,Shapiro-Wilk,0.6313116837264554,1.7994940039998954e-07,False
+levy,binary_2point,Shapiro-Wilk,0.5638485684516487,2.7170995386590506e-08,False
+levy,real_arithmetic,Shapiro-Wilk,0.36070125635782657,2.3751018133395754e-10,False
+levy,real_blx_alpha,Shapiro-Wilk,1.0,1.0,True

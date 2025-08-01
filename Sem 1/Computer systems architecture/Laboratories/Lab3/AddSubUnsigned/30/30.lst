@@ -1,0 +1,47 @@
+     1                                  bits 32 
+     2                                  global start        
+     3                                  
+     4                                  extern exit               
+     5                                  import exit msvcrt.dll    
+     6                                                        
+     7                                  ;(b+c+a)-(d+c+a)
+     8                                  
+     9                                  segment data use32 class=data
+    10                                      ; ...
+    11 00000000 FF                          a db 0_FFh
+    12 00000001 FFFF                        b dw 0_FF_FFh
+    13 00000003 FFFFFFFF                    c dd 0_FF_FF_FF_FFh
+    14 00000007 FFFF000000000000            d dq 0FF_FFh
+    15 0000000F 0000000000000000            aux dq 0
+    16                                      
+    17                                  segment code use32 class=code
+    18                                      start:
+    19 00000000 B800000000                      mov eax,0
+    20 00000005 BB00000000                      mov ebx,0
+    21 0000000A B900000000                      mov ecx,0
+    22 0000000F BA00000000                      mov edx,0
+    23                                          
+    24 00000014 A1[03000000]                    mov eax,[c]
+    25 00000019 A3[0F000000]                    mov [aux],eax
+    26 0000001E B800000000                      mov eax,0
+    27 00000023 668B1D[01000000]                mov bx,[b]
+    28 0000002A A1[03000000]                    mov eax,[c]
+    29 0000002F 66011D[0F000000]                add word[aux],bx
+    30 00000036 8315[11000000]00                adc dword[aux+2],0
+    31 0000003D 0105[0F000000]                  add dword[aux],eax
+    32 00000043 8315[13000000]00                adc dword[aux+4],0
+    33 0000004A B800000000                      mov eax,0
+    34 0000004F 66BB0000                        mov bx,0
+    35                                          ;aux<-b+c+a
+    36 00000053 A1[03000000]                    mov eax,[c]
+    37 00000058 0105[07000000]                  add dword[d],eax
+    38 0000005E 8315[0B000000]00                adc dword[d+4],0h
+    39 00000065 A0[00000000]                    mov al,[a]
+    40 0000006A 0005[07000000]                  add byte[d],al
+    41 00000070 8315[08000000]00                adc dword[d+1],0
+    42 00000077 B800000000                      mov eax,0
+    43                                          sub dword[aux],dword[d]
+    43          ******************       error: invalid combination of opcode and operands
+    44                                          
+    45 0000007C 6A00                            push    dword 0      ; push the parameter for exit onto the stack
+    46 0000007E FF15[00000000]                  call    [exit]       ; call exit to terminate the program

@@ -1,0 +1,41 @@
+STATISTICAL ANALYSIS REPORT
+==================================================
+
+OVERVIEW
+--------------------
+Analysis performed on 120 total runs
+Functions analyzed: drop_wave
+Configurations: binary_1point, binary_2point, real_arithmetic, real_blx_alpha
+Significance level: 0.05
+
+DESCRIPTIVE STATISTICS SUMMARY
+-----------------------------------
+
+drop_wave:
+  Best performing configuration: real_arithmetic (mean: -0.999989)
+  binary_1point: -0.993624 ± 0.019453
+  binary_2point: -0.989374 ± 0.024166
+  real_arithmetic: -0.999989 ± 0.000051
+  real_blx_alpha: -0.999965 ± 0.000131
+
+
+NORMALITY TEST SUMMARY
+-------------------------
+Normally distributed: 0/4 configurations
+
+
+ANOVA RESULTS
+---------------
+drop_wave:
+  F-statistic: 3.3629, p-value: 0.021150
+  Significant differences: Yes
+  Effect size (η²): 0.0800 (medium)
+
+PAIRWISE COMPARISON SUMMARY
+------------------------------
+drop_wave:
+  Significant differences (Bonferroni corrected): 2/6
+  Significant pairs:
+    binary_1point vs real_arithmetic: p = 0.005711
+    binary_2point vs real_arithmetic: p = 0.003329
+

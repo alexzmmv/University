@@ -1,0 +1,31 @@
+<header>
+    <div class="container">
+        <h1>Vacation Destinations</h1>
+        <nav>
+            <ul class="nav-links">
+                <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a></li>
+                
+                <!-- Show these links only when logged in -->
+                <ng-container *ngIf="isLoggedIn()">
+                    <li><a routerLink="/add-destination" routerLinkActive="active">Add Destination</a></li>
+                    <li><a routerLink="/destinations" routerLinkActive="active">Browse & Filter</a></li>
+                    <li><a routerLink="/about" routerLinkActive="active">About</a></li>
+                </ng-container>
+            </ul>
+            
+            <div class="auth-section">
+                <!-- Show when logged in -->
+                <div *ngIf="isLoggedIn()" class="user-menu">
+                    <span class="welcome-text">Welcome, {{currentUser?.username}}!</span>
+                    <button (click)="logout()" class="btn btn-outline">Logout</button>
+                </div>
+                
+                <!-- Show when not logged in -->
+                <div *ngIf="!isLoggedIn()" class="auth-buttons">
+                    <a routerLink="/login" class="btn btn-outline">Login</a>
+                    <a routerLink="/register" class="btn btn-primary">Register</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>

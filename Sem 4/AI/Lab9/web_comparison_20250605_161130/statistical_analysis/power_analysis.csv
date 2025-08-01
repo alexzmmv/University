@@ -1,0 +1,7 @@
+function_name,config1,config2,effect_size,sample_size,power,adequate_power
+levy,binary_1point,binary_2point,0.28246664468570226,30,0.3216198005769054,False
+levy,binary_1point,real_arithmetic,0.8885472690441182,30,0.9969303178024298,True
+levy,binary_1point,real_blx_alpha,0.8930545278214707,30,0.9971455139647437,True
+levy,binary_2point,real_arithmetic,0.6912652235500155,30,0.9552589697201832,True
+levy,binary_2point,real_blx_alpha,0.693198006400519,30,0.9562142736957696,True
+levy,real_arithmetic,real_blx_alpha,0.44144646146757643,30,0.6470377796164012,False

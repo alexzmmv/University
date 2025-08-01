@@ -1,0 +1,90 @@
+<div class="register-container">
+    <div class="register-card">
+        <div class="register-header">
+            <h2>Create Your Account</h2>
+            <p>Join us to start managing your vacation destinations.</p>
+        </div>
+        
+        <!-- Alert Messages -->
+        <div *ngIf="error" class="alert alert-danger">
+            {{error}}
+        </div>
+        
+        <div *ngIf="success" class="alert alert-success">
+            {{success}}
+        </div>
+        
+        <form (ngSubmit)="onSubmit()" #registerForm="ngForm" class="register-form">
+            <div class="form-group">
+                <label for="username">Username *</label>
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    [(ngModel)]="registerData.username"
+                    required
+                    class="form-control"
+                    placeholder="Choose a username"
+                    [disabled]="loading"
+                    minlength="3"
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email *</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    [(ngModel)]="registerData.email"
+                    required
+                    class="form-control"
+                    placeholder="Enter your email"
+                    [disabled]="loading"
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password *</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    [(ngModel)]="registerData.password"
+                    required
+                    class="form-control"
+                    placeholder="Choose a password (min 6 characters)"
+                    [disabled]="loading"
+                    minlength="6"
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password *</label>
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    [(ngModel)]="confirmPassword"
+                    required
+                    class="form-control"
+                    placeholder="Confirm your password"
+                    [disabled]="loading"
+                >
+            </div>
+            
+            <button 
+                type="submit" 
+                class="btn btn-primary btn-block"
+                [disabled]="loading"
+            >
+                <span *ngIf="loading" class="loading-spinner"></span>
+                {{loading ? 'Creating Account...' : 'Create Account'}}
+            </button>
+        </form>
+        
+        <div class="register-footer">
+            <p>Already have an account? <a routerLink="/login">Sign in here</a></p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,215 @@
+.edit-destination-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+h2 {
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+}
+
+p {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+/* Alerts */
+.alert {
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.alert i {
+  margin-right: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.alert-danger {
+  background-color: rgba(231, 76, 60, 0.2);
+  color: #c0392b;
+  border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+.alert-success {
+  background-color: rgba(46, 204, 113, 0.2);
+  color: #27ae60;
+  border: 1px solid rgba(46, 204, 113, 0.3);
+}
+
+/* Form Styles */
+.form-container {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+input[type="text"],
+input[type="number"],
+textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.error-message {
+  color: #e74c3c;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.cost-input {
+  position: relative;
+}
+
+.currency-symbol {
+  position: absolute;
+  top: 50%;
+  left: 0.75rem;
+  transform: translateY(-50%);
+  color: #7f8c8d;
+}
+
+input[name="cost_per_day"] {
+  padding-left: 1.5rem;
+}
+
+/* Button */
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: none;
+  text-decoration: none;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn i {
+  margin-right: 0.5rem;
+}
+
+.btn-primary {
+  background-color: #3498db;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #2980b9;
+}
+
+.btn-secondary {
+  background-color: #95a5a6;
+  color: white;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: #7f8c8d;
+}
+
+/* Back Link */
+.back-link {
+  margin-bottom: 1.5rem;
+}
+
+.back-link a {
+  color: #3498db;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.back-link a i {
+  margin-right: 0.5rem;
+}
+
+.back-link a:hover {
+  color: #2980b9;
+  text-decoration: underline;
+}
+
+.loading-spinner {
+  display: inline-block;
+  width: 1.2em;
+  height: 1.2em;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s linear infinite;
+  margin-right: 0.5rem;
+}
+
+/* Loading indicator */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.loading::after {
+  content: "";
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

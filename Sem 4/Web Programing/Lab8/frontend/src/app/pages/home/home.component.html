@@ -1,0 +1,82 @@
+<div class="home-container">
+    <div *ngIf="error" class="alert alert-danger">
+        {{error}}
+    </div>
+    
+    <div *ngIf="success" class="alert alert-success">
+        {{success}}
+    </div>
+    
+    <div class="home-banner">
+        <h2>Discover Your Next Adventure</h2>
+        <p>Explore beautiful destinations from around the world and plan your perfect vacation.</p>
+        
+        <div class="home-actions">
+            <a routerLink="/add-destination" class="btn btn-primary">Add New Destination</a>
+        </div>
+    </div>
+
+    <div class="stats-cards">
+        <div class="stat-card">
+            <h3>Destinations</h3>
+            <p class="stat-number">{{totalDestinations}}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Countries</h3>
+            <p class="stat-number">{{countries.length}}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Price Range</h3>
+            <p class="stat-number">${{costRange.min_cost | number:'1.0-0'}} - ${{costRange.max_cost | number:'1.0-0'}}</p>
+        </div>
+    </div>
+
+    <div class="page-layout">
+        <div class="main-content">
+            <h2>Featured Destinations</h2>
+
+            <div id="destinations-container">
+                <div *ngIf="loading" class="loading"></div>
+                
+                <div *ngIf="!loading && destinations.length === 0" class="no-items">
+                    <p>No destinations available. <a routerLink="/add-destination">Add your first destination</a>.</p>
+                </div>
+                
+                <div *ngIf="!loading && destinations.length > 0" class="destinations-grid">
+                    <div *ngFor="let destination of destinations" class="destination-card" [routerLink]="['/destination', destination.id]">
+                        <h3>{{destination.name}}</h3>
+                        <div class="country">{{destination.country_name}}</div>
+                        <p>
+                            {{(destination.description.length > 100) ? 
+                                (destination.description | slice:0:100) + '...' : 
+                                destination.description}}
+                        </p>
+                        <div class="cost">${{destination.cost_per_day | number:'1.2-2'}} per day</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div id="pagination-container" *ngIf="pagination.totalPages > 1">
+                <ul class="pagination">
+                    <li *ngIf="pagination.currentPage > 1">
+                        <a (click)="changePage(pagination.currentPage - 1)">
+                            Previous
+                        </a>
+                    </li>
+                    
+                    <li *ngFor="let page of [].constructor(pagination.totalPages); let i = index" 
+                        [class.active]="pagination.currentPage === i + 1">
+                        <a (click)="changePage(i + 1)">{{i + 1}}</a>
+                    </li>
+                    
+                    <li *ngIf="pagination.currentPage < pagination.totalPages">
+                        <a (click)="changePage(pagination.currentPage + 1)">
+                            Next
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

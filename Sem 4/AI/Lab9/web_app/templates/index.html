@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GA Optimization - Benchmark Functions</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .function-card {
+            transition: transform 0.2s ease-in-out;
+        }
+        .function-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .result-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .plot-container {
+            max-height: 500px;
+            overflow: hidden;
+        }
+        .loading-spinner {
+            display: none;
+        }
+        .config-section {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        /* Force hide modal when needed */
+        #loadingModal[style*="display: none"] {
+            display: none !important;
+            visibility: hidden !important;
+        }
+        .modal-force-hidden {
+            display: none !important;
+            visibility: hidden !important;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-dna"></i> GA Optimization
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link" href="/compare_configurations">Compare</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center mb-4">
+                    <i class="fas fa-chart-line"></i> Benchmark Function Optimization
+                </h1>
+                <p class="text-center text-muted mb-5">
+                    Optimize multimodal benchmark functions using Genetic Algorithms with different representations and crossover methods.
+                </p>
+            </div>
+        </div>
+
+        <!-- Function Selection and Visualization -->
+        <div class="row mb-5">
+            <div class="col-md-6">
+                <div class="card function-card h-100">
+                    <div class="card-header bg-info text-white">
+                        <h5><i class="fas fa-function"></i> Function Selection</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="functionSelect" class="form-label">Select Benchmark Function:</label>
+                            <select class="form-select" id="functionSelect">
+                                {% for func in functions %}
+                                <option value="{{ func }}">{{ func.replace('_', ' ').title() }} Function</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Visualization Type:</label>
+                            <div class="btn-group w-100" role="group">
+                                <input type="radio" class="btn-check" name="plotType" id="plot2d" value="2d" checked>
+                                <label class="btn btn-outline-primary" for="plot2d">2D Contour</label>
+                                <input type="radio" class="btn-check" name="plotType" id="plot3d" value="3d">
+                                <label class="btn btn-outline-primary" for="plot3d">3D Surface</label>
+                            </div>
+                        </div>
+                        <button class="btn btn-info w-100" onclick="visualizeFunction()">
+                            <i class="fas fa-eye"></i> Visualize Function
+                        </button>
+                        <div id="functionInfo" class="mt-3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header bg-success text-white">
+                        <h5><i class="fas fa-chart-area"></i> Function Visualization</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <div id="plotContainer">
+                            <div class="d-flex justify-content-center align-items-center" style="height: 300px;">
+                                <div class="text-muted">
+                                    <i class="fas fa-image fa-3x mb-3"></i>
+                                    <p>Select a function and click "Visualize" to see the plot</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="loading-spinner text-center mt-3">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Generating visualization...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GA Configuration -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <div class="config-section">
+                    <h3><i class="fas fa-cogs"></i> Genetic Algorithm Configuration</h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h6><i class="fas fa-dna"></i> Representation & Crossover</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label for="representation" class="form-label">Representation:</label>
+                                        <select class="form-select" id="representation" onchange="updateCrossoverOptions()">
+                                            <option value="binary">Binary Encoding</option>
+                                            <option value="real">Real-Valued Encoding</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="crossover" class="form-label">Crossover Method:</label>
+                                        <select class="form-select" id="crossover">
+                                            <option value="1point">1-Point Crossover</option>
+                                            <option value="2point">2-Point Crossover</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h6><i class="fas fa-sliders-h"></i> GA Parameters</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="mb-3">
+                                                <label for="populationSize" class="form-label">Population Size:</label>
+                                                <input type="number" class="form-control" id="populationSize" value="100" min="10" max="500">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="generations" class="form-label">Generations:</label>
+                                                <input type="number" class="form-control" id="generations" value="100" min="10" max="1000">
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="mb-3">
+                                                <label for="mutationRate" class="form-label">Mutation Rate:</label>
+                                                <input type="number" class="form-control" id="mutationRate" value="0.01" step="0.001" min="0" max="1">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="crossoverRate" class="form-label">Crossover Rate:</label>
+                                                <input type="number" class="form-control" id="crossoverRate" value="0.8" step="0.1" min="0" max="1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-primary btn-lg me-3" onclick="runSingleExperiment()">
+                            <i class="fas fa-play"></i> Run Single Experiment
+                        </button>
+                        <button class="btn btn-success btn-lg" onclick="runFullExperiments()">
+                            <i class="fas fa-chart-bar"></i> Run Full Analysis
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div id="resultsSection" style="display: none;">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card result-card">
+                        <div class="card-header">
+                            <h4><i class="fas fa-trophy"></i> Experiment Results</h4>
+                        </div>
+                        <div class="card-body">
+                            <div id="resultContent"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Full Analysis Results -->
+        <div id="analysisSection" style="display: none;">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header bg-warning text-dark">
+                            <h4><i class="fas fa-analytics"></i> Statistical Analysis Results</h4>
+                        </div>
+                        <div class="card-body">
+                            <div id="analysisContent"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Modal -->
+    <div class="modal fade" id="loadingModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <div class="spinner-border text-primary mb-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <h5 id="loadingMessage">Running experiment...</h5>
+                    <p class="text-muted">This may take a few moments.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Initialize loading modal once
+        let loadingModal;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'), {
+                backdrop: 'static',
+                keyboard: false
+            });
+        });
+        
+        // Helper function to properly show the loading modal
+        function showLoadingModal() {
+            console.log('Showing loading modal...');
+            window.modalShowTime = Date.now();
+            
+            // First ensure modal is completely hidden
+            forceHideModal();
+            
+            // Wait a bit then show
+            setTimeout(() => {
+                const modalElement = document.getElementById('loadingModal');
+                if (modalElement) {
+                    modalElement.classList.remove('modal-force-hidden');
+                    modalElement.style.removeProperty('display');
+                    modalElement.style.removeProperty('visibility');
+                    modalElement.classList.add('fade');
+                }
+                
+                if (loadingModal && typeof loadingModal.show === 'function') {
+                    loadingModal.show();
+                }
+            }, 50);
+        }
+        
+        // Helper function to properly hide the loading modal
+        function hideLoadingModal() {
+            console.log('Attempting to hide loading modal...');
+            
+            try {
+                // First try Bootstrap's hide method
+                if (loadingModal && typeof loadingModal.hide === 'function') {
+                    loadingModal.hide();
+                }
+            } catch (error) {
+                console.error('Error with Bootstrap modal hide:', error);
+            }
+            
+            // Force hide the modal immediately and after delay
+            forceHideModal();
+            setTimeout(forceHideModal, 100);
+            setTimeout(forceHideModal, 300);
+        }
+        
+        function forceHideModal() {
+            console.log('Force hiding modal...');
+            
+            const modalElement = document.getElementById('loadingModal');
+            const backdrop = document.querySelector('.modal-backdrop');
+            
+            // Force hide the modal element
+            if (modalElement) {
+                modalElement.style.display = 'none !important';
+                modalElement.style.visibility = 'hidden';
+                modalElement.classList.remove('show', 'fade');
+                modalElement.classList.add('modal-force-hidden');
+                modalElement.setAttribute('aria-hidden', 'true');
+                modalElement.removeAttribute('aria-modal');
+                modalElement.removeAttribute('role');
+            }
+            
+            // Remove all backdrops
+            document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+                backdrop.remove();
+            });
+            
+            // Clean up body classes and styles
+            document.body.classList.remove('modal-open');
+            document.body.style.removeProperty('overflow');
+            document.body.style.removeProperty('padding-right');
+            
+            // Remove any overlay styles that might be applied
+            document.body.style.overflow = '';
+            document.body.style.paddingRight = '';
+            
+            console.log('Modal force hidden');
+        }
+        
+        function updateCrossoverOptions() {
+            const representation = document.getElementById('representation').value;
+            const crossoverSelect = document.getElementById('crossover');
+            
+            crossoverSelect.innerHTML = '';
+            
+            if (representation === 'binary') {
+                crossoverSelect.innerHTML = `
+                    <option value="1point">1-Point Crossover</option>
+                    <option value="2point">2-Point Crossover</option>
+                `;
+            } else {
+                crossoverSelect.innerHTML = `
+                    <option value="arithmetic">Arithmetic Crossover</option>
+                    <option value="blx_alpha">BLX-α Crossover</option>
+                `;
+            }
+        }
+
+        function visualizeFunction() {
+            const functionName = document.getElementById('functionSelect').value;
+            const plotType = document.querySelector('input[name="plotType"]:checked').value;
+            
+            document.querySelector('.loading-spinner').style.display = 'block';
+            document.getElementById('plotContainer').innerHTML = '';
+            
+            fetch(`/visualize_function?function=${functionName}&type=${plotType}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.querySelector('.loading-spinner').style.display = 'none';
+                    
+                    if (data.success) {
+                        document.getElementById('plotContainer').innerHTML = 
+                            `<img src="data:image/png;base64,${data.image}" class="img-fluid" alt="Function Plot">`;
+                        
+                        const info = data.function_info;
+                        document.getElementById('functionInfo').innerHTML = `
+                            <div class="alert alert-info">
+                                <strong>${info.name}</strong><br>
+                                <small>
+                                    Domain: [${info.domain[0][0]}, ${info.domain[0][1]}] × [${info.domain[1][0]}, ${info.domain[1][1]}]<br>
+                                    Global Minimum: (${info.global_minimum[0]}, ${info.global_minimum[1]}) = ${info.global_min_value}
+                                </small>
+                            </div>
+                        `;
+                    } else {
+                        document.getElementById('plotContainer').innerHTML = 
+                            `<div class="alert alert-danger">Error: ${data.error}</div>`;
+                    }
+                })
+                .catch(error => {
+                    document.querySelector('.loading-spinner').style.display = 'none';
+                    document.getElementById('plotContainer').innerHTML = 
+                        `<div class="alert alert-danger">Error: ${error.message}</div>`;
+                });
+        }
+
+        function runSingleExperiment() {
+            const params = {
+                function: document.getElementById('functionSelect').value,
+                representation: document.getElementById('representation').value,
+                crossover: document.getElementById('crossover').value,
+                population_size: document.getElementById('populationSize').value,
+                generations: document.getElementById('generations').value,
+                mutation_rate: document.getElementById('mutationRate').value,
+                crossover_rate: document.getElementById('crossoverRate').value
+            };
+
+            document.getElementById('loadingMessage').textContent = 'Running genetic algorithm...';
+            showLoadingModal();
+
+            fetch('/run_experiment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(params)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Single experiment response received:', data);
+                hideLoadingModal();
+                
+                if (data.success) {
+                    displaySingleResult(data);
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Single experiment error:', error);
+                hideLoadingModal();
+                alert('Error: ' + error.message);
+            });
+        }
+
+        function displaySingleResult(data) {
+            const results = data.results;
+            const funcInfo = data.function_info;
+            
+            document.getElementById('resultContent').innerHTML = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Optimization Results</h5>
+                        <table class="table table-dark">
+                            <tr><td>Configuration</td><td>${results.configuration}</td></tr>
+                            <tr><td>Best Fitness</td><td>${results.best_fitness.toFixed(6)}</td></tr>
+                            <tr><td>Best Solution</td><td>(${results.best_solution[0].toFixed(4)}, ${results.best_solution[1].toFixed(4)})</td></tr>
+                            <tr><td>Function Evaluations</td><td>${results.function_evaluations}</td></tr>
+                            <tr><td>Generations</td><td>${results.generations}</td></tr>
+                        </table>
+                        <div class="alert alert-info">
+                            <strong>Global Optimum:</strong><br>
+                            Position: (${funcInfo.global_minimum[0]}, ${funcInfo.global_minimum[1]})<br>
+                            Value: ${funcInfo.global_min_value}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Convergence Plot</h5>
+                        <img src="data:image/png;base64,${results.convergence_plot}" class="img-fluid" alt="Convergence Plot">
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('resultsSection').style.display = 'block';
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function runFullExperiments() {
+            const params = {
+                num_runs: 10,  // Reduced for web interface
+                population_size: document.getElementById('populationSize').value,
+                generations: document.getElementById('generations').value,
+                mutation_rate: document.getElementById('mutationRate').value,
+                crossover_rate: document.getElementById('crossoverRate').value
+            };
+
+            document.getElementById('loadingMessage').textContent = 'Running comprehensive analysis...';
+            showLoadingModal();
+
+            fetch('/run_full_experiments', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(params)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Full experiments response received:', data);
+                hideLoadingModal();
+                
+                if (data.success) {
+                    displayAnalysisResults(data);
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Full experiments error:', error);
+                hideLoadingModal();
+                alert('Error: ' + error.message);
+            });
+        }
+
+        function displayAnalysisResults(data) {
+            let content = `
+                <div class="alert alert-success">
+                    <h5>Analysis Complete!</h5>
+                    <p>Total experiments: ${data.total_experiments}</p>
+                    <p>Results saved to: ${data.output_directory}</p>
+                </div>
+            `;
+
+            for (const [funcName, summary] of Object.entries(data.summary)) {
+                content += `
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h5>${funcName.replace('_', ' ').toUpperCase()} FUNCTION</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-primary">
+                                <strong>Best Configuration:</strong> ${summary.best_config}<br>
+                                <strong>Best Fitness:</strong> ${summary.best_fitness.toFixed(6)}<br>
+                                <strong>Mean ± Std:</strong> ${summary.mean_fitness.toFixed(6)} ± ${summary.std_fitness.toFixed(6)}
+                            </div>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Configuration</th>
+                                        <th>Mean</th>
+                                        <th>Std Dev</th>
+                                        <th>Min</th>
+                                        <th>Max</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                `;
+                
+                summary.all_configs.forEach(config => {
+                    content += `
+                        <tr>
+                            <td>${config.config}</td>
+                            <td>${config.mean.toFixed(6)}</td>
+                            <td>${config.std.toFixed(6)}</td>
+                            <td>${config.min.toFixed(6)}</td>
+                            <td>${config.max.toFixed(6)}</td>
+                        </tr>
+                    `;
+                });
+
+                content += `
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+            }
+
+            document.getElementById('analysisContent').innerHTML = content;
+            document.getElementById('analysisSection').style.display = 'block';
+            document.getElementById('analysisSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Initialize with first function visualization
+        document.addEventListener('DOMContentLoaded', function() {
+            visualizeFunction();
+            
+            // Emergency modal fix - click anywhere to force hide stuck modal
+            document.addEventListener('click', function(event) {
+                const modal = document.getElementById('loadingModal');
+                if (modal && modal.classList.contains('show') && !modal.contains(event.target)) {
+                    // If clicking outside modal and it's been visible for more than 5 seconds, force hide it
+                    const currentTime = Date.now();
+                    if (!window.modalShowTime || (currentTime - window.modalShowTime) > 5000) {
+                        console.log('Emergency modal hide triggered');
+                        hideLoadingModal();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

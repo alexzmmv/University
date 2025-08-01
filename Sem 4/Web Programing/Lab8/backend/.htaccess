@@ -1,0 +1,16 @@
+RewriteEngine On
+RewriteBase /
+
+# Allow direct access to actual files
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# Route API requests
+RewriteRule ^api/v1/countries/([0-9]+)/?$ api/v1/countries.php?id=$1 [QSA,L]
+RewriteRule ^api/v1/countries/?$ api/v1/countries.php [QSA,L]
+RewriteRule ^api/v1/destinations/cost-range/?$ api/v1/destinations.php?action=cost-range [QSA,L]
+RewriteRule ^api/v1/destinations/([0-9]+)/?$ api/v1/destinations.php?id=$1 [QSA,L]
+RewriteRule ^api/v1/destinations/?$ api/v1/destinations.php [QSA,L]
+
+# Route all other requests to index.php
+RewriteRule ^ index.php [L]

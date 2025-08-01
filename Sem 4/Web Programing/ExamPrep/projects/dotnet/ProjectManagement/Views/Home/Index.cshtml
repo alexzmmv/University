@@ -1,0 +1,213 @@
+﻿@model ProjectManagement.Models.HomeViewModel
+@{
+    ViewData["Title"] = "Project Management System";
+}
+
+<div class="container">
+    <h1 class="text-center mb-4">Project Management System</h1>
+
+    <!-- User Name Input Section -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h3>Set Current User</h3>
+        </div>
+        <div class="card-body">
+            <form asp-action="SetUser" method="post" class="form-inline">
+                <div class="form-group mr-3">
+                    <label for="userName" class="mr-2">Your Name:</label>
+                    <input type="text" class="form-control" id="userName" name="userName" 
+                           value="@Model.CurrentUserName" placeholder="Enter your name" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Set User</button>
+            </form>
+            @if (!string.IsNullOrEmpty(Model.CurrentUserName))
+            {
+                <div class="alert alert-info mt-2">
+                    Current User: <strong>@Model.CurrentUserName</strong>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Display All Projects -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h3>All Projects in Database</h3>
+        </div>
+        <div class="card-body">
+            @if (Model.AllProjects.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Project Manager</th>
+                                <th>Members</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var project in Model.AllProjects)
+                            {
+                                <tr>
+                                    <td>@project.Id</td>
+                                    <td>@project.Name</td>
+                                    <td>@project.Description</td>
+                                    <td>@(project.ProjectManager?.Name ?? "Not Assigned")</td>
+                                    <td>@project.Members</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted">No projects found in the database.</p>
+            }
+        </div>
+    </div>
+
+    <!-- User's Projects -->
+    @if (!string.IsNullOrEmpty(Model.CurrentUserName))
+    {
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>Your Projects</h3>
+            </div>
+            <div class="card-body">
+                @if (Model.UserProjects.Any())
+                {
+                    <ul class="list-group">
+                        @foreach (var projectName in Model.UserProjects)
+                        {
+                            <li class="list-group-item">@projectName</li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p class="text-muted">You are not a member of any projects.</p>
+                }
+            </div>
+        </div>
+    }    <!-- Assign Developer to Projects -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h3>Assign Developer to Projects</h3>
+        </div>
+        <div class="card-body">
+            <form asp-action="AssignDeveloper" method="post">
+                <div class="form-group mb-3">
+                    <label for="developerName">Developer Name:</label>
+                    <input type="text" class="form-control" id="developerName" name="developerName" 
+                           placeholder="Enter developer name" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="projectNames">Project Names (one per line):</label>
+                    <textarea class="form-control" id="projectNames" name="projectNames" rows="4" 
+                              placeholder="Enter project names, one per line" required></textarea>
+                    <small class="form-text text-muted">
+                        Enter project names separated by new lines. 
+                        If a project doesn't exist, it will be created automatically.
+                    </small>
+                </div>
+                <button type="submit" class="btn btn-success">Assign Developer</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Display All Developers with Skill Filter -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h3>All Software Developers</h3>
+        </div>
+        <div class="card-body">
+            <div class="form-group mb-3">
+                <label for="skillFilter">Filter by Skill:</label>
+                <input type="text" class="form-control" id="skillFilter" 
+                       placeholder="Enter skill to filter (e.g., Java, C#, Python)">
+            </div>
+            
+            @if (Model.AllDevelopers.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped" id="developersTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Skills</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var developer in Model.AllDevelopers)
+                            {
+                                <tr data-skills="@developer.Skills.ToLower()">
+                                    <td>@developer.Id</td>
+                                    <td>@developer.Name</td>
+                                    <td>@developer.Age</td>
+                                    <td>@developer.Skills</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <p class="text-muted">No developers found in the database.</p>
+            }
+        </div>
+    </div>
+
+    <!-- Success/Error Messages -->
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            @TempData["Success"]
+            <button type="button" class="close" data-dismiss="alert">
+                <span>&times;</span>
+            </button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            @TempData["Error"]
+            <button type="button" class="close" data-dismiss="alert">
+                <span>&times;</span>
+            </button>
+        </div>
+    }
+</div>
+
+<!-- JavaScript for skill filtering -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const skillFilter = document.getElementById('skillFilter');
+    const table = document.getElementById('developersTable');
+    
+    if (skillFilter && table) {
+        const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+        skillFilter.addEventListener('input', function() {
+            const filterValue = this.value.toLowerCase().trim();
+            
+            for (let i = 0; i < rows.length; i++) {
+                const skills = rows[i].getAttribute('data-skills');
+                
+                if (filterValue === '' || skills.includes(filterValue)) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        });
+    }
+});
+</script>

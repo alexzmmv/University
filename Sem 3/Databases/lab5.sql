@@ -1,0 +1,3 @@
+CREATE DATABASE Lab5;
+go 
+use Lab5;

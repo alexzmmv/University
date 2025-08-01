@@ -1,0 +1,119 @@
+<div class="edit-destination-container">
+    <div class="page-header">
+        <h2>Edit Destination</h2>
+    </div>
+    
+    <!-- Alert Messages -->
+    <div *ngIf="error" class="alert alert-danger">
+        {{error}}
+    </div>
+    
+    <div *ngIf="success" class="alert alert-success">
+        {{success}}
+    </div>
+    
+    <!-- Loading indicator -->
+    <div *ngIf="loading" class="loading"></div>
+    
+    <!-- Back button -->
+    <div class="back-link">
+        <a [routerLink]="['/destination', destination.id]">Back to Destination</a>
+    </div>
+    
+    <div *ngIf="!loading" class="form-container">
+        <form (ngSubmit)="onSubmit()" #destinationForm="ngForm">
+            <div class="form-group">
+                <label for="name">Destination Name *</label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    [(ngModel)]="destination.name"
+                    required
+                    [class.is-invalid]="formSubmitted && !destination.name.trim()"
+                    placeholder="e.g. Paris, Tokyo, Grand Canyon"
+                >
+                <div *ngIf="formSubmitted && !destination.name.trim()" class="error-message">
+                    Destination name is required
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="country">Country *</label>
+                <div class="country-input">
+                    <input
+                        type="text"
+                        id="country"
+                        name="country_name"
+                        [(ngModel)]="destination.country_name"
+                        required
+                        [class.is-invalid]="formSubmitted && !destination.country_name.trim()"
+                        placeholder="e.g. France, Japan, USA"
+                        list="country-list"
+                    >
+                    <datalist id="country-list">
+                        <option *ngFor="let country of countries" [value]="country.name"></option>
+                    </datalist>
+                </div>
+                <div *ngIf="formSubmitted && !destination.country_name.trim()" class="error-message">
+                    Country name is required
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Description *</label>
+                <textarea
+                    id="description"
+                    name="description"
+                    [(ngModel)]="destination.description"
+                    required
+                    rows="4"
+                    [class.is-invalid]="formSubmitted && !destination.description.trim()"
+                    placeholder="Provide a detailed description of the destination..."
+                ></textarea>
+                <div *ngIf="formSubmitted && !destination.description.trim()" class="error-message">
+                    Description is required
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="tourist_targets">Tourist Targets</label>
+                <textarea
+                    id="tourist_targets"
+                    name="tourist_targets"
+                    [(ngModel)]="destination.tourist_targets"
+                    rows="4"
+                    placeholder="List major attractions, one per line..."
+                ></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="cost_per_day">Cost Per Day ($) *</label>
+                <div class="cost-input">
+                    <span class="currency-symbol">$</span>
+                    <input
+                        type="number"
+                        id="cost_per_day"
+                        name="cost_per_day"
+                        [(ngModel)]="destination.cost_per_day"
+                        required
+                        min="0.01"
+                        step="0.01"
+                        [class.is-invalid]="formSubmitted && destination.cost_per_day <= 0"
+                        placeholder="e.g. 150"
+                    >
+                </div>
+                <div *ngIf="formSubmitted && destination.cost_per_day <= 0" class="error-message">
+                    Cost per day must be greater than zero
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary" [disabled]="saving || !hasChanges()">
+                    {{saving ? 'Saving...' : 'Save Changes'}}
+                </button>
+                <a [routerLink]="['/destination', destination.id]" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

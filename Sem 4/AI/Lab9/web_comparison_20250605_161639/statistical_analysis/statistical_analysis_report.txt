@@ -1,0 +1,36 @@
+STATISTICAL ANALYSIS REPORT
+==================================================
+
+OVERVIEW
+--------------------
+Analysis performed on 20 total runs
+Functions analyzed: drop_wave
+Configurations: binary_1point, real_arithmetic
+Significance level: 0.05
+
+DESCRIPTIVE STATISTICS SUMMARY
+-----------------------------------
+
+drop_wave:
+  Best performing configuration: real_arithmetic (mean: -0.956253)
+  binary_1point: -0.912300 ± 0.069628
+  real_arithmetic: -0.956253 ± 0.029667
+
+
+NORMALITY TEST SUMMARY
+-------------------------
+Normally distributed: 0/2 configurations
+
+
+ANOVA RESULTS
+---------------
+drop_wave:
+  F-statistic: 3.3725, p-value: 0.082865
+  Significant differences: No
+  Effect size (η²): 0.1578 (large)
+
+PAIRWISE COMPARISON SUMMARY
+------------------------------
+drop_wave:
+  Significant differences (Bonferroni corrected): 0/1
+

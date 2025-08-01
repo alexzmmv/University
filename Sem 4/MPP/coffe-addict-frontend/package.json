@@ -1,0 +1,37 @@
+{
+  "name": "coffe-addict",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "axios": "^1.8.4",
+    "framer-motion": "^12.5.0",
+    "jwt-decode": "^4.0.0",
+    "next": "^15.2.4",
+    "puppeteer": "^24.4.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-icons": "^5.5.0",
+    "react-swipeable": "^7.0.2",
+    "recharts": "^2.15.1"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
+    "@testing-library/user-event": "^14.6.1",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9",
+    "eslint-config-next": "15.2.2",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.0.14"
+  }
+}

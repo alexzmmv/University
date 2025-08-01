@@ -1,0 +1,53 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial;
+    overflow-y: auto;
+    padding-top: 60px;
+}
+
+#container {
+    width: 300px;
+    min-height: 200px; 
+    max-height: 70vh;
+    border: 2px dashed #ccc;
+    padding: 20px;
+    position: relative;
+    overflow-y: auto;
+    margin-bottom: 20px; 
+}
+
+.stack-item {
+    width: 280px;
+    height: 80px;
+    background-color: #3498db;
+    color: white;
+    margin: 10px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    cursor: grab;
+    position: relative;
+    user-select: none;
+    transition: background-color 0.3s;
+}
+
+.stack-item:hover {
+    background-color: #2980b9;
+}
+
+.dragging {
+    opacity: 0.8;
+    z-index: 100;
+    cursor: grabbing;
+    position: absolute;
+}
+
+.placeholder {
+    background-color: #ecf0f1;
+    border: 2px dashed #bdc3c7;
+}

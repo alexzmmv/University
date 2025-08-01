@@ -1,0 +1,2 @@
+function_name,config1,config2,mean1,mean2,test_used,statistic,p_value,significant,effect_size,better_config,p_value_bonferroni,significant_bonferroni
+drop_wave,binary_1point,real_arithmetic,-0.9123002870642981,-0.9562529773175632,Wilcoxon signed-rank,12.0,0.130859375,False,0.4777321436347417,real_arithmetic,0.130859375,False

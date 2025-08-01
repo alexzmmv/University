@@ -1,0 +1,2 @@
+function_name,n_groups,total_n,f_statistic,f_p_value,f_significant,kw_statistic,kw_p_value,kw_significant,eta_squared,effect_size_interpretation
+drop_wave,2,20,3.3725147023798048,0.0828649342836165,False,5.142857142857139,0.02334220201289089,True,0.1577968128385136,large

@@ -1,0 +1,3 @@
+function_name,config_name,test,statistic,p_value,is_normal
+drop_wave,binary_1point,Shapiro-Wilk,0.6851342799396832,0.0005821045991689994,False
+drop_wave,real_arithmetic,Shapiro-Wilk,0.6540581118927296,0.00024557017891214077,False

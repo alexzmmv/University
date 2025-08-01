@@ -1,0 +1,66 @@
+<div class="destination-detail-container">
+    <!-- Alert Messages -->
+    <div *ngIf="error" class="alert alert-danger">
+        {{error}}
+    </div>
+
+    <div *ngIf="success" class="alert alert-success">
+        {{success}}
+    </div>
+
+    <!-- Loading indicator -->
+    <div *ngIf="isLoading" class="loading-indicator">
+        <div class="spinner"></div>
+        <p>Loading destination details...</p>
+    </div>
+
+    <!-- Destination content -->
+    <div *ngIf="destination && destination.id" class="view-destination">
+        <h2>{{destination.name}}</h2>
+        
+        <p class="country-name">
+            <strong>Country:</strong> {{destination.country_name}}
+        </p>
+        
+        <div class="detail-section">
+            <h3>Description</h3>
+            <p>{{destination.description}}</p>
+        </div>
+        
+        <div class="detail-section">
+            <h3>Tourist Targets</h3>
+            <p>{{destination.tourist_targets}}</p>
+        </div>
+        
+        <div class="detail-section">
+            <h3>Cost Per Day</h3>
+            <p class="cost">${{destination.cost_per_day | number:'1.2-2'}}</p>
+        </div>
+        
+        <div class="actions">
+            <a routerLink="/destinations" class="btn">Back to List</a>
+            <a [routerLink]="['/edit-destination', destination.id]" class="btn btn-secondary">Edit</a>
+            <button (click)="showDeleteModal()" class="btn btn-danger delete-btn">Delete</button>
+        </div>
+    </div>
+
+    <!-- Not Found State -->
+    <div *ngIf="error && !isLoading && !destination.id" class="not-found">
+        <h3>Destination Not Found</h3>
+        <p>The destination you're looking for doesn't exist or has been removed.</p>
+        <a routerLink="/destinations" class="btn btn-primary">View All Destinations</a>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div *ngIf="showDeleteConfirm" class="delete-confirmation-modal">
+        <div class="modal-content">
+            <h3>Delete Confirmation</h3>
+            <p>Are you sure you want to delete <strong>{{destination.name}}</strong>? This action cannot be undone.</p>
+            
+            <div class="modal-actions">
+                <button (click)="deleteDestination()" class="btn btn-danger">Yes, Delete</button>
+                <button (click)="hideDeleteModal()" class="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

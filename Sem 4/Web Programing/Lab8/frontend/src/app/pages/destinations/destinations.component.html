@@ -1,0 +1,123 @@
+<div class="page-layout">
+    <div class="side-filters">
+        <div class="filter-section advanced-filters">
+            <h3>Filter Options</h3>
+            
+            <div class="filter-controls">
+                <div class="filter-group">
+                    <label for="search-input">Search</label>
+                    <input 
+                        type="text" 
+                        id="search-input" 
+                        [(ngModel)]="filters.search"
+                        placeholder="Search destinations..." 
+                    >
+                </div>
+                
+                <div class="filter-group">
+                    <label>Price Range ($ per day)</label>
+                    <div class="range-slider">
+                        <input 
+                            type="range" 
+                            id="min-cost" 
+                            [(ngModel)]="filters.min_cost"
+                            [min]="costRange.min_cost" 
+                            [max]="costRange.max_cost"
+                            (input)="onMinCostChange($event)"
+                        >
+                        <input 
+                            type="range" 
+                            id="max-cost" 
+                            [(ngModel)]="filters.max_cost"
+                            [min]="costRange.min_cost" 
+                            [max]="costRange.max_cost"
+                            (input)="onMaxCostChange($event)"
+                        >
+                        <div class="range-labels">
+                            <span id="min-cost-value">${{filters.min_cost}}</span>
+                            <span id="max-cost-value">${{filters.max_cost}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="filter-group">
+                <label>Select Countries</label>
+                <div class="checkbox-group">
+                    <div *ngFor="let country of countries" class="checkbox-item">
+                        <input 
+                            type="checkbox" 
+                            class="country-checkbox" 
+                            [id]="'country-' + country.id" 
+                            [value]="country.id"
+                            [checked]="countryIsSelected(country.id)"
+                            (change)="toggleCountryFilter(country.id)"
+                        >
+                        <label [for]="'country-' + country.id">{{country.name}}</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="filter-buttons">
+                <button type="button" (click)="applyFilters()" class="btn btn-primary">Apply Filters</button>
+                <button type="button" (click)="resetFilters()" class="btn btn-secondary">Reset Filters</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <h2>Browse Destinations</h2>
+        <h2> Count country: {{ getCountryCount() }}</h2>
+
+        <!-- Loading indicator -->
+        <div *ngIf="loading" class="loading"></div>
+        
+        <!-- Alert Messages -->
+        <div *ngIf="error" class="alert alert-danger">
+            {{error}}
+        </div>
+        
+        <div id="destinations-container">
+            <!-- No results message -->
+            <p *ngIf="!loading && destinations.length === 0" class="no-results">
+                No destinations found matching your criteria.
+            </p>
+            
+            <!-- Destinations grid -->
+            <div *ngIf="!loading && destinations.length > 0" class="destinations-grid">
+                <div *ngFor="let destination of destinations" class="destination-card" [routerLink]="['/destination', destination.id]">
+                    <h3>{{destination.name}}</h3>
+                    <div class="country"> {{destination.country_name}}</div>
+                    <p>
+                        {{(destination.description.length > 100) ? 
+                            (destination.description | slice:0:100) + '...' : 
+                            destination.description}}
+                    </p>
+                    <div class="cost"> {{destination.cost_per_day | number:'1.2-2'}} per day</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div *ngIf="pagination.totalPages > 1" id="pagination-container" class="pagination-container">
+            <ul class="pagination">
+                <li *ngIf="pagination.currentPage > 1">
+                    <a (click)="changePage(pagination.currentPage - 1)">
+                        Previous
+                    </a>
+                </li>
+                
+                <li *ngFor="let page of [].constructor(pagination.totalPages); let i = index" 
+                    [class.active]="pagination.currentPage === i + 1">
+                    <a (click)="changePage(i + 1)">{{i + 1}}</a>
+                </li>
+                
+                <li *ngIf="pagination.currentPage < pagination.totalPages">
+                    <a (click)="changePage(pagination.currentPage + 1)">
+                        Next 
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

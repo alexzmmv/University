@@ -1,0 +1,12 @@
+function_name,n_groups,total_n,f_statistic,f_p_value,f_significant,kw_statistic,kw_p_value,kw_significant,eta_squared,effect_size_interpretation,tukey_hsd
+drop_wave,4,120,14.658539913376186,3.7101197600366923e-08,True,57.00104992092184,2.5685543536904147e-12,True,0.274889510111379,large,"         Multiple Comparison of Means - Tukey HSD, FWER=0.05          
+======================================================================
+     group1          group2     meandiff p-adj   lower   upper  reject
+----------------------------------------------------------------------
+  binary_1point   binary_2point  -0.0014 0.9978 -0.0208  0.0181  False
+  binary_1point real_arithmetic  -0.0371    0.0 -0.0566 -0.0177   True
+  binary_1point  real_blx_alpha   -0.034 0.0001 -0.0534 -0.0145   True
+  binary_2point real_arithmetic  -0.0358    0.0 -0.0552 -0.0163   True
+  binary_2point  real_blx_alpha  -0.0326 0.0002 -0.0521 -0.0132   True
+real_arithmetic  real_blx_alpha   0.0032 0.9742 -0.0163  0.0226  False
+----------------------------------------------------------------------"

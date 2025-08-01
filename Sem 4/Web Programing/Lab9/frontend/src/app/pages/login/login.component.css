@@ -1,0 +1,142 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 2rem;
+}
+
+.login-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.login-header h2 {
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.login-header p {
+    color: #666;
+    margin: 0;
+}
+
+.login-form {
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e1e5e9;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.form-control:disabled {
+    background-color: #f8f9fa;
+    opacity: 0.65;
+}
+
+.btn {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: #0056b3;
+}
+
+.btn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.loading-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #ffffff;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.alert {
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.login-footer {
+    text-align: center;
+    padding-top: 1rem;
+    border-top: 1px solid #e1e5e9;
+}
+
+.login-footer p {
+    margin: 0;
+    color: #666;
+}
+
+.login-footer a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.login-footer a:hover {
+    text-decoration: underline;
+}

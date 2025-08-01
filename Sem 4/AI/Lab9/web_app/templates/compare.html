@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GA Configuration Comparison</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .config-card {
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .config-card:hover {
+            border-color: #007bff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .config-card.selected {
+            border-color: #28a745;
+            background-color: #f8fff9;
+        }
+        .stats-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        .comparison-section {
+            display: none;
+        }
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            z-index: 9999;
+        }
+        .loading-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .result-card {
+            margin-bottom: 20px;
+            border-left: 4px solid #007bff;
+        }
+        .config-badge {
+            font-size: 0.9em;
+            margin: 2px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-dna"></i> GA Optimization
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link active" href="/compare_configurations">Compare</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="spinner-border text-primary mb-3" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <h5 id="loadingMessage">Running comparison experiments...</h5>
+            <p class="text-muted">This may take a few moments.</p>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1><i class="fas fa-balance-scale"></i> Configuration Comparison</h1>
+                <p class="text-muted">Compare the performance of different GA configurations</p>
+            </div>
+        </div>
+
+        <!-- Configuration Selection -->
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-cog"></i> Experiment Settings</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="functionSelect" class="form-label">Function:</label>
+                            <select class="form-select" id="functionSelect">
+                                {% for function in functions %}
+                                <option value="{{ function }}">{{ function.replace('_', ' ').title() }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="numRuns" class="form-label">Number of Runs per Configuration:</label>
+                            <select class="form-select" id="numRuns">
+                                <option value="5">5 runs (Quick)</option>
+                                <option value="10" selected>10 runs (Standard)</option>
+                                <option value="20">20 runs (Thorough)</option>
+                                <option value="30">30 runs (Statistical)</option>
+                            </select>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="populationSize" class="form-label">Population Size:</label>
+                                <input type="number" class="form-control" id="populationSize" value="50" min="10" max="200" step="10">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="generations" class="form-label">Generations:</label>
+                                <input type="number" class="form-control" id="generations" value="50" min="10" max="200" step="10">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-list-check"></i> Selected Configurations</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="selectedConfigs" class="mb-3">
+                            <p class="text-muted">Select configurations below to compare</p>
+                        </div>
+                        <button class="btn btn-success btn-lg w-100" onclick="runComparison()" id="runComparisonBtn" disabled>
+                            <i class="fas fa-play"></i> Run Comparison
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Configuration Cards -->
+        <div class="row mt-4">
+            <div class="col-12">
+                <h4><i class="fas fa-tools"></i> Available Configurations</h4>
+                <p class="text-muted">Click to select configurations for comparison (select at least 2)</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card config-card" data-representation="binary" data-crossover="1point">
+                    <div class="card-body text-center">
+                        <i class="fas fa-binary fa-2x text-primary mb-2"></i>
+                        <h6 class="card-title">Binary + 1-Point</h6>
+                        <p class="card-text small text-muted">
+                            Binary encoding with single-point crossover
+                        </p>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="config1">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card config-card" data-representation="binary" data-crossover="2point">
+                    <div class="card-body text-center">
+                        <i class="fas fa-binary fa-2x text-info mb-2"></i>
+                        <h6 class="card-title">Binary + 2-Point</h6>
+                        <p class="card-text small text-muted">
+                            Binary encoding with two-point crossover
+                        </p>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="config2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card config-card" data-representation="real" data-crossover="arithmetic">
+                    <div class="card-body text-center">
+                        <i class="fas fa-calculator fa-2x text-success mb-2"></i>
+                        <h6 class="card-title">Real + Arithmetic</h6>
+                        <p class="card-text small text-muted">
+                            Real-valued with arithmetic crossover
+                        </p>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="config3">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card config-card" data-representation="real" data-crossover="blx_alpha">
+                    <div class="card-body text-center">
+                        <i class="fas fa-blend fa-2x text-warning mb-2"></i>
+                        <h6 class="card-title">Real + BLX-α</h6>
+                        <p class="card-text small text-muted">
+                            Real-valued with BLX-alpha crossover
+                        </p>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="config4">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <div class="comparison-section" id="comparisonResults">
+            <div class="row mt-5">
+                <div class="col-12">
+                    <h3><i class="fas fa-chart-bar"></i> Comparison Results</h3>
+                </div>
+            </div>
+
+            <!-- Summary Statistics -->
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="card result-card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-table"></i> Summary Statistics</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped stats-table" id="summaryTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Configuration</th>
+                                            <th>Mean Fitness</th>
+                                            <th>Std Dev</th>
+                                            <th>Best Fitness</th>
+                                            <th>Worst Fitness</th>
+                                            <th>Median</th>
+                                            <th>Avg. Convergence</th>
+                                            <th>Avg. Runtime (s)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="summaryTableBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visualization -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card result-card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-chart-box-plot"></i> Performance Distribution</h5>
+                        </div>
+                        <div class="card-body text-center">
+                            <div id="comparisonPlot">
+                                <!-- Plot will be inserted here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistical Tests -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card result-card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-microscope"></i> Pairwise Statistical Tests</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped" id="statisticalTestsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Comparison</th>
+                                            <th>T-Test p-value</th>
+                                            <th>T-Test Significant</th>
+                                            <th>Wilcoxon p-value</th>
+                                            <th>Wilcoxon Significant</th>
+                                            <th>Test Type</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="statisticalTestsBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <small class="text-muted">
+                                <i class="fas fa-info-circle"></i>
+                                Significance level: α = 0.05. T-test assumes normality; Wilcoxon is non-parametric.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ANOVA Results -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card result-card">
+                        <div class="card-header">
+                            <h5><i class="fas fa-chart-line"></i> ANOVA Analysis</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="anovaResults">
+                                <!-- ANOVA results will be inserted here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Download Results -->
+            <div class="row mt-4 mb-5">
+                <div class="col-12 text-center">
+                    <button class="btn btn-primary" onclick="downloadResults()">
+                        <i class="fas fa-download"></i> Download Detailed Results
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let selectedConfigurations = [];
+        let comparisonData = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click handlers to configuration cards
+            document.querySelectorAll('.config-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const checkbox = this.querySelector('input[type="checkbox"]');
+                    checkbox.checked = !checkbox.checked;
+                    toggleConfiguration(this);
+                });
+            });
+
+            // Prevent card click when clicking checkbox directly
+            document.querySelectorAll('.config-card input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    toggleConfiguration(this.closest('.config-card'));
+                });
+            });
+        });
+
+        function toggleConfiguration(card) {
+            const checkbox = card.querySelector('input[type="checkbox"]');
+            const representation = card.dataset.representation;
+            const crossover = card.dataset.crossover;
+            const configId = `${representation}_${crossover}`;
+
+            if (checkbox.checked) {
+                card.classList.add('selected');
+                if (!selectedConfigurations.find(c => c.id === configId)) {
+                    selectedConfigurations.push({
+                        id: configId,
+                        representation: representation,
+                        crossover: crossover,
+                        name: card.querySelector('.card-title').textContent
+                    });
+                }
+            } else {
+                card.classList.remove('selected');
+                selectedConfigurations = selectedConfigurations.filter(c => c.id !== configId);
+            }
+
+            updateSelectedConfigsDisplay();
+            updateRunButton();
+        }
+
+        function updateSelectedConfigsDisplay() {
+            const container = document.getElementById('selectedConfigs');
+            
+            if (selectedConfigurations.length === 0) {
+                container.innerHTML = '<p class="text-muted">Select configurations below to compare</p>';
+                return;
+            }
+
+            let html = '<div class="mb-2"><strong>Selected configurations:</strong></div>';
+            selectedConfigurations.forEach(config => {
+                html += `<span class="badge config-badge bg-primary">${config.name}</span>`;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        function updateRunButton() {
+            const button = document.getElementById('runComparisonBtn');
+            button.disabled = selectedConfigurations.length < 2;
+            
+            if (selectedConfigurations.length < 2) {
+                button.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Select at least 2 configurations';
+            } else {
+                button.innerHTML = '<i class="fas fa-play"></i> Run Comparison';
+            }
+        }
+
+        function runComparison() {
+            if (selectedConfigurations.length < 2) {
+                alert('Please select at least 2 configurations to compare.');
+                return;
+            }
+
+            document.getElementById('loadingOverlay').style.display = 'block';
+            document.getElementById('comparisonResults').style.display = 'none';
+
+            const requestData = {
+                function: document.getElementById('functionSelect').value,
+                configurations: selectedConfigurations,
+                num_runs: parseInt(document.getElementById('numRuns').value),
+                population_size: parseInt(document.getElementById('populationSize').value),
+                generations: parseInt(document.getElementById('generations').value),
+                mutation_rate: 0.01,
+                crossover_rate: 0.8
+            };
+
+            fetch('/api/run_comparison', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('loadingOverlay').style.display = 'none';
+                
+                if (data.success) {
+                    comparisonData = data;
+                    displayComparisonResults(data);
+                } else {
+                    alert('Error running comparison: ' + data.error);
+                }
+            })
+            .catch(error => {
+                document.getElementById('loadingOverlay').style.display = 'none';
+                console.error('Error:', error);
+                alert('Error running comparison: ' + error.message);
+            });
+        }
+
+        function displayComparisonResults(data) {
+            const comparison = data.comparison_data;
+            
+            // Show results section
+            document.getElementById('comparisonResults').style.display = 'block';
+            
+            // Populate summary statistics table
+            const tableBody = document.getElementById('summaryTableBody');
+            tableBody.innerHTML = '';
+            
+            comparison.configurations.forEach(config => {
+                const row = tableBody.insertRow();
+                row.innerHTML = `
+                    <td><strong>${config.name}</strong></td>
+                    <td>${config.mean.toFixed(6)}</td>
+                    <td>${config.std.toFixed(6)}</td>
+                    <td>${config.min.toFixed(6)}</td>
+                    <td>${config.max.toFixed(6)}</td>
+                    <td>${config.median.toFixed(6)}</td>
+                    <td>${config.convergence_mean.toFixed(1)}</td>
+                    <td>${config.runtime_mean.toFixed(4)}</td>
+                `;
+                
+                // Highlight best performer
+                if (config.mean === Math.min(...comparison.configurations.map(c => c.mean))) {
+                    row.style.backgroundColor = '#d4edda';
+                    row.style.fontWeight = 'bold';
+                }
+            });
+            
+            // Populate statistical tests table
+            const testsBody = document.getElementById('statisticalTestsBody');
+            testsBody.innerHTML = '';
+            
+            Object.entries(comparison.statistical_tests).forEach(([key, test]) => {
+                const row = testsBody.insertRow();
+                row.innerHTML = `
+                    <td><strong>${test.config1}</strong> vs <strong>${test.config2}</strong></td>
+                    <td>${test.t_test.p_value.toFixed(6)}</td>
+                    <td>${test.t_test.significant ? 
+                        '<span class="badge bg-success">Yes</span>' : 
+                        '<span class="badge bg-secondary">No</span>'}</td>
+                    <td>${test.wilcoxon.p_value.toFixed(6)}</td>
+                    <td>${test.wilcoxon.significant ? 
+                        '<span class="badge bg-success">Yes</span>' : 
+                        '<span class="badge bg-secondary">No</span>'}</td>
+                    <td><span class="badge bg-info">${test.wilcoxon.test_type}</span></td>
+                `;
+            });
+
+            // Populate ANOVA results
+            const anovaContainer = document.getElementById('anovaResults');
+            if (comparison.anova_results) {
+                const anova = comparison.anova_results;
+                anovaContainer.innerHTML = `
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-chart-bar"></i> One-way ANOVA</h6>
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td><strong>F-statistic:</strong></td>
+                                        <td>${anova.f_statistic.toFixed(4)}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>p-value:</strong></td>
+                                        <td>${anova.f_p_value.toFixed(6)}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Significant:</strong></td>
+                                        <td>${anova.f_significant ? 
+                                            '<span class="badge bg-success">Yes</span>' : 
+                                            '<span class="badge bg-secondary">No</span>'}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Effect Size (η²):</strong></td>
+                                        <td>${anova.eta_squared.toFixed(4)} (${anova.effect_size_interpretation})</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-chart-line"></i> Kruskal-Wallis (Non-parametric)</h6>
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td><strong>H-statistic:</strong></td>
+                                        <td>${anova.kw_statistic.toFixed(4)}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>p-value:</strong></td>
+                                        <td>${anova.kw_p_value.toFixed(6)}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Significant:</strong></td>
+                                        <td>${anova.kw_significant ? 
+                                            '<span class="badge bg-success">Yes</span>' : 
+                                            '<span class="badge bg-secondary">No</span>'}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="alert alert-info">
+                                <h6><i class="fas fa-info-circle"></i> Interpretation</h6>
+                                <p class="mb-0">
+                                    ${anova.f_significant || anova.kw_significant ? 
+                                        'There are <strong>statistically significant differences</strong> between the configurations.' :
+                                        'There are <strong>no statistically significant differences</strong> between the configurations.'
+                                    }
+                                    The effect size is <strong>${anova.effect_size_interpretation}</strong> (η² = ${anova.eta_squared.toFixed(4)}).
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                anovaContainer.innerHTML = '<p class="text-muted">ANOVA results not available</p>';
+            }
+            
+            // Generate comparison plot
+            generateComparisonPlot(data.function_name, selectedConfigurations.map(c => c.id));
+            
+            // Scroll to results
+            document.getElementById('comparisonResults').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+
+        function generateComparisonPlot(functionName, configNames) {
+            // Create URL parameters properly for array
+            let params = new URLSearchParams();
+            params.append('function', functionName);
+            
+            // Add each config name as a separate parameter
+            configNames.forEach(config => {
+                params.append('configs', config);
+            });
+            
+            console.log('Generating plot with params:', params.toString());
+            
+            fetch(`/api/get_comparison_plot?${params}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('comparisonPlot').innerHTML = 
+                        `<img src="data:image/png;base64,${data.plot}" class="img-fluid" alt="Comparison Plot">`;
+                } else {
+                    document.getElementById('comparisonPlot').innerHTML = 
+                        '<p class="text-danger">Error generating plot: ' + data.error + '</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Error generating plot:', error);
+                document.getElementById('comparisonPlot').innerHTML = 
+                    '<p class="text-danger">Error generating plot</p>';
+            });
+        }
+
+        function downloadResults() {
+            if (!comparisonData) {
+                alert('No comparison data available to download.');
+                return;
+            }
+            
+            // Create CSV content
+            let csvContent = "Configuration,Mean,Std,Min,Max,Median,Convergence,Runtime\n";
+            comparisonData.comparison_data.configurations.forEach(config => {
+                csvContent += `${config.name},${config.mean},${config.std},${config.min},${config.max},${config.median},${config.convergence_mean},${config.runtime_mean}\n`;
+            });
+            
+            // Download CSV
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('hidden', '');
+            a.setAttribute('href', url);
+            a.setAttribute('download', `ga_comparison_${comparisonData.function_name}_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>

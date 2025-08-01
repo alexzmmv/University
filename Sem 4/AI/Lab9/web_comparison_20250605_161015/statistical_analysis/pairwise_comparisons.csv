@@ -1,0 +1,7 @@
+function_name,config1,config2,mean1,mean2,test_used,statistic,p_value,significant,effect_size,better_config,p_value_bonferroni,significant_bonferroni
+drop_wave,binary_1point,binary_2point,-0.9489961679738161,-0.9418545598718465,Wilcoxon signed-rank,209.0,0.6408254038542509,False,0.08517908400462211,binary_1point,1.0,False
+drop_wave,binary_1point,real_arithmetic,-0.9489961679738161,-0.9828510131864192,Wilcoxon signed-rank,70.0,0.00046010687947273254,True,0.6395513038774573,real_arithmetic,0.0027606412768363953,True
+drop_wave,binary_1point,real_blx_alpha,-0.9489961679738161,-0.9788813023083986,Wilcoxon signed-rank,29.0,3.2391399145126343e-06,True,0.8498905821527968,real_blx_alpha,1.9434839487075806e-05,True
+drop_wave,binary_2point,real_arithmetic,-0.9418545598718465,-0.9828510131864192,Wilcoxon signed-rank,71.0,0.0005054883658885956,True,0.6349621780182918,real_arithmetic,0.0030329301953315735,True
+drop_wave,binary_2point,real_blx_alpha,-0.9418545598718465,-0.9788813023083986,Wilcoxon signed-rank,16.0,3.1478703022003174e-07,True,0.9337522414238107,real_blx_alpha,1.8887221813201904e-06,True
+drop_wave,real_arithmetic,real_blx_alpha,-0.9828510131864192,-0.9788813023083986,Wilcoxon signed-rank,165.0,0.25627006718125633,False,0.20726757029320367,real_arithmetic,1.0,False
