@@ -1,8 +1,0 @@
-com/projectmanagement/servlet/DatabaseSetupServlet.class
-com/projectmanagement/servlet/ProjectServlet.class
-com/projectmanagement/model/Project.class
-com/projectmanagement/config/DatabaseConfig.class
-com/projectmanagement/model/SoftwareDeveloper.class
-com/projectmanagement/servlet/DeveloperServlet.class
-com/projectmanagement/dao/SoftwareDeveloperDAO.class
-com/projectmanagement/dao/ProjectDAO.class
